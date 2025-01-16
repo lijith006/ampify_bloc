@@ -51,6 +51,9 @@
 // class GoogleSignInRequested extends AuthEvent {}
 
 // class LogoutRequested extends AuthEvent {}
+
+//tested result
+
 part of 'auth_bloc.dart';
 
 @immutable
@@ -80,3 +83,14 @@ class LoginUserWithEmailAndPassword extends AuthEvent {
 class Signout extends AuthEvent {}
 
 class SignOutRequested extends AuthEvent {}
+
+class TogglePasswordVisibility extends AuthEvent {
+  final bool isPasswordVisible;
+
+  TogglePasswordVisibility(this.isPasswordVisible);
+}
+
+//EXp
+// class CheckEmailVerificationStatus extends AuthEvent {}
+
+// class ResendEmailVerification extends AuthEvent {}

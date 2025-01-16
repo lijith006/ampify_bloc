@@ -17,41 +17,89 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Enter email to reset password'),
-            const SizedBox(
-              height: 10,
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        // title: const Text(
+        //   'Forgot password',
+        //   style: TextStyle(
+        //       fontSize: 30, fontWeight: FontWeight.w400, color: Colors.white),
+        // ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+      ),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/background.jpg'),
+                fit: BoxFit.cover)),
+        child: SizedBox.expand(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                const Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Forgot password',
+                        style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        'assets/images/forgotPassword.png',
+                        height: 350,
+                        width: 350,
+                      ),
+                    ),
+                  ],
+                ),
+                const Text('Enter email to reset password'),
+                const SizedBox(
+                  height: 10,
+                ),
+                Customtextformfield(
+                  controller: _email,
+                  labelText: 'Email',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                        .hasMatch(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                    label: 'Send Email',
+                    onTap: () async {
+                      await _auth.sendPasswordResetLink(_email.text);
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              'An email for password reset has been send to your email')));
+                      Navigator.pop(context);
+                    }),
+              ],
             ),
-            Customtextformfield(
-              controller: _email,
-              labelText: 'Email',
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                  return 'Please enter a valid email';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            CustomButton(
-                label: 'Send Email',
-                onTap: () async {
-                  await _auth.sendPasswordResetLink(_email.text);
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          'An email for password reset has been send to your email')));
-                  Navigator.pop(context);
-                }),
-          ],
+          ),
         ),
       ),
     );

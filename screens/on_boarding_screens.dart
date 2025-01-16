@@ -25,7 +25,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
     await prefs.setBool('onboardingComplete', true);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Wrapper()),
+      MaterialPageRoute(builder: (context) => Wrapper()),
     );
   }
 

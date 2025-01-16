@@ -21,3 +21,13 @@ class AuthError extends AuthState {
 
   AuthError({required this.message});
 }
+
+class AuthPasswordVisibilityChanged extends AuthState {
+  final bool isPasswordVisible;
+
+  AuthPasswordVisibilityChanged(this.isPasswordVisible);
+}
+
+// class AuthEmailNotVerified extends AuthState {}
+
+// class AuthEmailVerificationSent extends AuthState {}
