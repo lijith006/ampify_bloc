@@ -48,6 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //   }
     // });
 
+//SIGN UP
     on<CreateUserWithEmailAndPassword>((event, emit) async {
       emit(AuthLoading());
       try {

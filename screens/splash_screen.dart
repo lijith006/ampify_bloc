@@ -25,39 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  //onboard scrn with wrp
-  // Future<void> navigateToNextScreen() async {
-  //   await Future.delayed(const Duration(seconds: 3));
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   bool? onboardingComplete = prefs.getBool('onboardingComplete');
-
-  //   if (onboardingComplete == null || onboardingComplete == false) {
-  //     // Navigate to onboarding screens if onboarding is not complete
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => const OnBoardingScreens()),
-  //     );
-  //   } else {
-  //     // Navigate to the wrapper screen if onboarding is complete
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => const Wrapper()),
-  //     );
-  //   }
-
-  //   // if (onboardingComplete == true) {
-  //   //   Navigator.pushReplacement(
-  //   //     context,
-  //   //     MaterialPageRoute(builder: (context) => const Wrapper()),
-  //   //   );
-  //   // } else {
-  //   //   Navigator.pushReplacement(
-  //   //     context,
-  //   //     MaterialPageRoute(builder: (context) => const OnBoardingScreens()),
-  //   //   );
-  //   // }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

@@ -1,6 +1,8 @@
 import 'package:ampify_bloc/authentication/service/auth_service.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
+import 'package:ampify_bloc/widgets/validators_widget.dart';
+import 'package:ampify_bloc/widgets/widget_support.dart';
 
 import 'package:flutter/material.dart';
 
@@ -41,18 +43,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 50,
+                  height: 70,
                 ),
-                const Row(
+                Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Forgot password',
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white),
+                        style: AppWidget.screenHeading(),
                       ),
                     ),
                   ],
@@ -72,18 +71,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(
                   height: 10,
                 ),
-                Customtextformfield(
+                CustomTextFormField(
                   controller: _email,
                   labelText: 'Email',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                        .hasMatch(value)) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
+                  validator: Validators.validateEmail,
                 ),
                 const SizedBox(
                   height: 20,

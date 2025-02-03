@@ -1,14 +1,13 @@
 import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/screens/login_screen.dart';
-// import 'package:ampify_bloc/authentication/screens/login_screen_orginal.dart';
-// import 'package:ampify_bloc/screens/home/Home_screen.dart';
 import 'package:ampify_bloc/screens/home/home_screen.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
+import 'package:ampify_bloc/widgets/validators_widget.dart';
+import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import '../bloc/auth_state.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -35,18 +34,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0, shadowColor: Colors.transparent,
-        // Removes shadow
-      ),
+      backgroundColor: const Color.fromARGB(255, 243, 236, 236),
+      // backgroundColor: AppColors.backgroundColor,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0, shadowColor: Colors.transparent,
+      //   // Removes shadow
+      // ),
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/images/background.jpg'),
-                fit: BoxFit.cover)),
         child: SizedBox.expand(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -57,51 +53,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 30),
-                    const Text(
+                    Text(
                       'Signup',
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white),
+                      style: AppWidget.screenHeading(),
                     ),
-                    // const SizedBox(height: 30),
                     Column(
                       children: [
                         Center(
                           child: Image.asset(
                             'assets/images/signup2.png',
-                            height: 350,
-                            width: 350,
+                            height: 300,
+                            width: 300,
                           ),
                         ),
                       ],
                     ),
-                    Customtextformfield(
+                    CustomTextFormField(
                       controller: _nameController,
                       labelText: 'Name',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your name';
-                        } else if (value.length < 3) {
-                          return 'Name must be at least 3 characters long';
-                        }
-                        return null;
-                      },
+                      validator: Validators.validateUsername,
                     ),
                     const SizedBox(height: 20),
-                    Customtextformfield(
-                      suffixIcon: Icon(Icons.email_outlined),
+                    CustomTextFormField(
+                      suffixIcon: const Icon(Icons.email_outlined),
                       controller: _emailController,
                       labelText: 'Email',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                            .hasMatch(value)) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
+                      validator: Validators.validateEmail,
                     ),
                     const SizedBox(height: 20),
                     BlocBuilder<AuthBloc, AuthState>(
@@ -110,18 +87,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (state is AuthPasswordVisibilityChanged) {
                           isPasswordVisible = state.isPasswordVisible;
                         }
-                        return Customtextformfield(
+                        return CustomTextFormField(
                           controller: _passwordController,
                           obscureText: !isPasswordVisible,
                           labelText: 'Password',
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            } else if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
-                            }
-                            return null;
-                          },
+                          validator: Validators.validatePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
                               isPasswordVisible
@@ -136,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         );
                       },
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -158,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 5),
                     BlocListener<AuthBloc, AuthState>(
                       listener: (context, state) {
                         if (state is AuthLoading) {
@@ -176,7 +146,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               builder: (context) => const HomeScreen(),
                             ),
                           );
-                          // Navigator.pop(context);
                         }
                         if (state is AuthError) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -201,11 +170,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 5),
                     const Divider(thickness: 1),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 5),
                     const Center(child: Text('Or login with Google account')),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
                         if (state is AuthLoading) {

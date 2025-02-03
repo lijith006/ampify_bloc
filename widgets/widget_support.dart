@@ -16,4 +16,9 @@ class AppWidget {
       fontWeight: FontWeight.bold,
     );
   }
+
+  static TextStyle screenHeading() {
+    return const TextStyle(
+        fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white);
+  }
 }
