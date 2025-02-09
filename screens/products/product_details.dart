@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/arc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -108,7 +110,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       width: double.infinity,
                       // color: const Color(0XFF526664),
                       // color: Color.fromARGB(255, 24, 63, 5),
-                      color: Color.fromARGB(255, 123, 168, 228),
+                      color: const Color.fromARGB(255, 123, 168, 228),
 
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -172,7 +174,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           //Button
                           CustomButton(
                             label: 'Add to Cart',
-                            onTap: () {},
+                            onTap: () {
+                              final cartItem = CartItem(
+                                productId: widget.productId,
+                                title: productName,
+                                price: productPrice,
+                                quantity: 1,
+                                imageUrls: base64Images,
+                              );
+                              addToCart(cartItem);
+                            },
                           )
                         ],
                       ),
@@ -181,6 +192,31 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ],
               ),
             ),
+    );
+  }
+
+  Future<void> addToCart(CartItem item) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    final cartRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('cart');
+    final docSnapshot = await cartRef.doc(item.productId).get();
+    if (docSnapshot.exists) {
+      //if the item already in cart-
+      final existingData = docSnapshot.data();
+      final currentQuantity = existingData?['quantity'] ?? 0;
+      await cartRef
+          .doc(item.productId)
+          .update({'quantity': currentQuantity + 1});
+    } else {
+      //If the item is new
+      await cartRef.doc(item.productId).set(item.toMap());
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Product added to cart!')),
     );
   }
 }
