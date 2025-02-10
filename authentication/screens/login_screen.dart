@@ -209,6 +209,7 @@
 import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/screens/forgot-password.dart';
 import 'package:ampify_bloc/authentication/screens/signup_screen.dart';
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/home/home_screen.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
@@ -233,9 +234,10 @@ class _LoginScreenState extends State<LoginScreen> {
     final _passwordController = TextEditingController();
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 236, 236),
+      // backgroundColor: const Color.fromARGB(255, 243, 236, 236),
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: Center(
+        title: const Center(
             child: Text(
           'Login',
           style: TextStyle(fontSize: 26),
@@ -244,7 +246,6 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
         shadowColor: Colors.transparent,
       ),
-      // extendBodyBehindAppBar: true,
       body: Container(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -255,15 +256,16 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // const SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   //EXP im
                   Column(
                     children: [
                       Center(
                         child: Image.asset(
-                          'assets/images/login3.png',
-                          height: 300,
-                          width: 300,
+                          // 'assets/images/login3.png',
+                          'assets/images/logscrn.png',
+                          height: 320,
+                          width: 320,
                         ),
                       ),
                     ],
@@ -365,7 +367,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (state is AuthLoading) {
                         return const Center(
                           child: SpinKitWave(
-                            color: Colors.blue,
+                            color: Colors.black45,
                             size: 35.0,
                           ),
                         );

@@ -2,13 +2,15 @@
 
 // import 'package:ampify_bloc/authentication/screens/login_screen.dart';
 // import 'package:ampify_bloc/authentication/service/auth_service.dart';
-// // import 'package:ampify_bloc/screens/cart/cart.dart';
+// import 'package:ampify_bloc/screens/cart/cart.dart';
+
 // import 'package:ampify_bloc/screens/categories/bloc/categories_bloc.dart';
 // import 'package:ampify_bloc/screens/categories/bloc/categories_event.dart';
 // import 'package:ampify_bloc/screens/categories/categories.dart';
 // import 'package:ampify_bloc/screens/products/product_details.dart';
-// // import 'package:ampify_bloc/screens/profile/profile.dart';
-// // import 'package:ampify_bloc/widgets/custom_bottom_navbar.dart';
+// import 'package:ampify_bloc/screens/profile/profile.dart';
+// import 'package:ampify_bloc/screens/wishlistScreen/wishlist_screen.dart';
+
 // import 'package:ampify_bloc/widgets/widget_support.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,6 +33,14 @@
 //   String searchQuery = '';
 //   int selectedIndex = 0;
 //   int activeIndex = 0;
+//   // List of screens to show
+//   final List<Widget> screens = [
+//     //const HomeScreen(),
+//     const MyCart(),
+//     const WishlistScreen(),
+//     const MyProfile(),
+//   ];
+
 //   //Fetch  categories
 
 //   Stream<QuerySnapshot> fetchCategories() {
@@ -57,35 +67,11 @@
 //     }
 //   }
 
-//   //Bottom Navigation bar
-
-//   // void onItemTapped(int index) {
-//   //   setState(() {
-//   //     selectedIndex = index;
-//   //   });
-//   //   //nav logic
-//   //   switch (index) {
-//   //     case 0:
-//   //       //Home
-//   //       break;
-//   //     case 1:
-//   //       //Cart
-//   //       Navigator.push(
-//   //           context,
-//   //           MaterialPageRoute(
-//   //             builder: (context) => const MyCart(),
-//   //           ));
-
-//   //       break;
-//   //     case 2:
-//   //       //Profile
-//   //       Navigator.push(
-//   //           context,
-//   //           MaterialPageRoute(
-//   //             builder: (context) => const MyProfile(),
-//   //           ));
-//   //   }
-//   // }
+//   void onItemTapped(int index) {
+//     setState(() {
+//       selectedIndex = index;
+//     });
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -308,7 +294,7 @@
 //                               ));
 //                         },
 //                         child: Card(
-//                           elevation: 2,
+//                           elevation: 3,
 //                           child: Column(
 //                             children: [
 //                               Expanded(
@@ -355,8 +341,6 @@
 //         ),
 //       ),
 //     );
-//     //       CustomBottomNavBar(currentIndex: selectedIndex, onTap: onItemTapped),
-//     // );
 //   }
 
 //   void showSignOutDialog(BuildContext context, AuthService _auth) {
@@ -402,20 +386,21 @@
 //     );
 //   }
 // }
-//******************************************************** */
+//*---------*************--------------------------************
+
 import 'dart:convert';
 
 import 'package:ampify_bloc/authentication/screens/login_screen.dart';
 import 'package:ampify_bloc/authentication/service/auth_service.dart';
 import 'package:ampify_bloc/screens/cart/cart.dart';
-// import 'package:ampify_bloc/screens/cart/cart.dart';
+
 import 'package:ampify_bloc/screens/categories/bloc/categories_bloc.dart';
 import 'package:ampify_bloc/screens/categories/bloc/categories_event.dart';
 import 'package:ampify_bloc/screens/categories/categories.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/screens/profile/profile.dart';
-// import 'package:ampify_bloc/screens/profile/profile.dart';
-// import 'package:ampify_bloc/widgets/custom_bottom_navbar.dart';
+import 'package:ampify_bloc/screens/wishlistScreen/wishlist_screen.dart';
+
 import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -440,10 +425,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int activeIndex = 0;
   // List of screens to show
   final List<Widget> screens = [
-    const HomeScreen(),
+    //const HomeScreen(),
     const MyCart(),
+    const WishlistScreen(),
     const MyProfile(),
   ];
+
   //Fetch  categories
 
   Stream<QuerySnapshot> fetchCategories() {
@@ -517,15 +504,6 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyCart(),
-                        ));
-                  },
-                  child: Text('CART')),
               //Carousel slider
               StreamBuilder<QuerySnapshot>(
                 stream: fetchProducts(),
@@ -706,7 +684,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ));
                         },
                         child: Card(
-                          elevation: 2,
+                          elevation: 3,
                           child: Column(
                             children: [
                               Expanded(

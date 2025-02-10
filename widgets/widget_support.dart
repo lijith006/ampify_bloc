@@ -21,4 +21,9 @@ class AppWidget {
     return const TextStyle(
         fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white);
   }
+
+  static TextStyle screenHeadingBlack() {
+    return const TextStyle(
+        fontSize: 28, fontWeight: FontWeight.w400, color: Colors.black);
+  }
 }

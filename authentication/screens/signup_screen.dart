@@ -1,5 +1,6 @@
 import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/screens/login_screen.dart';
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/home/home_screen.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
@@ -34,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 236, 236),
+      backgroundColor: AppColors.backgroundColor,
       // backgroundColor: AppColors.backgroundColor,
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,
@@ -50,18 +51,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               key: _formKey,
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 30),
                     Text(
                       'Signup',
-                      style: AppWidget.screenHeading(),
+                      style: AppWidget.screenHeadingBlack(),
                     ),
                     Column(
                       children: [
                         Center(
                           child: Image.asset(
-                            'assets/images/signup2.png',
+                            // 'assets/images/signup2.png',
+                            'assets/images/signup_dn.png',
                             height: 300,
                             width: 300,
                           ),
@@ -180,7 +182,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (state is AuthLoading) {
                           return const Center(
                             child: SpinKitWave(
-                              color: Colors.blue,
+                              color: Colors.black45,
                               size: 35.0,
                             ),
                           );
