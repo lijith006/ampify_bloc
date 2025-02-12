@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
+import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SavedItemsScreen extends StatelessWidget {
-  // final List<CartItem> savedItems;
   final Function(CartItem) moveToCart;
 
   const SavedItemsScreen({
@@ -24,6 +25,7 @@ class SavedItemsScreen extends StatelessWidget {
       );
     }
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: const Text('Saved Items'),
       ),
@@ -48,22 +50,33 @@ class SavedItemsScreen extends StatelessWidget {
             itemCount: savedItems.length,
             itemBuilder: (context, index) {
               final item = savedItems[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: ListTile(
-                  leading: Image.memory(
-                    decodeBase64Image(item.imageUrls.first),
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-                  title: Text(item.title),
-                  subtitle: Text('₹${item.price}'),
-                  trailing: ElevatedButton(
-                    onPressed: () async {
-                      await moveToCartFirestore(context, item, userId);
-                    },
-                    child: const Text('Move to Cart'),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailPage(productId: item.productId),
+                      ));
+                },
+                child: Card(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: ListTile(
+                    leading: Image.memory(
+                      decodeBase64Image(item.imageUrls.first),
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(item.title),
+                    subtitle: Text('₹${item.price}'),
+                    trailing: ElevatedButton(
+                      onPressed: () async {
+                        await moveToCartFirestore(context, item, userId);
+                      },
+                      child: const Text('Move to Cart'),
+                    ),
                   ),
                 ),
               );

@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:ampify_bloc/screens/cart/saved_items_screen.dart';
+import 'package:ampify_bloc/screens/products/product_details.dart';
+import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyCart extends StatefulWidget {
-  //************* */
-
   const MyCart({
     super.key,
   });
@@ -27,48 +28,93 @@ class _MyCartState extends State<MyCart> {
         child: Text('Please log in'),
       );
     }
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('My Cart'),
-        ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc(userId)
-              .collection('cart')
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text('Your cart is empty 😔'));
-            }
-            final cartItems = snapshot.data!.docs.map((doc) {
-              return CartItem.fromMap(doc.data() as Map<String, dynamic>);
-            }).toList();
 
-            return Column(
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SavedItemsScreen(
-                              moveToCart: (CartItem) {},
-                            ),
-                          ));
-                    },
-                    child: const Text('Saved items')),
-                Expanded(child: buildCartList(cartItems)),
-                buildTotalSection(cartItems),
-                //save later call
-              ],
-            );
-          },
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: AppBar(
+            //  title: const Text('My Cart'),
+            bottom: const TabBar(
+                indicatorColor: Colors.blueAccent,
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
+                tabs: [
+                  Tab(
+                    icon: Icon(Icons.save),
+                    text: 'My Cart',
+                  ),
+                  Tab(icon: Icon(Icons.save), text: "Saved for Later"),
+                ]),
+          ),
+          body: TabBarView(
+            children: [
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(userId)
+                    .collection('cart')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('Your cart is empty 😔'));
+                  }
+                  final cartItems = snapshot.data!.docs.map((doc) {
+                    return CartItem.fromMap(doc.data() as Map<String, dynamic>);
+                  }).toList();
+
+                  return Column(
+                    children: [
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //             builder: (context) => SavedItemsScreen(
+                      //               moveToCart: (CartItem) {},
+                      //             ),
+                      //           ));
+                      //     },
+                      //     child: const Text('Saved items')),
+                      Expanded(child: buildCartList(cartItems)),
+                      buildTotalSection(cartItems),
+                      //save later call
+                    ],
+                  );
+                },
+              ),
+
+              // Saved Items Tab
+              SavedItemsScreen(
+                moveToCart: (CartItem item) async {
+                  final userId = FirebaseAuth.instance.currentUser?.uid;
+                  if (userId == null) return;
+
+                  final savedRef = FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(userId)
+                      .collection('saved');
+
+                  final cartRef = FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(userId)
+                      .collection('cart');
+
+                  await savedRef.doc(item.productId).delete();
+                  await cartRef.doc(item.productId).set(item.toMap());
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Item moved to cart!')),
+                  );
+                },
+              ),
+            ],
+          ),
         ));
   }
 
@@ -82,81 +128,92 @@ class _MyCartState extends State<MyCart> {
       itemCount: cartItems.length,
       itemBuilder: (context, index) {
         final item = cartItems[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                //image
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.memory(
-                    decodeBase64Image(item.imageUrls.first),
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.contain,
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProductDetailPage(productId: item.productId),
+                ));
+          },
+          child: Card(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  //image
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.memory(
+                      decodeBase64Image(item.imageUrls.first),
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //title  and price
-                    Text(
-                      item.title,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text('₹${item.price}',
-                        style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold)),
-                    Text(
-                      'Estimated Delivery: $formattedDate',
-                      style: const TextStyle(
-                        color: Color.fromARGB(90, 12, 12, 12),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //title  and price
+                      Text(
+                        item.title,
+                        style: AppWidget.boldCardTitle(),
+                        //  TextStyle(
+                        //     fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    ),
+                      Text('₹${item.price}',
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold)),
+                      Text(
+                        'Estimated Delivery: $formattedDate',
+                        style: const TextStyle(
+                          color: Color.fromARGB(90, 12, 12, 12),
+                        ),
+                      ),
 
-                    //add & remove quantity
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () => updateQuantity(item, -1),
-                            icon: const Icon(Icons.remove)),
-                        Text("${item.quantity}"),
-                        IconButton(
-                            onPressed: () => updateQuantity(item, 1),
-                            icon: const Icon(Icons.add)),
-                        //Save for later
-                        TextButton(
-                          onPressed: () {
-                            saveForLater(item);
-                          },
-                          child: const Text('Save for Later',
-                              style: TextStyle(color: Colors.blue)),
-                        )
-                      ],
-                    )
-                  ],
-                )),
-                // Remove product
-                // IconButton(
-                //     onPressed: () => removeFromCart(item.productId),
-                //     icon: const Icon(
-                //       Icons.delete,
-                //       color: Colors.red,
-                //     )),
-              ],
+                      //add & remove quantity
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              onPressed: () => updateQuantity(item, -1),
+                              icon: const Icon(Icons.remove)),
+                          Text("${item.quantity}"),
+                          IconButton(
+                              onPressed: () => updateQuantity(item, 1),
+                              icon: const Icon(Icons.add)),
+                          //Save for later
+                          TextButton(
+                            onPressed: () {
+                              saveForLater(item);
+                            },
+                            child: const Text('Save for Later',
+                                style: TextStyle(color: Colors.blue)),
+                          )
+                        ],
+                      )
+                    ],
+                  )),
+                  // Remove product
+                  // IconButton(
+                  //     onPressed: () => removeFromCart(item.productId),
+                  //     icon: const Icon(
+                  //       Icons.delete,
+                  //       color: Colors.red,
+                  //     )),
+                ],
+              ),
             ),
           ),
         );
@@ -225,13 +282,13 @@ class _MyCartState extends State<MyCart> {
 
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+                backgroundColor: Color(0XFF1A73E8),
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 40)),
             onPressed: () => print('Proceed to Buy'),
             child: const Text(
               'Proceed to Buy',
-              style: TextStyle(fontSize: 18, color: Colors.black),
+              style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),
         ],

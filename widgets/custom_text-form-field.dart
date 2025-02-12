@@ -1,47 +1,3 @@
-// import 'package:flutter/material.dart';
-
-// class Customtextformfield extends StatelessWidget {
-//   final TextEditingController controller;
-//   final String labelText;
-//   final bool obscureText;
-//   final Widget? suffixIcon;
-//   final Widget? prefixicon;
-//   final int maxLines;
-//   final String? Function(String?)? validator;
-//   final TextInputType keyboardtype;
-
-//   const Customtextformfield({
-//     super.key,
-//     required this.controller,
-//     required this.labelText,
-//     this.obscureText = false,
-//     this.validator,
-//     this.suffixIcon,
-//     this.prefixicon,
-//     this.keyboardtype = TextInputType.text,
-//     this.maxLines = 1,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextFormField(
-//       controller: controller,
-//       obscureText: obscureText,
-//       maxLines: maxLines,
-//       keyboardType: keyboardtype,
-//       decoration: InputDecoration(
-//           labelText: labelText,
-//           border: OutlineInputBorder(
-//             borderRadius: BorderRadius.circular(20),
-//           ),
-//           prefixIcon: prefixicon,
-//           suffixIcon: suffixIcon),
-//       validator: validator,
-//     );
-//   }
-// }
-//********************************************* */
-
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -91,7 +47,7 @@ class CustomTextFormField extends StatelessWidget {
           filled: true,
           // fillColor: Colors.grey[200],
           // fillColor: Color(0XFFe1d5c9),
-          fillColor: Color.fromARGB(255, 240, 237, 235),
+          fillColor: const Color.fromARGB(255, 240, 237, 235),
 
           // border: InputBorder.none,
 
