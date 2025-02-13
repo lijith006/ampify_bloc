@@ -61,3 +61,5 @@ class SearchFilterService {
     return firestore.collection('brands').snapshots();
   }
 }
+
+//************************************************** */

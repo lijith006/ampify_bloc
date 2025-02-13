@@ -1,3 +1,4 @@
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomActionButton extends StatelessWidget {
@@ -26,12 +27,14 @@ class CustomActionButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       icon: icon != null
-          ? Icon(icon, color: Colors.white)
+          ? Icon(icon, color: AppColors.textcolorCommmonGrey)
           : const SizedBox.shrink(),
       label: Text(
         label,
         style: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textcolorCommmonGrey),
       ),
     );
   }

@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
-          // Main content based on navigation
+          // Main content based on--- navigation
           IndexedStack(
             index: _selectedIndex,
             children: screens,
@@ -450,9 +450,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildSearchField() {
     return TextField(
       controller: searchController,
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: 'Search products...',
-        hintStyle: TextStyle(color: Colors.white54),
+        hintStyle: const TextStyle(color: Colors.white54),
         border: InputBorder.none,
         suffixIcon: IconButton(
           icon: const Icon(
@@ -559,3 +560,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+//******************************************************** */
