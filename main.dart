@@ -3,6 +3,7 @@ import 'package:ampify_bloc/authentication/service/auth_service.dart';
 import 'package:ampify_bloc/screens/products/bloc/product_details_bloc.dart';
 import 'package:ampify_bloc/screens/splash_screen.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
+import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProductDetailsBloc>(
           create: (_) => ProductDetailsBloc(),
         ),
-        BlocProvider(create: (_) => WishlistBloc()),
+        BlocProvider<WishlistBloc>(
+          create: (context) => WishlistBloc()..add(FetchWishlist()),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

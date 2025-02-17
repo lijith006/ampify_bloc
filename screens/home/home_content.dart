@@ -290,169 +290,178 @@ class _HomeContentState extends State<HomeContent> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(8.0),
+      // padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           ProductCarousel(productStream: fetchProducts()),
 
-          const SizedBox(height: 20),
           // C a t e g o r i e s
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Categories', style: AppWidget.boldTextFieldStyle()),
-          ),
-          const SizedBox(height: 20),
-          //Categories
-          StreamBuilder(
-            stream: fetchCategories(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
-              }
-              final categories = snapshot.data!.docs;
-              return SizedBox(
-                height: 100,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final category = categories[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BlocProvider(
-                                create: (context) => CategoriesBloc(
-                                  firestore: FirebaseFirestore.instance,
-                                )..add(FetchProducts(
-                                    category.id,
-                                  )),
-                                child: Categories(
-                                  categoryId: category.id,
-                                  categoryName: category['name'],
-                                ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Categories', style: AppWidget.boldCardTitle()),
+
+                const SizedBox(height: 5),
+                //Categories
+                StreamBuilder(
+                  stream: fetchCategories(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+                    final categories = snapshot.data!.docs;
+                    return SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          final category = categories[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BlocProvider(
+                                      create: (context) => CategoriesBloc(
+                                        firestore: FirebaseFirestore.instance,
+                                      )..add(FetchProducts(
+                                          category.id,
+                                        )),
+                                      child: Categories(
+                                        categoryId: category.id,
+                                        categoryName: category['name'],
+                                      ),
+                                    ),
+                                  ));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: MemoryImage(
+                                        base64Decode(category['image'])),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(category['name']),
+                                ],
                               ),
-                            ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage:
-                                  MemoryImage(base64Decode(category['image'])),
                             ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Text(category['name']),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                     );
                   },
                 ),
-              );
-            },
-          ),
-          const SizedBox(height: 20),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Featured products',
-              style: AppWidget.boldTextFieldStyle(),
-            ),
-          ),
-          const SizedBox(height: 20),
-          //PRODUCT GRID
-          StreamBuilder<QuerySnapshot>(
-            stream: fetchProducts(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text('Something went wrong'),
-                );
-              }
-              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(
+                const SizedBox(height: 5),
+                Align(
+                  alignment: Alignment.centerLeft,
                   child: Text(
-                    'No products available',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    'Featured products',
+                    style: AppWidget.boldCardTitle(),
                   ),
-                );
-              }
-              final products = snapshot.data!.docs;
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 0.75),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final productId = products[index].id;
+                ),
+                const SizedBox(height: 20),
+                //PRODUCT GRID
+                StreamBuilder<QuerySnapshot>(
+                  stream: fetchProducts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('Something went wrong'),
+                      );
+                    }
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'No products available',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                      );
+                    }
+                    final products = snapshot.data!.docs;
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                              childAspectRatio: 0.75),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        final productId = products[index].id;
 
-                  final product = products[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ProductDetailPage(productId: productId),
-                          ));
-                    },
-                    child: Card(
-                      elevation: 3,
-                      child: Column(
-                        children: [
-                          Expanded(
-                              child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                              image: MemoryImage(
-                                base64Decode(product['images'][0]),
-                              ),
-                              fit: BoxFit.cover,
-                            )),
-                          )),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                        final product = products[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProductDetailPage(productId: productId),
+                                ));
+                          },
+                          child: Card(
+                            elevation: 3,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  product['name'],
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  '\₹${product['price']}',
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(255, 107, 104, 104),
+                                Expanded(
+                                    child: Container(
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                    image: MemoryImage(
+                                      base64Decode(product['images'][0]),
+                                    ),
+                                    fit: BoxFit.contain,
+                                  )),
+                                )),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        product['name'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '\₹${product['price']}',
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 107, 104, 104),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          )
+                        );
+                      },
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );

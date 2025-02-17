@@ -9,6 +9,14 @@ class AppWidget {
     );
   }
 
+  static TextStyle boldTextFieldStyleSmall() {
+    return const TextStyle(
+      color: Color(0xFF333333),
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
   static TextStyle boldCardTitle() {
     return const TextStyle(
       color: Color(0xFF333333),

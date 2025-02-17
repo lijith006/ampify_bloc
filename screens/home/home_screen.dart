@@ -496,6 +496,71 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+// //Category filter
+//   Widget buildCategoryFilter(StateSetter setState) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const Text('Category'),
+//         StreamBuilder<QuerySnapshot>(
+//           stream: searchFilterService.fetchCategories(),
+//           builder: (context, snapshot) {
+//             if (!snapshot.hasData) {
+//               return const CircularProgressIndicator();
+//             }
+//             return Wrap(
+//               spacing: 8.0,
+//               children: snapshot.data!.docs.map((doc) {
+//                 return FilterChip(
+//                   label: Text(doc['name']),
+//                   selected: filter.category == doc.id,
+//                   onSelected: (selected) {
+//                     setState(() {
+//                       filter.category = selected ? doc.id : null;
+//                     });
+//                   },
+//                 );
+//               }).toList(),
+//             );
+//           },
+//         ),
+//       ],
+//     );
+//   }
+
+// //Brand filter
+//   Widget buildBrandFilter(StateSetter setState) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const Text('Brand'),
+//         StreamBuilder<QuerySnapshot>(
+//           stream: searchFilterService.fetchBrands(),
+//           builder: (context, snapshot) {
+//             if (!snapshot.hasData) {
+//               return const CircularProgressIndicator();
+//             }
+//             return Wrap(
+//               spacing: 8.0,
+//               children: snapshot.data!.docs.map((doc) {
+//                 return FilterChip(
+//                   label: Text(doc['name']),
+//                   selected: filter.brand == doc.id,
+//                   onSelected: (selected) {
+//                     setState(() {
+//                       filter.brand = selected ? doc.id : null;
+//                     });
+//                   },
+//                 );
+//               }).toList(),
+//             );
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }
+//******************************************************** */
 //Category filter
   Widget buildCategoryFilter(StateSetter setState) {
     return Column(
@@ -560,4 +625,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-//******************************************************** */
