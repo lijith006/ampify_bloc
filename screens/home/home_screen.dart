@@ -47,7 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         excludeHeaderSemantics: true,
-        backgroundColor: const Color(0xFF1A73E8),
+        backgroundColor: AppColors.backgroundColor,
+        // backgroundColor: const Color(0xFF1A73E8),
         title:
             _selectedIndex == 0 ? buildSearchField() : Text(getScreenTitle()),
         actions: [
@@ -99,13 +100,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(Icons.search_off,
-                            size: 64, color: Colors.grey),
+                            size: 64, color: Colors.black87),
                         const SizedBox(height: 16),
                         Text(
                           'No products found for "${searchQuery.isEmpty ? 'selected filters' : searchQuery}"',
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Colors.grey,
+                            color: Colors.black87,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -130,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         return Container(
-          color: Colors.white,
+          color: AppColors.backgroundColor,
           child: Column(
             children: [
               if (isFilterActive || searchQuery.isNotEmpty)
@@ -339,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //Filter button
   Widget buildFilterButton() {
     return IconButton(
-      color: Colors.white54,
+      color: Colors.black,
       icon: const Icon(Icons.filter_list),
       onPressed: showFilterBottomSheet,
     );
@@ -351,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onPressed: () => showSignOutDialog(context, auth),
       icon: const Icon(
         Icons.logout,
-        color: Colors.white54,
+        color: Colors.black,
       ),
     );
   }
@@ -450,15 +451,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildSearchField() {
     return TextField(
       controller: searchController,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         hintText: 'Search products...',
-        hintStyle: const TextStyle(color: Colors.white54),
+        hintStyle: const TextStyle(color: Colors.black),
         border: InputBorder.none,
         suffixIcon: IconButton(
           icon: const Icon(
             Icons.search,
-            color: Colors.white54,
+            color: Colors.black,
           ),
           onPressed: () => updateSearch(),
         ),
@@ -496,71 +497,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-// //Category filter
-//   Widget buildCategoryFilter(StateSetter setState) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const Text('Category'),
-//         StreamBuilder<QuerySnapshot>(
-//           stream: searchFilterService.fetchCategories(),
-//           builder: (context, snapshot) {
-//             if (!snapshot.hasData) {
-//               return const CircularProgressIndicator();
-//             }
-//             return Wrap(
-//               spacing: 8.0,
-//               children: snapshot.data!.docs.map((doc) {
-//                 return FilterChip(
-//                   label: Text(doc['name']),
-//                   selected: filter.category == doc.id,
-//                   onSelected: (selected) {
-//                     setState(() {
-//                       filter.category = selected ? doc.id : null;
-//                     });
-//                   },
-//                 );
-//               }).toList(),
-//             );
-//           },
-//         ),
-//       ],
-//     );
-//   }
-
-// //Brand filter
-//   Widget buildBrandFilter(StateSetter setState) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const Text('Brand'),
-//         StreamBuilder<QuerySnapshot>(
-//           stream: searchFilterService.fetchBrands(),
-//           builder: (context, snapshot) {
-//             if (!snapshot.hasData) {
-//               return const CircularProgressIndicator();
-//             }
-//             return Wrap(
-//               spacing: 8.0,
-//               children: snapshot.data!.docs.map((doc) {
-//                 return FilterChip(
-//                   label: Text(doc['name']),
-//                   selected: filter.brand == doc.id,
-//                   onSelected: (selected) {
-//                     setState(() {
-//                       filter.brand = selected ? doc.id : null;
-//                     });
-//                   },
-//                 );
-//               }).toList(),
-//             );
-//           },
-//         ),
-//       ],
-//     );
-//   }
-// }
-//******************************************************** */
 //Category filter
   Widget buildCategoryFilter(StateSetter setState) {
     return Column(

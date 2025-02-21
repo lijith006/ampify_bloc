@@ -129,6 +129,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/common/card_widget.dart';
+import 'package:ampify_bloc/screens/cart/cart_model.dart';
+import 'package:ampify_bloc/screens/products/bloc/product_details_bloc.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
@@ -138,7 +141,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class WishlistScreen extends StatelessWidget {
-  const WishlistScreen({super.key});
+  const WishlistScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +156,10 @@ class WishlistScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(title: const Text('Wishlist')),
+      appBar: AppBar(
+        title: const Text('W i s h l i s t'),
+        backgroundColor: AppColors.backgroundColor,
+      ),
       body: BlocBuilder<WishlistBloc, WishlistState>(
         builder: (context, state) {
           if (state is WishlistLoading) {
@@ -196,89 +204,39 @@ class WishlistScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          color: Color.fromARGB(109, 155, 154, 154),
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Stack(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: images.isNotEmpty
-                                      ? Image.memory(
-                                          imageBytes,
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          fit: BoxFit.contain,
-                                        )
-                                      : const Icon(
-                                          Icons.image_not_supported,
-                                          size: 50,
-                                        ),
-                                ),
+                    child: CardWidget(
+                      imageBytes: imageBytes,
+                      name: name,
+                      price: price,
+                      isWishlisted: true,
+                      productId: productId,
+                      onWishlistToggle: () {
+                        context.read<WishlistBloc>().add(
+                              ToggleWishlistItem(
+                                productId: productId,
+                                isCurrentlyWishlisted: true,
+                                context: context,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  name,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                margin: const EdgeInsets.only(bottom: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  "₹${price.toStringAsFixed(2)}",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              ),
-                              onPressed: () {
-                                context.read<WishlistBloc>().add(
-                                      ToggleWishlistItem(
-                                        productId: productId,
-                                        isCurrentlyWishlisted: true,
-                                        context: context,
-                                      ),
-                                    );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                            );
+                      },
+                      onAddToCart: () {
+                        // Convert Uint8List to Base64 String
+                        final base64Image = base64Encode(imageBytes);
+
+                        // Store as List<String>
+
+                        final cartItem = CartItem(
+                          productId: productId,
+                          title: name,
+                          price: price,
+                          quantity: 1,
+                          imageUrls: [base64Image],
+                        );
+
+                        context
+                            .read<ProductDetailsBloc>()
+                            .add(AddToCart(cartItem, context));
+                      },
                     ),
                   );
                 },

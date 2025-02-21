@@ -26,12 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final _passwordController = TextEditingController();
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return Scaffold(
-      // backgroundColor: const Color.fromARGB(255, 243, 236, 236),
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: const Center(
             child: Text(
-          'Login',
+          'L o g i n',
           style: TextStyle(fontSize: 26),
         )),
         backgroundColor: Colors.transparent,
@@ -54,7 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Center(
                         child: Image.asset(
-                          // 'assets/images/login3.png',
                           'assets/images/logscrn.png',
                           height: 320,
                           width: 320,
@@ -134,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     builder: (context, state) {
                       return Center(
                         child: CustomButton(
-                          label: 'Login',
+                          label: 'L o g i n',
                           onTap: () {
                             if (_formKey.currentState?.validate() ?? false) {
                               context.read<AuthBloc>().add(
@@ -149,8 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                   ),
-                  // const SizedBox(height: 5),
-                  // const Divider(thickness: 1),
+
                   const SizedBox(height: 10),
                   const Center(child: Text('Or login with Google account')),
                   const SizedBox(height: 5),
