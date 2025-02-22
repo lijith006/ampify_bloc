@@ -207,7 +207,7 @@ class Categories extends StatelessWidget {
                                 image: MemoryImage(
                                   base64Decode(product['images'][0]),
                                 ),
-                                fit: BoxFit.cover)),
+                                fit: BoxFit.contain)),
                       )),
                       Padding(
                         padding: const EdgeInsets.all(8.0),

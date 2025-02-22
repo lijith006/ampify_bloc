@@ -207,8 +207,13 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
 
       if (event.isCurrentlyWishlisted) {
         await wishlistRef.delete();
-        ScaffoldMessenger.of(event.context).showSnackBar(
-            const SnackBar(content: Text('Removed from Wishlist')));
+        if (event.context.mounted) {
+          ScaffoldMessenger.of(event.context).showSnackBar(
+            const SnackBar(content: Text('Removed from Wishlist')),
+          );
+        }
+        // ScaffoldMessenger.of(event.context).showSnackBar(
+        //     const SnackBar(content: Text('Removed from Wishlist')));
       } else {
         await wishlistRef.set({
           'productId': event.productId,
@@ -217,8 +222,13 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
           'imageUrls': event.productData!['imageUrls'],
           'timestamp': FieldValue.serverTimestamp(),
         });
-        ScaffoldMessenger.of(event.context)
-            .showSnackBar(const SnackBar(content: Text('Added to Wishlist')));
+        if (event.context.mounted) {
+          ScaffoldMessenger.of(event.context).showSnackBar(
+            const SnackBar(content: Text('Added to Wishlist')),
+          );
+          // ScaffoldMessenger.of(event.context)
+          //     .showSnackBar(const SnackBar(content: Text('Added to Wishlist')));
+        }
       }
 
       // Refresh wishlist state after modification

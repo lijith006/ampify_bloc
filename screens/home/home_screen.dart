@@ -11,6 +11,7 @@ import 'package:ampify_bloc/screens/search_filter/search_filter_service.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/wishlist_screen.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -429,6 +430,7 @@ class _HomeScreenState extends State<HomeScreen> {
       gap: 8,
       selectedIndex: _selectedIndex,
       onTabChange: (index) {
+        HapticFeedback.heavyImpact();
         setState(() {
           _selectedIndex = index;
           // Clear search when switching tabs

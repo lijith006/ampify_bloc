@@ -2,13 +2,13 @@ import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/screens/forgot-password.dart';
 import 'package:ampify_bloc/authentication/screens/signup_screen.dart';
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/common/app_loading.dart';
 import 'package:ampify_bloc/screens/home/home_screen.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
 import 'package:ampify_bloc/widgets/validators_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../bloc/auth_state.dart';
 
@@ -150,16 +150,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 10),
                   const Center(child: Text('Or login with Google account')),
-                  const SizedBox(height: 5),
+                  // const SizedBox(height: 5),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoading) {
                         return const Center(
-                          child: SpinKitWave(
-                            color: Colors.black45,
-                            size: 35.0,
-                          ),
-                        );
+                            child: LoadingWidget(
+                          width: 300,
+                          height: 300,
+                          moveUp: 120,
+                        ));
                       } else {
                         return Center(
                           child: InkWell(

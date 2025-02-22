@@ -338,6 +338,7 @@ import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_state.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
+import 'package:ampify_bloc/screens/cart/cart_service.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/saved_items_screen.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
@@ -365,7 +366,8 @@ class _MyCartState extends State<MyCart> {
     }
 
     return BlocProvider(
-      create: (context) => CartBloc()..add(LoadCartItems()),
+      create: (context) =>
+          CartBloc(context.read<CartService>())..add(LoadCartItems()),
       child: DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -482,15 +484,28 @@ class _MyCartState extends State<MyCart> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(
-                                  onPressed: () =>
-                                      updateQuantity(context, item, -1),
-                                  icon: const Icon(Icons.remove)),
+                              if (item.quantity > 1)
+                                IconButton(
+                                    onPressed: () =>
+                                        updateQuantity(context, item, -1),
+                                    icon: const Icon(Icons.remove)),
                               Text("${item.quantity}"),
                               IconButton(
-                                  onPressed: () =>
-                                      updateQuantity(context, item, 1),
-                                  icon: const Icon(Icons.add)),
+                                onPressed: () {
+                                  if (item.quantity < 10) {
+                                    updateQuantity(context, item, 1);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            "Maximum quantity limit reached (10)"),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                },
+                                icon: const Icon(Icons.add),
+                              ),
                               //Save for later
                               TextButton(
                                 onPressed: () {
@@ -501,6 +516,28 @@ class _MyCartState extends State<MyCart> {
                               ),
                             ],
                           )
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   children: [
+                          //     IconButton(
+                          //         onPressed: () =>
+                          //             updateQuantity(context, item, -1),
+                          //         icon: const Icon(Icons.remove)),
+                          //     Text("${item.quantity}"),
+                          //     IconButton(
+                          //         onPressed: () =>
+                          //             updateQuantity(context, item, 1),
+                          //         icon: const Icon(Icons.add)),
+                          //     //Save for later
+                          //     TextButton(
+                          //       onPressed: () {
+                          //         saveForLater(context, item);
+                          //       },
+                          //       child: const Text('Save for Later',
+                          //           style: TextStyle(color: Colors.blue)),
+                          //     ),
+                          //   ],
+                          // )
                         ],
                       )),
                     ],
@@ -547,7 +584,7 @@ class _MyCartState extends State<MyCart> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Text('₹$total',
                   style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.green)),
             ],
@@ -556,7 +593,7 @@ class _MyCartState extends State<MyCart> {
           const SizedBox(height: 10),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0XFF1A73E8),
+                backgroundColor: const Color.fromARGB(255, 99, 202, 40),
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 40)),
             onPressed: () => print('Proceed to Buy'),

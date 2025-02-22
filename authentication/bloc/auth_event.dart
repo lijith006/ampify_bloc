@@ -1,63 +1,45 @@
-// // import 'package:equatable/equatable.dart';
+// part of 'auth_bloc.dart';
 
-// // abstract class AuthEvent extends Equatable {
-// //   const AuthEvent();
+// @immutable
+// sealed class AuthEvent {}
 
-// //   @override
-// //   List<Object> get props => [];
-// // }
+// class SendPasswordResetLink extends AuthEvent {
+//   final String email;
 
-// // class LoginRequested extends AuthEvent {
-// //   final String email;
-// //   final String password;
-
-// //   const LoginRequested(this.email, this.password);
-// // }
-
-// // class SignUpRequested extends AuthEvent {
-// //   final String email;
-// //   final String password;
-
-// //   const SignUpRequested(this.email, this.password);
-// // }
-
-// // class GoogleSignInRequested extends AuthEvent {}
-
-// // class LogoutRequested extends AuthEvent {}
-
-// import 'package:equatable/equatable.dart';
-
-// abstract class AuthEvent extends Equatable {
-//   const AuthEvent();
-
-//   @override
-//   List<Object> get props => [];
+//   SendPasswordResetLink({required this.email});
 // }
 
-// class LoginRequested extends AuthEvent {
+// class LoginWithGoogle extends AuthEvent {}
+
+// class CreateUserWithEmailAndPassword extends AuthEvent {
 //   final String email;
 //   final String password;
 
-//   const LoginRequested(this.email, this.password);
+//   CreateUserWithEmailAndPassword({required this.email, required this.password});
 // }
 
-// class SignUpRequested extends AuthEvent {
+// class LoginUserWithEmailAndPassword extends AuthEvent {
 //   final String email;
 //   final String password;
-
-//   const SignUpRequested(this.email, this.password);
+//   LoginUserWithEmailAndPassword(this.email, this.password);
 // }
 
-// class GoogleSignInRequested extends AuthEvent {}
+// class Signout extends AuthEvent {}
 
-// class LogoutRequested extends AuthEvent {}
+// class SignOutRequested extends AuthEvent {}
 
-//tested result
+// class TogglePasswordVisibility extends AuthEvent {
+//   final bool isPasswordVisible;
+
+//   TogglePasswordVisibility(this.isPasswordVisible);
+// }
+
+//......*********************************************
 
 part of 'auth_bloc.dart';
 
 @immutable
-sealed class AuthEvent {}
+abstract class AuthEvent {}
 
 class SendPasswordResetLink extends AuthEvent {
   final String email;
@@ -70,8 +52,15 @@ class LoginWithGoogle extends AuthEvent {}
 class CreateUserWithEmailAndPassword extends AuthEvent {
   final String email;
   final String password;
+  final String? base64Image;
+  final String name;
 
-  CreateUserWithEmailAndPassword({required this.email, required this.password});
+  CreateUserWithEmailAndPassword({
+    required this.email,
+    required this.password,
+    required this.name,
+    this.base64Image,
+  });
 }
 
 class LoginUserWithEmailAndPassword extends AuthEvent {
@@ -89,8 +78,3 @@ class TogglePasswordVisibility extends AuthEvent {
 
   TogglePasswordVisibility(this.isPasswordVisible);
 }
-
-//EXp
-// class CheckEmailVerificationStatus extends AuthEvent {}
-
-// class ResendEmailVerification extends AuthEvent {}
