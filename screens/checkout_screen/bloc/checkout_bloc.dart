@@ -21,7 +21,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           addresses: updatedAddresses, selectedAddress: state.selectedAddress));
     });
 
-    on<SelectedAddress>((event, emit) {
+    on<SelectAddress>((event, emit) {
       emit(CheckoutState(
           addresses: state.addresses, selectedAddress: event.address));
     });

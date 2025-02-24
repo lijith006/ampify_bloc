@@ -33,4 +33,16 @@ class Validators {
     }
     return null;
   }
+
+  static String? validateMobileNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Mobile number cannot be empty';
+    }
+    const mobilePattern = r'^[0-9]{10}$';
+    final regex = RegExp(mobilePattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter a valid 10-digit mobile number';
+    }
+    return null;
+  }
 }

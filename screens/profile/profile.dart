@@ -13,63 +13,63 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  final TextEditingController _nameController = TextEditingController();
+  // final TextEditingController _nameController = TextEditingController();
   @override
   void initState() {
     super.initState();
     context.read<ProfileBloc>().add(LoadProfile()); // Load profile data
   }
 
-  void _showEditDialog(Map<String, dynamic> userProfile) {
-    _nameController.text = userProfile['name'] ?? '';
+  // void _showEditDialog(Map<String, dynamic> userProfile) {
+  //   _nameController.text = userProfile['name'] ?? '';
 
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Profile'),
-        content: TextField(
-          controller: _nameController,
-          decoration: const InputDecoration(labelText: 'Name'),
-        ),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel')),
-          TextButton(
-              onPressed: () {
-                context.read<ProfileBloc>().add(
-                    UpdateProfile(updates: {'name': _nameController.text}));
-                Navigator.pop(context);
-              },
-              child: const Text('Save'))
-        ],
-      ),
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Edit Profile'),
+  //       content: TextField(
+  //         controller: _nameController,
+  //         decoration: const InputDecoration(labelText: 'Name'),
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: const Text('Cancel')),
+  //         TextButton(
+  //             onPressed: () {
+  //               context.read<ProfileBloc>().add(
+  //                   UpdateProfile(updates: {'name': _nameController.text}));
+  //               Navigator.pop(context);
+  //             },
+  //             child: const Text('Save'))
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  void _confirmDeleteAccount() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-            'Are you sure you want to delete your account? This action is irreversible.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              context.read<ProfileBloc>().add(DeleteAccount());
-              Navigator.pop(context);
-            },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _confirmDeleteAccount() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Delete Account'),
+  //       content: const Text(
+  //           'Are you sure you want to delete your account? This action is irreversible.'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: const Text('Cancel'),
+  //         ),
+  //         TextButton(
+  //           onPressed: () {
+  //             context.read<ProfileBloc>().add(DeleteAccount());
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text('Delete', style: TextStyle(color: Colors.red)),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

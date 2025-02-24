@@ -10,8 +10,8 @@ class AddAddress extends CheckoutEvent {
   AddAddress(this.address);
 }
 
-class SelectedAddress extends CheckoutEvent {
+class SelectAddress extends CheckoutEvent {
   final String address;
 
-  SelectedAddress(this.address);
+  SelectAddress(this.address);
 }

@@ -515,8 +515,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             style: const TextStyle(
                                                 fontSize: 30,
                                                 fontWeight: FontWeight.w900,
-                                                // color: AppColors
-                                                //     .textcolorCommmonGrey
                                                 color: Color.fromARGB(
                                                     255, 85, 86, 94)),
                                             overflow: TextOverflow.ellipsis,
@@ -542,10 +540,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                         Container(
                           width: screenWidth * 10,
-
-                          // color: const Color.fromARGB(255, 217, 241, 239),
                           color: AppColors.backgroundColor,
-
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
@@ -582,15 +577,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
                                 const SizedBox(height: 20),
 
-                                // Product Description
-                                // Text(
-                                //   state.productDescription,
-                                //   style: const TextStyle(
-                                //       fontSize: 15,
-                                //       color: AppColors.textcolorCommmonGrey),
-                                // ),
-                                // const SizedBox(height: 20),
-
 //Buttons
                                 Container(
                                   color: AppColors.backgroundColor,
@@ -623,11 +609,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         ),
                                         CustomActionButton(
                                           label: 'Buy now',
-                                          // backgroundColor:
-                                          //     const Color(0xFFFF6F61),
                                           backgroundColor: const Color.fromARGB(
                                               255, 218, 229, 243),
-                                          onPressed: () {
+                                          onPressed: () async {
                                             final cartItem = CartItem(
                                               productId: widget.productId,
                                               title: state.productName,
@@ -635,13 +619,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               quantity: 1,
                                               imageUrls: state.base64Images,
                                             );
+                                            // // Store temporary order in Firebase
+                                            // await FirebaseFirestore.instance
+                                            //     .collection("temp_orders")
+                                            //     .doc()
+                                            //     .set({
+                                            //   "productId": cartItem.productId,
+                                            //   "title": cartItem.title,
+                                            //   "price": cartItem.price,
+                                            //   "quantity": cartItem.quantity,
+                                            //   "imageUrls": cartItem.imageUrls,
+                                            //   "timestamp":
+                                            //       FieldValue.serverTimestamp(),
+                                            // });
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         CheckoutScreen(
-                                                            product:
-                                                                cartItem)));
+                                                            products: [
+                                                              cartItem
+                                                            ])));
                                           },
                                           icon: Icons.shopping_cart,
                                         )

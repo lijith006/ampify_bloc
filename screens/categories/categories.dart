@@ -1,8 +1,10 @@
 // import 'dart:convert';
 
+// import 'package:ampify_bloc/screens/categories/bloc/categories_bloc.dart';
+// import 'package:ampify_bloc/screens/categories/bloc/categories_state.dart';
 // import 'package:ampify_bloc/screens/products/product_details.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 
 // class Categories extends StatelessWidget {
 //   final String categoryId;
@@ -17,32 +19,53 @@
 //         backgroundColor: Colors.transparent,
 //         title: const Text('Category'),
 //       ),
-//       body: StreamBuilder(
-//         stream: FirebaseFirestore.instance
-//             .collection('products')
-//             .where('categoryId', isEqualTo: categoryId)
-//             .snapshots(),
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return const Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           }
-//           if (snapshot.hasError) {
-//             return const Center(
-//               child: Text('Something went wrong'),
-//             );
-//           }
-//           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//       body: BlocBuilder<CategoriesBloc, CategoriesState>(
+//           builder: (context, state) {
+//         if (state is CategoriesLoading) {
+//           return const Center(
+//             child: CircularProgressIndicator(),
+//           );
+//         } else if (state is CategoriesError) {
+//           return Center(
+//             child: Text(state.message),
+//           );
+//         } else if (state is CategoriesLoaded) {
+//           final products = state.products;
+//           if (products.isEmpty) {
 //             return const Center(
 //               child: Text(
-//                 'No products available in this category',
+//                 'No product available in this category',
 //                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
 //               ),
 //             );
 //           }
 
-//           final products = snapshot.data!.docs;
+//           //StreamBuilder(
+//           // stream: FirebaseFirestore.instance
+//           //     .collection('products')
+//           //     .where('categoryId', isEqualTo: categoryId)
+//           //     .snapshots(),
+//           // builder: (context, snapshot) {
+//           //   if (snapshot.connectionState == ConnectionState.waiting) {
+//           //     return const Center(
+//           //       child: CircularProgressIndicator(),
+//           //     );
+//           //   }
+//           //   if (snapshot.hasError) {
+//           //     return const Center(
+//           //       child: Text('Something went wrong'),
+//           //     );
+//           //   }
+//           //   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//           //     return const Center(
+//           //       child: Text(
+//           //         'No products available in this category',
+//           //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+//           //       ),
+//           //     );
+//           //   }
+
+//           //   final products = snapshot.data!.docs;
 //           return GridView.builder(
 //             padding: const EdgeInsets.all(8.0),
 //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -75,7 +98,7 @@
 //                                 image: MemoryImage(
 //                                   base64Decode(product['images'][0]),
 //                                 ),
-//                                 fit: BoxFit.cover)),
+//                                 fit: BoxFit.contain)),
 //                       )),
 //                       Padding(
 //                         padding: const EdgeInsets.all(8.0),
@@ -101,11 +124,16 @@
 //               );
 //             },
 //           );
-//         },
-//       ),
+//         } else {
+//           return const Center(
+//             child: Text('Initial state'),
+//           );
+//         }
+//       }),
 //     );
 //   }
 // }
+
 //*********************************************** */
 import 'dart:convert';
 
@@ -187,6 +215,8 @@ class Categories extends StatelessWidget {
               final productId = products[index].id;
 
               final product = products[index];
+              // String productId = doc['productId'];
+
               return GestureDetector(
                 onTap: () {
                   Navigator.push(

@@ -340,6 +340,7 @@ import 'package:ampify_bloc/screens/cart/bloc/cart_state.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:ampify_bloc/screens/cart/cart_service.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/saved_items_screen.dart';
+import 'package:ampify_bloc/screens/checkout_screen/checkout_screen.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -516,28 +517,6 @@ class _MyCartState extends State<MyCart> {
                               ),
                             ],
                           )
-                          // Row(
-                          //   mainAxisSize: MainAxisSize.min,
-                          //   children: [
-                          //     IconButton(
-                          //         onPressed: () =>
-                          //             updateQuantity(context, item, -1),
-                          //         icon: const Icon(Icons.remove)),
-                          //     Text("${item.quantity}"),
-                          //     IconButton(
-                          //         onPressed: () =>
-                          //             updateQuantity(context, item, 1),
-                          //         icon: const Icon(Icons.add)),
-                          //     //Save for later
-                          //     TextButton(
-                          //       onPressed: () {
-                          //         saveForLater(context, item);
-                          //       },
-                          //       child: const Text('Save for Later',
-                          //           style: TextStyle(color: Colors.blue)),
-                          //     ),
-                          //   ],
-                          // )
                         ],
                       )),
                     ],
@@ -596,7 +575,11 @@ class _MyCartState extends State<MyCart> {
                 backgroundColor: const Color.fromARGB(255, 99, 202, 40),
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 40)),
-            onPressed: () => print('Proceed to Buy'),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckoutScreen(products: cartItems),
+                )),
             child: const Text(
               'Proceed to Buy',
               style: TextStyle(fontSize: 18, color: Colors.white),
