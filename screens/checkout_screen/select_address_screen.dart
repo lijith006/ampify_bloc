@@ -1,5 +1,129 @@
+// import 'package:ampify_bloc/screens/checkout_screen/add_new_address_screen.dart';
+// import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// class SelectAddressScreen extends StatelessWidget {
+//   const SelectAddressScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Select Address'),
+//       ),
+//       body: BlocBuilder<CheckoutBloc, CheckoutState>(
+//         builder: (BuildContext context, state) {
+//           return Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Column(
+//               children: [
+//                 Expanded(
+//                     child: ListView.builder(
+//                   itemCount: state.addresses.length,
+//                   itemBuilder: (context, index) {
+//                     return ListTile(
+//                       title: Text(state.addresses[index]),
+//                       trailing: Radio(
+//                           value: state.addresses[index],
+//                           groupValue: state.selectedAddress,
+//                           onChanged: (value) {
+//                             context
+//                                 .read<CheckoutBloc>()
+//                                 .add(SelectAddress(value as String));
+//                             Navigator.pop(context);
+//                           }),
+//                     );
+//                   },
+//                 )),
+//                 ElevatedButton(
+//                   onPressed: () => Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                           builder: (context) => AddNewAddressScreen())),
+//                   child: Text("Add New Address"),
+//                 )
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+//******************************************************** */
+
+// import 'package:ampify_bloc/screens/checkout_screen/add_new_address_screen.dart';
+// import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
+// import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_event.dart';
+// import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_state.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// class SelectAddressScreen extends StatelessWidget {
+//   const SelectAddressScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Select Address'),
+//       ),
+//       body: BlocBuilder<CheckoutBloc, CheckoutState>(
+//         builder: (BuildContext context, state) {
+//           // Show loader while fetching
+//           if (state.isLoading) {
+//             return const Center(child: CircularProgressIndicator());
+//           }
+
+//           return Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Column(
+//               children: [
+//                 Expanded(
+//                     child: ListView.builder(
+//                   itemCount: state.addresses.length,
+//                   itemBuilder: (context, index) {
+//                     final address = state.addresses[index]['address'];
+//                     final id = state.addresses[index]['id'];
+//                     return Card(
+//                       child: ListTile(
+//                         title: Text(address),
+//                         trailing: Radio(
+//                             value: state.addresses[index],
+//                             groupValue: state.selectedAddress,
+//                             onChanged: (value) {
+//                               context
+//                                   .read<CheckoutBloc>()
+//                                   .add(SelectAddress(value as String));
+//                               Navigator.pop(context);
+//                             }),
+//                       ),
+//                     );
+//                   },
+//                 )),
+//                 ElevatedButton(
+//                   onPressed: () => Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                           builder: (context) => AddNewAddressScreen())),
+//                   child: const Text("Add New Address"),
+//                 )
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+////////////////////////////////////////////////////////////
+///
+///import 'package:ampify_bloc/screens/checkout_screen/add_new_address_screen.dart';
 import 'package:ampify_bloc/screens/checkout_screen/add_new_address_screen.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
+import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_event.dart';
+import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,35 +138,96 @@ class SelectAddressScreen extends StatelessWidget {
       ),
       body: BlocBuilder<CheckoutBloc, CheckoutState>(
         builder: (BuildContext context, state) {
+          // Show loader while fetching
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
                 Expanded(
-                    child: ListView.builder(
-                  itemCount: state.addresses.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(state.addresses[index]),
-                      trailing: Radio(
-                          value: state.addresses[index],
-                          groupValue: state.selectedAddress,
-                          onChanged: (value) {
-                            context
-                                .read<CheckoutBloc>()
-                                .add(SelectAddress(value as String));
-                            Navigator.pop(context);
-                          }),
-                    );
-                  },
-                )),
+                  child: ListView.builder(
+                    itemCount: state.addresses.length,
+                    itemBuilder: (context, index) {
+                      final address = state.addresses[index]['address'];
+                      final id = state.addresses[index]['id'];
+                      return Card(
+                        child: ListTile(
+                          title: Text(address),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon:
+                                    const Icon(Icons.edit, color: Colors.blue),
+                                onPressed: () {
+                                  TextEditingController controller =
+                                      TextEditingController(text: address);
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text("Edit Address"),
+                                      content: TextField(
+                                        controller: controller,
+                                        decoration: const InputDecoration(
+                                            hintText: "Enter new address"),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text("Cancel"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            context.read<CheckoutBloc>().add(
+                                                EditAddress(
+                                                    id, controller.text));
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Save"),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon:
+                                    const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () {
+                                  context
+                                      .read<CheckoutBloc>()
+                                      .add(DeleteAddress(id));
+                                },
+                              ),
+                              Radio(
+                                value: address,
+                                groupValue: state.selectedAddress,
+                                onChanged: (value) {
+                                  context
+                                      .read<CheckoutBloc>()
+                                      .add(SelectAddress(value as String));
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 ElevatedButton(
                   onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddNewAddressScreen())),
-                  child: Text("Add New Address"),
-                )
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddNewAddressScreen()),
+                  ),
+                  child: const Text("Add New Address"),
+                ),
               ],
             ),
           );

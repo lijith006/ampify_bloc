@@ -570,9 +570,11 @@ class _MyCartState extends State<MyCart> {
           ),
           const SizedBox(height: 10),
           const SizedBox(height: 10),
+
+          //button proceed to buy
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 99, 202, 40),
+                backgroundColor: Colors.orange.shade700,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 40)),
             onPressed: () => Navigator.push(
