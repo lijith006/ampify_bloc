@@ -532,7 +532,7 @@ class _MyCartState extends State<MyCart> {
                 top: 0,
                 right: 0,
                 child: IconButton(
-                  onPressed: () => removeFromCart(context, item.productId),
+                  onPressed: () => removeFromCart(context, item),
                   icon: const Icon(Icons.delete, color: Colors.red),
                 ),
               ),
@@ -607,7 +607,38 @@ class _MyCartState extends State<MyCart> {
   }
 
 //Remove Product Logic
-  void removeFromCart(BuildContext context, String productId) {
-    context.read<CartBloc>().add(RemoveFromCart(productId));
+  void removeFromCart(BuildContext context, CartItem item) {
+    context.read<CartBloc>().add(RemoveFromCart(item.productId));
+
+    //snackbar
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Item removed from cart!'),
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            //Re-add the item
+            context.read<CartBloc>().add(AddToCart(item));
+          }),
+    ));
   }
 }
+  // void removeFromCart(BuildContext context, String productId, CartItem item) {
+  //   context.read<CartBloc>().add(RemoveFromCart(productId));
+
+  //   //snackbar
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     content: const Text('Item removed from cart!'),
+  //     duration: const Duration(seconds: 2),
+  //     behavior: SnackBarBehavior.floating,
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  //     action: SnackBarAction(
+  //         label: 'Undo',
+  //         onPressed: () {
+  //           //Re-add the item
+  //           context.read<CartBloc>().add(AddToCart(item));
+  //         }),
+  //   ));
+  // }

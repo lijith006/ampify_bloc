@@ -130,8 +130,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/common/card_widget.dart';
+import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
+import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
-import 'package:ampify_bloc/screens/products/bloc/product_details_bloc.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
@@ -216,6 +217,14 @@ class WishlistScreen extends StatelessWidget {
                                 productId: productId,
                                 isCurrentlyWishlisted: true,
                                 context: context,
+                                //********** */
+                                productData: {
+                                  'name': name,
+                                  'price': price,
+                                  'imageUrls': [base64Encode(imageBytes)],
+                                },
+
+                                //************* */
                               ),
                             );
                       },
@@ -233,9 +242,11 @@ class WishlistScreen extends StatelessWidget {
                           imageUrls: [base64Image],
                         );
 
-                        context
-                            .read<ProductDetailsBloc>()
-                            .add(AddToCart(cartItem, context));
+                        context.read<CartBloc>().add(AddToCart(cartItem));
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Item added to cart!')));
                       },
                     ),
                   );

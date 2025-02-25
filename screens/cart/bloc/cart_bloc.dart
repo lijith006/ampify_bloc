@@ -214,20 +214,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       print("Adding item to cart: ${event.item.title}");
       await _cartService.addToCart(userId, event.item);
       print("Item added successfully!");
-
-      if (state is CartLoaded) {
-        final updatedCart = List<CartItem>.from((state as CartLoaded).cartItems)
-          ..add(event.item);
-        emit(CartLoaded(updatedCart));
-      } else {
-        emit(CartLoaded(
-            [event.item])); // If state is not CartLoaded, create a new list
-      }
+      add(LoadCartItems());
       //  stream will handle updates..
     } catch (e) {
       emit(CartError("Failed to add item: ${e.toString()}"));
     }
   }
+
+  // Future<void> _onAddToCart(AddToCart event, Emitter<CartState> emit) async {
+  //   final userId = FirebaseAuth.instance.currentUser?.uid;
+  //   if (userId == null) return;
+
+  //   try {
+  //     print("Adding item to cart: ${event.item.title}");
+  //     await _cartService.addToCart(userId, event.item);
+  //     print("Item added successfully!");
+  //     add(LoadCartItems());
+  //     //  stream will handle updates..
+  //   } catch (e) {
+  //     emit(CartError("Failed to add item: ${e.toString()}"));
+  //   }
+  // }
 
   Future<void> _onRemoveFromCart(
       RemoveFromCart event, Emitter<CartState> emit) async {

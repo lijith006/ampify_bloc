@@ -49,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         excludeHeaderSemantics: true,
         backgroundColor: AppColors.backgroundColor,
-        // backgroundColor: const Color(0xFF1A73E8),
         title:
             _selectedIndex == 0 ? buildSearchField() : Text(getScreenTitle()),
         actions: [
@@ -451,24 +450,57 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //Search field
   Widget buildSearchField() {
-    return TextField(
-      controller: searchController,
-      style: const TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        hintText: 'Search products...',
-        hintStyle: const TextStyle(color: Colors.black),
-        border: InputBorder.none,
-        suffixIcon: IconButton(
-          icon: const Icon(
-            Icons.search,
-            color: Colors.black,
+    return Row(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage('assets/images/ampifylogo.png'),
           ),
-          onPressed: () => updateSearch(),
         ),
-      ),
-      onSubmitted: (value) => updateSearch(),
+        Expanded(
+          child: TextField(
+            controller: searchController,
+            style: const TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+              hintText: 'Search products...',
+              hintStyle: const TextStyle(color: Colors.black),
+              border: InputBorder.none,
+              suffixIcon: IconButton(
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ),
+                onPressed: () => updateSearch(),
+              ),
+            ),
+            onSubmitted: (value) => updateSearch(),
+          ),
+        ),
+      ],
     );
   }
+// //Search field
+//   Widget buildSearchField() {
+//     return TextField(
+//       controller: searchController,
+//       style: const TextStyle(color: Colors.black),
+//       decoration: InputDecoration(
+//         hintText: 'Search products...',
+//         hintStyle: const TextStyle(color: Colors.black),
+//         border: InputBorder.none,
+//         suffixIcon: IconButton(
+//           icon: const Icon(
+//             Icons.search,
+//             color: Colors.black,
+//           ),
+//           onPressed: () => updateSearch(),
+//         ),
+//       ),
+//       onSubmitted: (value) => updateSearch(),
+//     );
+//   }
 
   //********************************** */
   Widget buildPriceRangeFilter(StateSetter setState) {

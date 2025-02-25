@@ -154,7 +154,7 @@ class Categories extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Category'),
+        title: const Text('C a t e g o r y'),
       ),
       body: BlocBuilder<CategoriesBloc, CategoriesState>(
           builder: (context, state) {
@@ -233,6 +233,7 @@ class Categories extends StatelessWidget {
                       Expanded(
                           child: Container(
                         decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
                             image: DecorationImage(
                                 image: MemoryImage(
                                   base64Decode(product['images'][0]),

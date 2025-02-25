@@ -2,6 +2,8 @@
 // import 'dart:async';
 
 // import 'package:ampify_bloc/screens/cart/cart_model.dart';
+// import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
+// import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:equatable/equatable.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -58,22 +60,7 @@
 //         },
 //       );
 
-//       if (userId != null) {
-//         _wishlistSubscription = FirebaseFirestore.instance
-//             .collection('users')
-//             .doc(userId)
-//             .collection('wishlist')
-//             .doc(event.productId)
-//             .snapshots()
-//             .listen(
-//           (snapshot) {
-//             add(_WishlistStatusUpdated(snapshot.exists));
-//           },
-//           onError: (error) {
-//             print("Error monitoring wishlist status: $error");
-//           },
-//         );
-//       }
+//       if (userId != null) {}
 //     } catch (e) {
 //       emit(ProductDetailError("Error setting up product streams"));
 //     }
@@ -129,42 +116,16 @@
 //     if (state is ProductDetailsLoaded) {
 //       final currentState = state as ProductDetailsLoaded;
 
-//       final wishlistRef = FirebaseFirestore.instance
-//           .collection('users')
-//           .doc(userId)
-//           .collection('wishlist')
-//           .doc(event.productId);
-//       if (event.isCurrentlyWishlisted) {
-//         await wishlistRef.delete();
-//         emit(ProductDetailsLoaded(
-//           base64Images: currentState.base64Images,
-//           productName: currentState.productName,
-//           productDescription: currentState.productDescription,
-//           productPrice: currentState.productPrice,
-//           isWishlisted: false,
-//         ));
-//         // Show Snackbar - removing
-//         ScaffoldMessenger.of(event.context).showSnackBar(
-//             const SnackBar(content: Text('Removed from Wishlist')));
-//       } else {
-//         await wishlistRef.set({
-//           'productId': event.productId,
-//           'name': currentState.productName,
-//           'price': currentState.productPrice,
-//           'imageUrls': currentState.base64Images,
-//           'timestamp': FieldValue.serverTimestamp(),
-//         });
-//         emit(ProductDetailsLoaded(
-//           base64Images: currentState.base64Images,
-//           productName: currentState.productName,
-//           productDescription: currentState.productDescription,
-//           productPrice: currentState.productPrice,
-//           isWishlisted: true,
-//         ));
-//         // Show Snackbar - add
-//         ScaffoldMessenger.of(event.context)
-//             .showSnackBar(const SnackBar(content: Text('Added to Wishlist')));
-//       }
+//       event.context.read<WishlistBloc>().add(ToggleWishlistItem(
+//             productId: event.productId,
+//             isCurrentlyWishlisted: event.isCurrentlyWishlisted,
+//             productData: {
+//               'name': currentState.productName,
+//               'price': currentState.productPrice,
+//               'imageUrls': currentState.base64Images,
+//             },
+//             context: event.context, // For snackbar messages
+//           ));
 //     }
 //   }
 
@@ -224,8 +185,7 @@
 //     }
 //   }
 // }
-// //******************************************************************** */
-
+//*********************************************************** */
 //***************************************************** */
 import 'dart:async';
 
@@ -357,7 +317,7 @@ class ProductDetailsBloc
     }
   }
 
-//Add to Cart
+// //Add to Cart
   Future<void> _onAddToCart(
       AddToCart event, Emitter<ProductDetailsState> emit) async {
     try {

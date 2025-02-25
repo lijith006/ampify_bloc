@@ -88,6 +88,7 @@ void main() async {
             BlocProvider<AuthBloc>(
               create: (_) => AuthBloc(AuthService()),
             ),
+            BlocProvider(create: (context) => WishlistBloc()),
             BlocProvider<ProductDetailsBloc>(
               create: (_) => ProductDetailsBloc(),
             ),
