@@ -12,4 +12,5 @@ class AppColors {
 
   static const Color border = Color.fromARGB(128, 198, 230, 211);
   static const Color button = Color(0xFF31473A);
+  static Color buttonColorOrange = Colors.orange.shade700;
 }

@@ -367,9 +367,7 @@ class CheckoutScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange.shade700,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                  backgroundColor: AppColors.buttonColorOrange,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
                 child: const Text(

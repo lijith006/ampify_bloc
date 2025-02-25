@@ -374,17 +374,20 @@ class _MyCartState extends State<MyCart> {
           child: Scaffold(
             backgroundColor: AppColors.backgroundColor,
             appBar: AppBar(
-              bottom: const TabBar(
-                  indicatorColor: Colors.blueAccent,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  tabs: [
-                    Tab(
-                      icon: Icon(Icons.save),
-                      text: 'My Cart',
-                    ),
-                    Tab(icon: Icon(Icons.save), text: "Saved for Later"),
-                  ]),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(30),
+                child: TabBar(
+                    indicatorColor: AppColors.buttonColorOrange,
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    tabs: const [
+                      Tab(
+                        icon: Icon(Icons.save),
+                        text: 'My Cart',
+                      ),
+                      Tab(icon: Icon(Icons.save), text: "Saved for Later"),
+                    ]),
+              ),
             ),
             body: TabBarView(
               children: [
@@ -439,6 +442,7 @@ class _MyCartState extends State<MyCart> {
           child: Stack(
             children: [
               Card(
+                color: Colors.white,
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -574,7 +578,7 @@ class _MyCartState extends State<MyCart> {
           //button proceed to buy
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange.shade700,
+                backgroundColor: AppColors.buttonColorOrange,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 40)),
             onPressed: () => Navigator.push(
