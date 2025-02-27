@@ -227,6 +227,7 @@ class AddNewAddressScreen extends StatefulWidget {
 }
 
 class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
+  // final _formKey = GlobalKey<FormState>();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
@@ -239,6 +240,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 //Location
 
   bool isLoading = false;
+
 //Fetch user's location
 
   Future<void> fetchAndSetAddress() async {
@@ -279,12 +281,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               place.administrativeArea ?? place.locality ?? '';
           countryController.text = place.country ?? '';
           pincodeController.text = place.postalCode ?? '';
-          // addressController.text = place.name ?? '';
-          // areaController.text = place.street ?? '';
-          // landmarkController.text = place.subLocality ?? '';
-          // townController.text = place.locality ?? '';
-          // countryController.text = place.country ?? '';
-          // pincodeController.text = place.postalCode ?? '';
         });
       } else {
         throw Exception("Address not found");
@@ -334,11 +330,19 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
             children: [
               //Country
               CustomTextFormField(
-                  controller: countryController, labelText: 'Country'),
+                controller: countryController,
+                labelText: 'Country',
+                validator: (value) =>
+                    Validators.validateRequired(value, 'Country'),
+              ),
 
               // Full Name
               CustomTextFormField(
-                  controller: fullNameController, labelText: 'Full name'),
+                controller: fullNameController,
+                labelText: 'Full name',
+                validator: (value) =>
+                    Validators.validateRequired(value, 'Full Name'),
+              ),
 //Mobile number
               CustomTextFormField(
                 controller: mobileController,
@@ -395,24 +399,41 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
               //Address Flat/House/Company
               CustomTextFormField(
-                  controller: addressController,
-                  labelText: 'Flat, House No, Company, Apartment'),
+                controller: addressController,
+                labelText: 'Flat, House No, Company, Apartment',
+                validator: (value) =>
+                    Validators.validateRequired(value, 'Address'),
+              ),
               //Area,Street
 
               CustomTextFormField(
-                  controller: areaController,
-                  labelText: 'Area, Street, Village'),
+                controller: areaController,
+                labelText: 'Area, Street, Village',
+                validator: (value) =>
+                    Validators.validateRequired(value, 'Area/Street'),
+              ),
 
               //Landmark
               CustomTextFormField(
-                  controller: landmarkController, labelText: 'Landmark'),
+                controller: landmarkController,
+                labelText: 'Landmark',
+                validator: (value) =>
+                    Validators.validateRequired(value, 'Landmark'),
+              ),
 
               //Pincode
               CustomTextFormField(
-                  controller: pincodeController, labelText: 'Pincode'),
+                controller: pincodeController,
+                labelText: 'Pincode',
+                validator: Validators.validatePincode,
+              ),
               //Town/City
               CustomTextFormField(
-                  controller: townController, labelText: 'Town/City'),
+                controller: townController,
+                labelText: 'Town/City',
+                validator: (value) =>
+                    Validators.validateRequired(value, 'Town/City'),
+              ),
 
               //-------------------------------------------------------------------------------------
               const SizedBox(
@@ -421,17 +442,15 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               CustomButton(
                   label: 'Save Address',
                   onTap: () {
+                    // final formState = _formKey.currentState;
+                    // if (formState != null && formState.validate()) {
+                    // if (_formKey.currentState!.validate()) {
                     String newAddress =
                         "${fullNameController.text}, ${addressController.text}, ${areaController.text}, ${landmarkController.text}, ${townController.text}, ${pincodeController.text}, ${countryController.text}";
 
                     if (newAddress.isNotEmpty) {
                       context.read<CheckoutBloc>().add(AddAddress(newAddress));
                       Navigator.pop(context);
-                      // if (_addressController.text.isNotEmpty) {
-                      //   context
-                      //       .read<CheckoutBloc>()
-                      //       .add(AddAddress(_addressController.text));
-                      // }
                     }
                   })
             ],

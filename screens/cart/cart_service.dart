@@ -137,13 +137,13 @@ class CartService {
       // Check if the item already exists in the cart
       final docSnapshot = await cartRef.get();
       if (docSnapshot.exists) {
-        // If the item exists, update its quantity
+        // If the item exists---- update its quantity
         final existingQuantity = docSnapshot.data()?['quantity'] ?? 0;
         await cartRef.update({
           'quantity': existingQuantity + item.quantity,
         });
       } else {
-        // If the item doesn't exist, add it to the cart
+        // If the item doesn't exist---- add it to the cart
         await cartRef.set(item.toMap());
       }
     } catch (e) {

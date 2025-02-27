@@ -83,12 +83,14 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     //   emit(state.copyWith(addresses: addresses));
     // });
     on<LoadAddresses>((event, emit) async {
-      emit(state.copyWith(isLoading: true)); // Show loading state
+      //  loading state
+      emit(state.copyWith(isLoading: true));
       try {
         final addresses = await addressService.fetchAddresses();
         emit(state.copyWith(addresses: addresses, isLoading: false));
       } catch (e) {
-        emit(state.copyWith(isLoading: false)); // Hide loading state if failed
+        // Hide loading state if failed
+        emit(state.copyWith(isLoading: false));
       }
     });
     on<AddAddress>((event, emit) async {

@@ -51,6 +51,7 @@
 import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/service/auth_service.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
+import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
 import 'package:ampify_bloc/screens/cart/cart_service.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_event.dart';
@@ -88,6 +89,9 @@ void main() async {
             BlocProvider<AuthBloc>(
               create: (_) => AuthBloc(AuthService()),
             ),
+            BlocProvider(
+                create: (context) =>
+                    CartBloc(CartService())..add(LoadCartItems())),
             BlocProvider(create: (context) => WishlistBloc()),
             BlocProvider<ProductDetailsBloc>(
               create: (_) => ProductDetailsBloc(),

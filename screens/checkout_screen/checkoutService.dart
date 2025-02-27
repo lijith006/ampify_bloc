@@ -6,16 +6,6 @@ class AddressService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String get userId => _auth.currentUser?.uid ?? '';
 
-//   Future<List<String>> fetchAddresses() async {
-//     final snapshot = await _firestore.collection('addresses').get();
-//     return snapshot.docs.map((doc) => doc['address'] as String).toList();
-//   }
-
-//   Future<void> addAddress(String address) async {
-//     await _firestore.collection('addresses').add({'address': address});
-//   }
-// }
-
   Future<List<Map<String, dynamic>>> fetchAddresses() async {
     if (userId.isEmpty) return [];
     final snapshot = await _firestore

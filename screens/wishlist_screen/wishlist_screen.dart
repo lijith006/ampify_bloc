@@ -132,6 +132,7 @@ import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/common/card_widget.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
+import 'package:ampify_bloc/screens/cart/bloc/cart_state.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
@@ -211,6 +212,12 @@ class WishlistScreen extends StatelessWidget {
                       price: price,
                       isWishlisted: true,
                       productId: productId,
+                      cartCount: context.watch<CartBloc>().state is CartLoaded
+                          ? (context.watch<CartBloc>().state as CartLoaded)
+                              .cartItems
+                              .where((item) => item.productId == productId)
+                              .fold(0, (sum, item) => sum + item.quantity)
+                          : 0,
                       onWishlistToggle: () {
                         context.read<WishlistBloc>().add(
                               ToggleWishlistItem(

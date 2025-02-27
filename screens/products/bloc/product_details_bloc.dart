@@ -321,6 +321,7 @@ class ProductDetailsBloc
   Future<void> _onAddToCart(
       AddToCart event, Emitter<ProductDetailsState> emit) async {
     try {
+      print("Adding item to cart: ${event.item.title}");
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         emit(CartErrorState(errorMessage: "User not logged in"));

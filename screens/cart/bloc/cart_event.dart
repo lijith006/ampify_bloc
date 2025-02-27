@@ -81,3 +81,10 @@ class SaveForLater extends CartEvent {
   final CartItem item;
   SaveForLater(this.item);
 }
+
+//--------------------------------------------------------
+class CartUpdated extends CartEvent {
+  final List<CartItem> items;
+
+  CartUpdated(this.items);
+}

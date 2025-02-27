@@ -45,4 +45,23 @@ class Validators {
     }
     return null;
   }
+
+  static String? validateRequired(String? value, String fieldName) {
+    if (value == null || value.isEmpty) {
+      return '$fieldName cannot be empty';
+    }
+    return null;
+  }
+
+  static String? validatePincode(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Pincode cannot be empty';
+    }
+    const pincodePattern = r'^[0-9]{6}$';
+    final regex = RegExp(pincodePattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter a valid 6-digit pincode';
+    }
+    return null;
+  }
 }

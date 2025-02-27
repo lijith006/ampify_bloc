@@ -14,8 +14,7 @@ class ToggleWishlistItem extends WishlistEvent {
   final String productId;
   final bool isCurrentlyWishlisted;
   final BuildContext context;
-  final Map<String, dynamic>?
-      productData; // Optional product data for adding new items
+  final Map<String, dynamic>? productData;
 
   ToggleWishlistItem({
     required this.productId,
