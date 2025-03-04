@@ -5,6 +5,7 @@ import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/bloc/saved_items_bloc.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
+import 'package:ampify_bloc/widgets/custom_orange_button.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -93,27 +94,43 @@ class SavedItemsScreen extends StatelessWidget {
                               ),
                             ),
 
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.buttonColorOrange,
-                              ),
-                              onPressed: () {
-                                final cartBloc = context.read<CartBloc>();
+                            // ElevatedButton(
+                            //   style: ElevatedButton.styleFrom(
+                            //     backgroundColor: AppColors.buttonColorOrange,
+                            //   ),
+                            //   onPressed: () {
+                            //     final cartBloc = context.read<CartBloc>();
 
-                                context
-                                    .read<SavedItemsBloc>()
-                                    .add(MoveToCart(item, cartBloc));
+                            //     context
+                            //         .read<SavedItemsBloc>()
+                            //         .add(MoveToCart(item, cartBloc));
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Item moved to cart!')),
-                                );
-                              },
-                              child: const Text(
-                                'Move to Cart',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //       const SnackBar(
+                            //           content: Text('Item moved to cart!')),
+                            //     );
+                            //   },
+                            //   child: const Text(
+                            //     'Move to Cart',
+                            //     style: TextStyle(color: Colors.white),
+                            //   ),
+                            // )
+
+                            CustomOrangeButton(
+                                width: 135,
+                                text: 'Move to Cart',
+                                onPressed: () {
+                                  final cartBloc = context.read<CartBloc>();
+
+                                  context
+                                      .read<SavedItemsBloc>()
+                                      .add(MoveToCart(item, cartBloc));
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Item moved to cart!')),
+                                  );
+                                })
                           ],
                         ),
                       ),

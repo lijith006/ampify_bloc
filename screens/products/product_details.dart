@@ -423,9 +423,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               actions: [
                 BlocBuilder<WishlistBloc, WishlistState>(
                   builder: (context, wishlistState) {
+                    print("Wishlist State: $wishlistState");
                     final isWishlisted = wishlistState is WishlistLoaded &&
                         wishlistState.wishlistedItems
                             .contains(widget.productId);
+                    print(
+                        "Product ${widget.productId} isWishlisted: $isWishlisted");
 
                     return IconButton(
                       icon: Icon(
@@ -433,6 +436,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         color: isWishlisted ? Colors.red : Colors.grey,
                       ),
                       onPressed: () {
+                        print(
+                            "Toggling Wishlist for Product ID: ${widget.productId}");
                         context.read<WishlistBloc>().add(
                               ToggleWishlistItem(
                                 productId: widget.productId,
@@ -526,8 +531,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             fontSize: 23,
                                             fontWeight: FontWeight.w500,
                                             color: Color(0xFFFF6F61),
-                                            //  Color.fromARGB(
-                                            //     255, 255, 120, 120)
                                           ),
                                         ),
                                       ],
@@ -588,8 +591,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       children: [
                                         CustomActionButton(
                                           label: 'Add to Cart',
-                                          // backgroundColor: const Color.fromARGB(
-                                          //     255, 218, 229, 243),
                                           backgroundColor: const Color.fromARGB(
                                               255, 221, 168, 62),
                                           onPressed: () {

@@ -78,10 +78,6 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final AddressService addressService;
 
   CheckoutBloc(this.addressService) : super(CheckoutState()) {
-    // on<LoadAddresses>((event, emit) async {
-    //   final addresses = await addressService.fetchAddresses();
-    //   emit(state.copyWith(addresses: addresses));
-    // });
     on<LoadAddresses>((event, emit) async {
       //  loading state
       emit(state.copyWith(isLoading: true));

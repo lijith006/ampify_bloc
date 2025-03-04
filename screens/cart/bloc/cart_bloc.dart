@@ -548,7 +548,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final CartService _cartService;
   StreamSubscription<List<CartItem>>? _cartSubscription;
 
-  //CartBloc(this._cartService) : super(CartLoading())
   CartBloc(this._cartService) : super(CartInitial()) {
     on<LoadCartItems>(_onLoadCartItems);
     on<AddToCart>(_onAddToCart);
@@ -561,24 +560,25 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   // Load cart items
   Future<void> _onLoadCartItems(
       LoadCartItems event, Emitter<CartState> emit) async {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) {
-      emit(CartError("User not logged in"));
-      return;
-    }
-
+    emit(CartLoading());
     try {
-      print("Loading cart items...");
-      emit(CartLoading());
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) {
+        emit(CartError("User not logged in"));
+        return;
+      }
 
+      // Cancel existing subscription
       await _cartSubscription?.cancel();
 
       // Set up real-time listener
       _cartSubscription = _cartService.getCartStream(userId).listen(
         (cartItems) {
+          // Use add to dispatch a new event instead of calling emit directly
           add(CartUpdated(cartItems));
         },
         onError: (error) {
+          // Emit error state if the stream fails
           emit(CartError("Failed to load cart: ${error.toString()}"));
         },
       );
@@ -593,6 +593,40 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
     emit(CartLoaded(event.items));
   }
+  // Future<void> _onLoadCartItems(
+  //     LoadCartItems event, Emitter<CartState> emit) async {
+  //   final userId = FirebaseAuth.instance.currentUser?.uid;
+  //   if (userId == null) {
+  //     emit(CartError("User not logged in"));
+  //     return;
+  //   }
+
+  //   try {
+  //     print("Loading cart items...");
+  //     emit(CartLoading());
+
+  //     await _cartSubscription?.cancel();
+
+  //     // Set up real-time listener
+  //     _cartSubscription = _cartService.getCartStream(userId).listen(
+  //       (cartItems) {
+  //         add(CartUpdated(cartItems));
+  //       },
+  //       onError: (error) {
+  //         emit(CartError("Failed to load cart: ${error.toString()}"));
+  //       },
+  //     );
+  //   } catch (e) {
+  //     emit(CartError("Failed to load cart: ${e.toString()}"));
+  //   }
+  // }
+
+  // void _onCartUpdated(CartUpdated event, Emitter<CartState> emit) {
+  //   if (state is CartLoaded && (state as CartLoaded).cartItems == event.items) {
+  //     return;
+  //   }
+  //   emit(CartLoaded(event.items));
+  // }
 
   Future<void> _onAddToCart(AddToCart event, Emitter<CartState> emit) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;

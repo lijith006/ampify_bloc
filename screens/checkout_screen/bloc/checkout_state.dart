@@ -1,11 +1,3 @@
-// part of 'checkout_bloc.dart';
-
-// class CheckoutState {
-//   final List<String> addresses;
-//   final String? selectedAddress;
-
-//   const CheckoutState({required this.addresses, this.selectedAddress});
-// }
 //************************************************* */
 // part of 'checkout_bloc.dart';
 
@@ -52,4 +44,13 @@ class CheckoutState {
       isLoading: isLoading ?? this.isLoading,
     );
   }
+}
+
+class AddressErrorState extends CheckoutState {
+  final String message;
+
+  AddressErrorState(this.message);
+
+  @override
+  String toString() => 'AddressErrorState: $message';
 }

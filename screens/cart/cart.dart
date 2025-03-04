@@ -1,14 +1,19 @@
 // import 'dart:convert';
 // import 'dart:typed_data';
-
 // import 'package:ampify_bloc/common/app_colors.dart';
+// import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
+// import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
+// import 'package:ampify_bloc/screens/cart/bloc/cart_state.dart';
 // import 'package:ampify_bloc/screens/cart/cart_model.dart';
-// import 'package:ampify_bloc/screens/cart/saved_items_screen.dart';
+// import 'package:ampify_bloc/screens/cart/cart_service.dart';
+// import 'package:ampify_bloc/screens/cart/saved_item_screen/saved_items_screen.dart';
+// import 'package:ampify_bloc/screens/checkout_screen/checkout_screen.dart';
 // import 'package:ampify_bloc/screens/products/product_details.dart';
+// import 'package:ampify_bloc/widgets/custom_orange_button.dart';
 // import 'package:ampify_bloc/widgets/widget_support.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 
 // class MyCart extends StatefulWidget {
 //   const MyCart({
@@ -29,93 +34,58 @@
 //       );
 //     }
 
-//     return DefaultTabController(
-//         length: 2,
-//         child: Scaffold(
-//           backgroundColor: AppColors.backgroundColor,
-//           appBar: AppBar(
-//             //  title: const Text('My Cart'),
-//             bottom: const TabBar(
-//                 indicatorColor: Colors.blueAccent,
-//                 labelColor: Colors.black,
-//                 unselectedLabelColor: Colors.grey,
-//                 tabs: [
-//                   Tab(
-//                     icon: Icon(Icons.save),
-//                     text: 'My Cart',
-//                   ),
-//                   Tab(icon: Icon(Icons.save), text: "Saved for Later"),
-//                 ]),
-//           ),
-//           body: TabBarView(
-//             children: [
-//               StreamBuilder<QuerySnapshot>(
-//                 stream: FirebaseFirestore.instance
-//                     .collection('users')
-//                     .doc(userId)
-//                     .collection('cart')
-//                     .snapshots(),
-//                 builder: (context, snapshot) {
-//                   if (snapshot.connectionState == ConnectionState.waiting) {
-//                     return const Center(
-//                       child: CircularProgressIndicator(),
-//                     );
-//                   }
-//                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-//                     return const Center(child: Text('Your cart is empty 😔'));
-//                   }
-//                   final cartItems = snapshot.data!.docs.map((doc) {
-//                     return CartItem.fromMap(doc.data() as Map<String, dynamic>);
-//                   }).toList();
-
-//                   return Column(
-//                     children: [
-//                       // ElevatedButton(
-//                       //     onPressed: () {
-//                       //       Navigator.push(
-//                       //           context,
-//                       //           MaterialPageRoute(
-//                       //             builder: (context) => SavedItemsScreen(
-//                       //               moveToCart: (CartItem) {},
-//                       //             ),
-//                       //           ));
-//                       //     },
-//                       //     child: const Text('Saved items')),
-//                       Expanded(child: buildCartList(cartItems)),
-//                       buildTotalSection(cartItems),
-//                       //save later call
-//                     ],
-//                   );
-//                 },
+//     return BlocProvider(
+//       create: (context) =>
+//           CartBloc(context.read<CartService>())..add(LoadCartItems()),
+//       child: DefaultTabController(
+//           length: 2,
+//           child: Scaffold(
+//             backgroundColor: AppColors.backgroundColor,
+//             appBar: AppBar(
+//               bottom: PreferredSize(
+//                 preferredSize: const Size.fromHeight(30),
+//                 child: TabBar(
+//                     indicatorColor: AppColors.buttonColorOrange,
+//                     labelColor: Colors.black,
+//                     unselectedLabelColor: Colors.grey,
+//                     tabs: const [
+//                       Tab(
+//                         icon: Icon(Icons.save),
+//                         text: 'My Cart',
+//                       ),
+//                       Tab(icon: Icon(Icons.save), text: "Saved for Later"),
+//                     ]),
 //               ),
+//             ),
+//             body: TabBarView(
+//               children: [
+//                 BlocBuilder<CartBloc, CartState>(
+//                   builder: (context, state) {
+//                     if (state is CartLoading) {
+//                       return const Center(child: CircularProgressIndicator());
+//                     } else if (state is CartLoaded) {
+//                       if (state.cartItems.isEmpty) {
+//                         return const Center(
+//                             child: Text('Your cart is empty 😔'));
+//                       }
+//                       return Column(
+//                         children: [
+//                           Expanded(child: buildCartList(state.cartItems)),
+//                           buildTotalSection(state.cartItems),
+//                         ],
+//                       );
+//                     } else {
+//                       return const Center(child: Text('Failed to load cart.'));
+//                     }
+//                   },
+//                 ),
 
-//               // Saved Items Tab
-//               SavedItemsScreen(
-//                 moveToCart: (CartItem item) async {
-//                   final userId = FirebaseAuth.instance.currentUser?.uid;
-//                   if (userId == null) return;
-
-//                   final savedRef = FirebaseFirestore.instance
-//                       .collection('users')
-//                       .doc(userId)
-//                       .collection('saved');
-
-//                   final cartRef = FirebaseFirestore.instance
-//                       .collection('users')
-//                       .doc(userId)
-//                       .collection('cart');
-
-//                   await savedRef.doc(item.productId).delete();
-//                   await cartRef.doc(item.productId).set(item.toMap());
-
-//                   ScaffoldMessenger.of(context).showSnackBar(
-//                     const SnackBar(content: Text('Item moved to cart!')),
-//                   );
-//                 },
-//               ),
-//             ],
-//           ),
-//         ));
+//                 // Saved Items Tab
+//                 const SavedItemsScreen()
+//               ],
+//             ),
+//           )),
+//     );
 //   }
 
 // //Cart section
@@ -140,6 +110,7 @@
 //           child: Stack(
 //             children: [
 //               Card(
+//                 color: Colors.white,
 //                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
 //                 shape: RoundedRectangleBorder(
 //                     borderRadius: BorderRadius.circular(10)),
@@ -169,8 +140,6 @@
 //                           Text(
 //                             item.title,
 //                             style: AppWidget.boldCardTitle(),
-//                             //  TextStyle(
-//                             //     fontSize: 18, fontWeight: FontWeight.bold),
 //                           ),
 //                           Text('₹${item.price}',
 //                               style: const TextStyle(
@@ -187,19 +156,33 @@
 //                           //add & remove quantity
 //                           Row(
 //                             mainAxisSize: MainAxisSize.min,
-//                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                             children: [
-//                               IconButton(
-//                                   onPressed: () => updateQuantity(item, -1),
-//                                   icon: const Icon(Icons.remove)),
+//                               if (item.quantity > 1)
+//                                 IconButton(
+//                                     onPressed: () =>
+//                                         updateQuantity(context, item, -1),
+//                                     icon: const Icon(Icons.remove)),
 //                               Text("${item.quantity}"),
 //                               IconButton(
-//                                   onPressed: () => updateQuantity(item, 1),
-//                                   icon: const Icon(Icons.add)),
+//                                 onPressed: () {
+//                                   if (item.quantity < 10) {
+//                                     updateQuantity(context, item, 1);
+//                                   } else {
+//                                     ScaffoldMessenger.of(context).showSnackBar(
+//                                       const SnackBar(
+//                                         content: Text(
+//                                             "Maximum quantity limit reached (10)"),
+//                                         duration: Duration(seconds: 2),
+//                                       ),
+//                                     );
+//                                   }
+//                                 },
+//                                 icon: const Icon(Icons.add),
+//                               ),
 //                               //Save for later
 //                               TextButton(
 //                                 onPressed: () {
-//                                   saveForLater(item);
+//                                   saveForLater(context, item);
 //                                 },
 //                                 child: const Text('Save for Later',
 //                                     style: TextStyle(color: Colors.blue)),
@@ -217,7 +200,7 @@
 //                 top: 0,
 //                 right: 0,
 //                 child: IconButton(
-//                   onPressed: () => removeFromCart(item.productId),
+//                   onPressed: () => removeFromCart(context, item),
 //                   icon: const Icon(Icons.delete, color: Colors.red),
 //                 ),
 //               ),
@@ -252,87 +235,59 @@
 //                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
 //               Text('₹$total',
 //                   style: const TextStyle(
-//                       fontSize: 18,
+//                       fontSize: 22,
 //                       fontWeight: FontWeight.bold,
 //                       color: Colors.green)),
 //             ],
 //           ),
 //           const SizedBox(height: 10),
-//           const SizedBox(height: 10),
-//           ElevatedButton(
-//             style: ElevatedButton.styleFrom(
-//                 backgroundColor: Color(0XFF1A73E8),
-//                 padding:
-//                     const EdgeInsets.symmetric(vertical: 12, horizontal: 40)),
-//             onPressed: () => print('Proceed to Buy'),
-//             child: const Text(
-//               'Proceed to Buy',
-//               style: TextStyle(fontSize: 18, color: Colors.white),
-//             ),
-//           ),
+//           CustomOrangeButton(
+//               width: 300,
+//               text: 'Proceed to Buy',
+//               onPressed: () {
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => CheckoutScreen(products: cartItems),
+//                     ));
+//               })
 //         ],
 //       ),
 //     );
 //   }
 
 // //Update section
-//   Future<void> updateQuantity(CartItem item, int change) async {
-//     final userId = FirebaseAuth.instance.currentUser?.uid;
-//     if (userId == null) return;
-
-//     int newQuantity = item.quantity + change;
-//     if (newQuantity > 0) {
-//       await FirebaseFirestore.instance
-//           .collection('users')
-//           .doc(userId)
-//           .collection('cart')
-//           .doc(item.productId)
-//           .update({'quantity': newQuantity});
-//     }
+//   void updateQuantity(BuildContext context, CartItem item, int change) {
+//     context.read<CartBloc>().add(UpdateQuantity(item, change));
 //   }
 
 // //Save for later
-//   Future<void> saveForLater(CartItem item) async {
-//     final userId = FirebaseAuth.instance.currentUser?.uid;
-//     if (userId == null) return;
-
-//     final cartRef = FirebaseFirestore.instance
-//         .collection('users')
-//         .doc(userId)
-//         .collection('cart');
-
-//     final savedRef = FirebaseFirestore.instance
-//         .collection('users')
-//         .doc(userId)
-//         .collection('saved');
-//     //Remove from cart
-//     await cartRef.doc(item.productId).delete();
-//     //Add to save for later
-//     await savedRef.doc(item.productId).set(item.toMap());
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text('Item saved for later!')),
-//     );
+//   void saveForLater(BuildContext context, CartItem item) {
+//     context.read<CartBloc>().add(SaveForLater(item));
 //   }
 
 // //Remove Product Logic
-//   Future<void> removeFromCart(String productId) async {
-//     final userId = FirebaseAuth.instance.currentUser?.uid;
-//     if (userId == null) return;
+//   void removeFromCart(BuildContext context, CartItem item) {
+//     context.read<CartBloc>().add(RemoveFromCart(item.productId));
 
-//     await FirebaseFirestore.instance
-//         .collection('users')
-//         .doc(userId)
-//         .collection('cart')
-//         .doc(productId)
-//         .delete();
+//     //snackbar
+//     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//       content: const Text('Item removed from cart!'),
+//       duration: const Duration(seconds: 2),
+//       behavior: SnackBarBehavior.floating,
+//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//       action: SnackBarAction(
+//           label: 'Undo',
+//           onPressed: () {
+//             //Re-add the item
+//             context.read<CartBloc>().add(AddToCart(item));
+//           }),
+//     ));
 //   }
 // }
-
-//---------------------------------------------**********************
-
+//************************************************************************ */
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
@@ -342,6 +297,7 @@ import 'package:ampify_bloc/screens/cart/cart_service.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/saved_items_screen.dart';
 import 'package:ampify_bloc/screens/checkout_screen/checkout_screen.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
+import 'package:ampify_bloc/widgets/custom_orange_button.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -489,12 +445,20 @@ class _MyCartState extends State<MyCart> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (item.quantity > 1)
-                                IconButton(
-                                    onPressed: () =>
-                                        updateQuantity(context, item, -1),
-                                    icon: const Icon(Icons.remove)),
+                              // Minus Icon
+                              IconButton(
+                                onPressed: item.quantity > 1
+                                    ? () => updateQuantity(context, item, -1)
+                                    : null, // Disable if quantity is 1
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: item.quantity > 1
+                                      ? Colors.black
+                                      : Colors.grey,
+                                ),
+                              ),
                               Text("${item.quantity}"),
+                              // Plus Icon
                               IconButton(
                                 onPressed: () {
                                   if (item.quantity < 10) {
@@ -511,6 +475,7 @@ class _MyCartState extends State<MyCart> {
                                 },
                                 icon: const Icon(Icons.add),
                               ),
+
                               //Save for later
                               TextButton(
                                 onPressed: () {
@@ -573,24 +538,16 @@ class _MyCartState extends State<MyCart> {
             ],
           ),
           const SizedBox(height: 10),
-          const SizedBox(height: 10),
-
-          //button proceed to buy
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.buttonColorOrange,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 40)),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CheckoutScreen(products: cartItems),
-                )),
-            child: const Text(
-              'Proceed to Buy',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-          ),
+          CustomOrangeButton(
+              width: 300,
+              text: 'Proceed to Buy',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CheckoutScreen(products: cartItems),
+                    ));
+              })
         ],
       ),
     );
@@ -625,20 +582,3 @@ class _MyCartState extends State<MyCart> {
     ));
   }
 }
-  // void removeFromCart(BuildContext context, String productId, CartItem item) {
-  //   context.read<CartBloc>().add(RemoveFromCart(productId));
-
-  //   //snackbar
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //     content: const Text('Item removed from cart!'),
-  //     duration: const Duration(seconds: 2),
-  //     behavior: SnackBarBehavior.floating,
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-  //     action: SnackBarAction(
-  //         label: 'Undo',
-  //         onPressed: () {
-  //           //Re-add the item
-  //           context.read<CartBloc>().add(AddToCart(item));
-  //         }),
-  //   ));
-  // }
