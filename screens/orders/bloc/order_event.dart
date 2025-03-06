@@ -5,11 +5,14 @@ abstract class OrderEvent {}
 class PlaceOrder extends OrderEvent {
   final double amount;
   final String orderId;
+  final String paymentId;
+
   final List<CartItem> items;
   final String address;
   final String userEmail;
 
   PlaceOrder({
+    required this.paymentId,
     required this.amount,
     required this.orderId,
     required this.items,

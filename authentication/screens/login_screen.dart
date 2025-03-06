@@ -150,7 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 10),
                   const Center(child: Text('Or login with Google account')),
-                  // const SizedBox(height: 5),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoading) {

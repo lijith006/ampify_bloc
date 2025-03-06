@@ -709,27 +709,6 @@ class _HomeScreenState extends State<HomeScreen> {
       isFilterActive = filter.isActive;
     });
   }
-  // void clearFilter(String filterType) {
-  //   setState(() {
-  //     switch (filterType) {
-  //       case 'search':
-  //         searchQuery = '';
-  //         searchController.clear();
-  //         break;
-  //       case 'category':
-  //         filter.categories = null;
-  //         break;
-  //       case 'brand':
-  //         filter.brands = null;
-  //         break;
-  //       case 'price':
-  //         filter.minPrice = null;
-  //         filter.maxPrice = null;
-  //         break;
-  //     }
-  //     isFilterActive = filter.isActive;
-  //   });
-  // }
 
   // Method to clear all filters
   void clearAllFilters() {

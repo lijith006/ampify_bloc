@@ -114,7 +114,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 
@@ -134,7 +133,6 @@ class _ProductCarouselState extends State<ProductCarousel> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final CarouselSliderController controller = CarouselSliderController();
-  // int _activeIndex = 0;
 
   Stream<QuerySnapshot> fetchBanners() {
     return firestore.collection('banners').snapshots();
@@ -194,7 +192,7 @@ class _ProductCarouselState extends State<ProductCarousel> {
                 itemBuilder: (context, index) {
                   return AnimatedOpacity(
                     duration: const Duration(milliseconds: 500),
-                    opacity: 1.0, //  fade-in effect
+                    opacity: 1.0,
                     child: imageWidgets[index],
                   );
                 },

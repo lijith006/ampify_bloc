@@ -522,14 +522,10 @@ class _HomeContentState extends State<HomeContent> {
                                                     as WishlistLoaded)
                                                 .wishlistedItems
                                                 .any((doc) => doc == productId),
-
-                                        //   wishlistedItems.contains(productId),
                                         productData: productData,
                                         context: context,
                                       ),
                                     );
-
-                                //   toggleWishlist(productId);
                               },
                               onAddToCart: () {
                                 // Convert Uint8List to Base64 String

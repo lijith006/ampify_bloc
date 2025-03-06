@@ -127,17 +127,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthError(message: e.toString()));
       }
     });
-    // on<LoginWithGoogle>(
-    //   (event, emit) async {
-    //     emit(AuthLoading());
-    //     try {
-    //       final userCredential = await _authService.loginWithGoogle();
-    //       emit(AuthSuccess(user: userCredential?.user));
-    //     } catch (e) {
-    //       emit(AuthError(message: e.toString()));
-    //     }
-    //   },
-    // );
 
 //SIGN UP
     on<CreateUserWithEmailAndPassword>((event, emit) async {
