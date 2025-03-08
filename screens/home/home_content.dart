@@ -335,7 +335,7 @@ class _HomeContentState extends State<HomeContent> {
         children: [
           ProductCarousel(productStream: fetchProducts()),
 
-          // C a t e g o r i e s
+          // F e t c h    C a t e g o r i e s
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -344,7 +344,6 @@ class _HomeContentState extends State<HomeContent> {
                 Text('C a t e g o r i e s', style: AppWidget.boldCardTitle()),
 
                 const SizedBox(height: 5),
-                //Categories
                 StreamBuilder(
                   stream: fetchCategories(),
                   builder: (context, snapshot) {
@@ -413,7 +412,7 @@ class _HomeContentState extends State<HomeContent> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                //PRODUCT GRID
+                //P R O D U C T    G R I D
                 StreamBuilder<QuerySnapshot>(
                   stream: fetchProducts(),
                   builder: (context, snapshot) {
@@ -476,6 +475,8 @@ class _HomeContentState extends State<HomeContent> {
                                   ),
                                 ));
                           },
+
+                          //C a r d     W i d g e t
                           child: CardWidget(
                               key: ValueKey(productId),
                               name: product['name'],
@@ -488,7 +489,7 @@ class _HomeContentState extends State<HomeContent> {
                                   .contains(productId),
                               productId: productId,
 
-                              //check wishlisted
+                              //c h e c k   w i s h l i s t e d
                               onWishlistToggle: () {
                                 print(
                                     "Wishlist Toggle Clicked for Product ID: $productId");
@@ -528,7 +529,7 @@ class _HomeContentState extends State<HomeContent> {
                                     );
                               },
                               onAddToCart: () {
-                                // Convert Uint8List to Base64 String
+                                //  Uint8List  to  Base64 String
                                 final base64Image = base64Encode(imageBytes);
 
                                 // Store as List<String>

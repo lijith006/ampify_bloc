@@ -580,7 +580,6 @@
 //*********************************************************** */
 //*************************MArch 3
 
-import 'package:ampify_bloc/authentication/screens/login_screen.dart';
 import 'package:ampify_bloc/authentication/service/auth_service.dart';
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/cart/cart.dart';
@@ -591,7 +590,6 @@ import 'package:ampify_bloc/screens/search_filter/search_widgets/filters/filter_
 import 'package:ampify_bloc/screens/search_filter/search_widgets/search/search_field.dart';
 import 'package:ampify_bloc/screens/search_filter/search_widgets/search/search_results.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/wishlist_screen.dart';
-import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -635,7 +633,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _selectedIndex == 0 ? buildSearchField() : Text(getScreenTitle()),
         actions: [
           if (_selectedIndex == 0) buildFilterButton(),
-          buildLogoutButton(_auth),
+          // buildLogoutButton(_auth),
         ],
       ),
       body: Stack(
@@ -730,62 +728,62 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //Logout logic
-  Widget buildLogoutButton(AuthService auth) {
-    return IconButton(
-      onPressed: () => showSignOutDialog(context, auth),
-      icon: const Icon(
-        Icons.logout,
-        color: Colors.black,
-      ),
-    );
-  }
+  // Widget buildLogoutButton(AuthService auth) {
+  //   return IconButton(
+  //     onPressed: () => showSignOutDialog(context, auth),
+  //     icon: const Icon(
+  //       Icons.logout,
+  //       color: Colors.black,
+  //     ),
+  //   );
+  // }
 
 //Sign out dialogue box
-  void showSignOutDialog(BuildContext context, AuthService _auth) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          title: const Text(
-            'Sign Out',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          content: const Text('Are you sure you want to sign out?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                await _auth.signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: Text(
-                'Sign Out',
-                style: AppWidget.whitelightTextFieldStyle(),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void showSignOutDialog(BuildContext context, AuthService _auth) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(15),
+  //         ),
+  //         title: const Text(
+  //           'Sign Out',
+  //           style: TextStyle(fontWeight: FontWeight.bold),
+  //         ),
+  //         content: const Text('Are you sure you want to sign out?'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: const Text(
+  //               'Cancel',
+  //               style: TextStyle(color: Colors.grey),
+  //             ),
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () async {
+  //               Navigator.pop(context);
+  //               await _auth.signOut();
+  //               Navigator.pushReplacement(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) => const LoginScreen(),
+  //                 ),
+  //               );
+  //             },
+  //             style: ElevatedButton.styleFrom(
+  //               backgroundColor: Colors.red,
+  //             ),
+  //             child: Text(
+  //               'Sign Out',
+  //               style: AppWidget.whitelightTextFieldStyle(),
+  //             ),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   String getScreenTitle() {
     switch (_selectedIndex) {

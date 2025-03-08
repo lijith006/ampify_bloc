@@ -1,8 +1,9 @@
 // import 'dart:convert';
+// import 'package:ampify_bloc/widgets/carousel_indicator_buttons.dart';
 // import 'package:flutter/material.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 
 // class ProductCarousel extends StatefulWidget {
 //   final Stream<QuerySnapshot> productStream;
@@ -17,10 +18,11 @@
 // }
 
 // class _ProductCarouselState extends State<ProductCarousel> {
+//   int currentIndex = 0;
+
 //   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 //   final CarouselSliderController controller = CarouselSliderController();
-//   int _activeIndex = 0;
 
 //   Stream<QuerySnapshot> fetchBanners() {
 //     return firestore.collection('banners').snapshots();
@@ -72,36 +74,48 @@
 //         if (imageWidgets.isEmpty) {
 //           return const Center(child: Text('No images available'));
 //         }
-
 //         return Column(
 //           children: [
-//             CarouselSlider(
-//               items: imageWidgets,
-//               carouselController: controller,
-//               options: CarouselOptions(
-//                 height: 180,
-//                 autoPlay: true,
-//                 enlargeCenterPage: true,
-//                 viewportFraction: 1.0,
-//                 onPageChanged: (index, reason) {
+//             SizedBox(
+//               height: 210,
+//               child: Swiper(
+//                 itemBuilder: (context, index) {
+//                   return AnimatedOpacity(
+//                     duration: const Duration(milliseconds: 500),
+//                     opacity: 1.0,
+//                     child: imageWidgets[index],
+//                   );
+//                 },
+//                 itemCount: imageWidgets.length,
+//                 autoplay: true,
+//                 autoplayDelay: 3000,
+//                 autoplayDisableOnInteraction: true,
+//                 curve: Curves.easeInOut,
+
+//                 // pagination: const SwiperPagination(
+//                 //   builder: FractionPaginationBuilder(
+//                 //     color: Colors.white54,
+//                 //     activeColor: Colors.white,
+//                 //     fontSize: 14,
+//                 //     activeFontSize: 16,
+//                 //   ),
+//                 // ),
+//                 control: const SwiperControl(color: Colors.white70),
+//                 onIndexChanged: (index) {
 //                   setState(() {
-//                     _activeIndex = index;
+//                     currentIndex = index;
 //                   });
 //                 },
+//                 //fade: 0.7,
 //               ),
 //             ),
 //             const SizedBox(height: 10),
-//             AnimatedSmoothIndicator(
-//               activeIndex: _activeIndex,
-//               count: imageWidgets.length,
-//               effect: const ExpandingDotsEffect(
-//                 dotHeight: 8,
-//                 dotWidth: 8,
-//                 activeDotColor: Colors.blue,
-//                 dotColor: Colors.grey,
-//                 expansionFactor: 3,
-//               ),
-//               onDotClicked: (index) => controller.animateToPage(index),
+// //C a r o u s e l    I n d i c a t o r
+//             CarouselIndicator(
+//               itemCount: imageWidgets.length,
+//               currentIndex: currentIndex,
+//               activeColor: Colors.blue,
+//               inactiveColor: Colors.grey,
 //             ),
 //           ],
 //         );
@@ -109,9 +123,11 @@
 //     );
 //   }
 // }
+
 //****************************************************** */
 
 import 'dart:convert';
+// import 'package:ampify_bloc/widgets/carousel_indicator_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -130,6 +146,8 @@ class ProductCarousel extends StatefulWidget {
 }
 
 class _ProductCarouselState extends State<ProductCarousel> {
+  int currentIndex = 0;
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final CarouselSliderController controller = CarouselSliderController();
@@ -201,22 +219,41 @@ class _ProductCarouselState extends State<ProductCarousel> {
                 autoplayDelay: 3000,
                 autoplayDisableOnInteraction: true,
                 curve: Curves.easeInOut,
-                pagination: const SwiperPagination(
-                  builder: FractionPaginationBuilder(
-                    color: Colors.white54,
-                    activeColor: Colors.white,
-                    fontSize: 14,
-                    activeFontSize: 16,
-                  ),
-                ),
                 control: const SwiperControl(color: Colors.white70),
-                //fade: 0.7,
+                onIndexChanged: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
               ),
             ),
             const SizedBox(height: 10),
+            buildIndicator(imageWidgets.length),
           ],
         );
       },
+    );
+  }
+
+  // Carousel Indicators with Slide Animation
+  Widget buildIndicator(int itemCount) {
+    if (itemCount == 0)
+      return const SizedBox.shrink(); // Handle empty list case
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(itemCount, (index) {
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          width: currentIndex == index ? 16 : 8, // Active dot scales up
+          height: 8,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: currentIndex == index ? Colors.blue : Colors.grey,
+          ),
+        );
+      }),
     );
   }
 }

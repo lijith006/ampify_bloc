@@ -297,6 +297,7 @@ import 'package:ampify_bloc/screens/cart/cart_service.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/saved_items_screen.dart';
 import 'package:ampify_bloc/screens/checkout_screen/checkout_screen.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
+import 'package:ampify_bloc/widgets/custom_black_button.dart';
 import 'package:ampify_bloc/widgets/custom_orange_button.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -482,7 +483,7 @@ class _MyCartState extends State<MyCart> {
                                   saveForLater(context, item);
                                 },
                                 child: const Text('Save for Later',
-                                    style: TextStyle(color: Colors.blue)),
+                                    style: TextStyle(color: Colors.black54)),
                               ),
                             ],
                           )
@@ -538,6 +539,16 @@ class _MyCartState extends State<MyCart> {
             ],
           ),
           const SizedBox(height: 10),
+          // CustomBlackButton(
+          //     width: 300,
+          //     text: 'Proceed to Buy',
+          //     onPressed: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //             builder: (context) => CheckoutScreen(products: cartItems),
+          //           ));
+          //     })
           CustomOrangeButton(
               width: 300,
               text: 'Proceed to Buy',

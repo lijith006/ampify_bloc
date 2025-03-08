@@ -81,9 +81,12 @@
 //               actions: [
 //                 BlocBuilder<WishlistBloc, WishlistState>(
 //                   builder: (context, wishlistState) {
+//                     print("Wishlist State: $wishlistState");
 //                     final isWishlisted = wishlistState is WishlistLoaded &&
 //                         wishlistState.wishlistedItems
 //                             .contains(widget.productId);
+//                     print(
+//                         "Product ${widget.productId} isWishlisted: $isWishlisted");
 
 //                     return IconButton(
 //                       icon: Icon(
@@ -91,6 +94,8 @@
 //                         color: isWishlisted ? Colors.red : Colors.grey,
 //                       ),
 //                       onPressed: () {
+//                         print(
+//                             "Toggling Wishlist for Product ID: ${widget.productId}");
 //                         context.read<WishlistBloc>().add(
 //                               ToggleWishlistItem(
 //                                 productId: widget.productId,
@@ -173,8 +178,6 @@
 //                                             style: const TextStyle(
 //                                                 fontSize: 30,
 //                                                 fontWeight: FontWeight.w900,
-//                                                 // color: AppColors
-//                                                 //     .textcolorCommmonGrey
 //                                                 color: Color.fromARGB(
 //                                                     255, 85, 86, 94)),
 //                                             overflow: TextOverflow.ellipsis,
@@ -186,8 +189,6 @@
 //                                             fontSize: 23,
 //                                             fontWeight: FontWeight.w500,
 //                                             color: Color(0xFFFF6F61),
-//                                             //  Color.fromARGB(
-//                                             //     255, 255, 120, 120)
 //                                           ),
 //                                         ),
 //                                       ],
@@ -200,10 +201,7 @@
 //                         ),
 //                         Container(
 //                           width: screenWidth * 10,
-
-//                           // color: const Color.fromARGB(255, 217, 241, 239),
 //                           color: AppColors.backgroundColor,
-
 //                           child: Padding(
 //                             padding: const EdgeInsets.all(16.0),
 //                             child: Column(
@@ -240,15 +238,6 @@
 
 //                                 const SizedBox(height: 20),
 
-//                                 // Product Description
-//                                 // Text(
-//                                 //   state.productDescription,
-//                                 //   style: const TextStyle(
-//                                 //       fontSize: 15,
-//                                 //       color: AppColors.textcolorCommmonGrey),
-//                                 // ),
-//                                 // const SizedBox(height: 20),
-
 // //Buttons
 //                                 Container(
 //                                   color: AppColors.backgroundColor,
@@ -261,8 +250,7 @@
 //                                         CustomActionButton(
 //                                           label: 'Add to Cart',
 //                                           backgroundColor: const Color.fromARGB(
-//                                               255, 218, 229, 243),
-//                                           // const Color(0xFF1A73E8),
+//                                               255, 221, 168, 62),
 //                                           onPressed: () {
 //                                             final cartItem = CartItem(
 //                                               productId: widget.productId,
@@ -280,9 +268,9 @@
 //                                         ),
 //                                         CustomActionButton(
 //                                           label: 'Buy now',
-//                                           backgroundColor:
-//                                               const Color(0xFFFF6F61),
-//                                           onPressed: () {
+//                                           backgroundColor: const Color.fromARGB(
+//                                               255, 218, 229, 243),
+//                                           onPressed: () async {
 //                                             final cartItem = CartItem(
 //                                               productId: widget.productId,
 //                                               title: state.productName,
@@ -290,13 +278,27 @@
 //                                               quantity: 1,
 //                                               imageUrls: state.base64Images,
 //                                             );
+//                                             // // Store temporary order in Firebase
+//                                             // await FirebaseFirestore.instance
+//                                             //     .collection("temp_orders")
+//                                             //     .doc()
+//                                             //     .set({
+//                                             //   "productId": cartItem.productId,
+//                                             //   "title": cartItem.title,
+//                                             //   "price": cartItem.price,
+//                                             //   "quantity": cartItem.quantity,
+//                                             //   "imageUrls": cartItem.imageUrls,
+//                                             //   "timestamp":
+//                                             //       FieldValue.serverTimestamp(),
+//                                             // });
 //                                             Navigator.push(
 //                                                 context,
 //                                                 MaterialPageRoute(
 //                                                     builder: (context) =>
 //                                                         CheckoutScreen(
-//                                                             product:
-//                                                                 cartItem)));
+//                                                             products: [
+//                                                               cartItem
+//                                                             ])));
 //                                           },
 //                                           icon: Icons.shopping_cart,
 //                                         )
@@ -338,6 +340,7 @@
 //     );
 //   }
 // }
+
 //************************************************************************* */
 
 import 'dart:convert';
@@ -350,6 +353,7 @@ import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_state.dart';
 import 'package:ampify_bloc/widgets/custom_action_button.dart';
+import 'package:ampify_bloc/widgets/custom_indicator_buttons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/arc.dart';
 
@@ -461,10 +465,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             body: state.base64Images.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
-                    // padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        //I m a g e    C a r o u s e l
                         CarouselSlider.builder(
                           itemCount: state.base64Images.length,
                           options: CarouselOptions(
@@ -491,15 +495,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           },
                         ),
                         const SizedBox(
+                          height: 10,
+                        ),
+
+                        //I m a g e    I n d i c a t o r
+
+                        CarouselIndicator(
+                          itemCount: state.base64Images.length,
+                          currentIndex: currentIndex,
+                          activeColor: Colors.blue,
+                          inactiveColor: Colors.grey,
+                        ),
+
+                        const SizedBox(
                           height: 30,
                         ),
+
+                        //A r c
                         Arc(
                           height: 30,
                           edge: Edge.TOP,
                           arcType: ArcType.CONVEY,
                           child: Container(
                             width: double.infinity,
-                            // color: const Color.fromARGB(255, 123, 168, 228),
                             color: const Color.fromARGB(255, 218, 229, 243),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -541,6 +559,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                           ),
                         ),
+
+                        //D e t a i l s
                         Container(
                           width: screenWidth * 10,
                           color: AppColors.backgroundColor,
@@ -580,7 +600,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
                                 const SizedBox(height: 20),
 
-//Buttons
+                                //B u t t o n s
                                 Container(
                                   color: AppColors.backgroundColor,
                                   child: Padding(
@@ -620,19 +640,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               quantity: 1,
                                               imageUrls: state.base64Images,
                                             );
-                                            // // Store temporary order in Firebase
-                                            // await FirebaseFirestore.instance
-                                            //     .collection("temp_orders")
-                                            //     .doc()
-                                            //     .set({
-                                            //   "productId": cartItem.productId,
-                                            //   "title": cartItem.title,
-                                            //   "price": cartItem.price,
-                                            //   "quantity": cartItem.quantity,
-                                            //   "imageUrls": cartItem.imageUrls,
-                                            //   "timestamp":
-                                            //       FieldValue.serverTimestamp(),
-                                            // });
+
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
