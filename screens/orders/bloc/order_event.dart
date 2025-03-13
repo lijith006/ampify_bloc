@@ -67,20 +67,6 @@ class PlaceOrder extends OrderEvent {
   });
 }
 
-class InitiatePayment extends OrderEvent {
-  final double amount;
-  final List<CartItem> items;
-  final String address;
-  final String userEmail;
-
-  InitiatePayment({
-    required this.amount,
-    required this.items,
-    required this.address,
-    required this.userEmail,
-  });
-}
-
 class FetchOrders extends OrderEvent {}
 
 class UpdateOrderStatus extends OrderEvent {

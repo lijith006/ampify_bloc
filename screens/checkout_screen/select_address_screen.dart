@@ -1,5 +1,3 @@
-////////////////////////////////////////////////////////////
-///
 // import 'package:ampify_bloc/screens/add_address_screen/add_new_address_screen.dart';
 // import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
 // import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_event.dart';
@@ -17,7 +15,15 @@
 //       appBar: AppBar(
 //         title: const Text('Select Address'),
 //       ),
-//       body: BlocBuilder<CheckoutBloc, CheckoutState>(
+//       // body: BlocBuilder<CheckoutBloc, CheckoutState>(
+//       body: BlocConsumer<CheckoutBloc, CheckoutState>(
+//         listener: (context, state) {
+//           if (state is AddressErrorState) {
+//             ScaffoldMessenger.of(context).showSnackBar(
+//               SnackBar(content: Text(state.message)),
+//             );
+//           }
+//         },
 //         builder: (BuildContext context, state) {
 //           // Show loader while fetching
 //           if (state.isLoading) {
@@ -63,9 +69,9 @@
 //                                         ),
 //                                         TextButton(
 //                                           onPressed: () {
-//                                             context.read<CheckoutBloc>().add(
-//                                                 EditAddress(
-//                                                     id, controller.text));
+//                                             context
+//                                                 .read<CheckoutBloc>()
+//                                                 .add(EditAddress(id, address));
 //                                             Navigator.pop(context);
 //                                           },
 //                                           child: const Text("Save"),
@@ -119,6 +125,7 @@
 //     );
 //   }
 // }
+
 //00000000000000000000000000000000000000000000000000000000000000
 
 import 'package:ampify_bloc/screens/add_address_screen/add_new_address_screen.dart';
@@ -138,7 +145,6 @@ class SelectAddressScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Select Address'),
       ),
-      // body: BlocBuilder<CheckoutBloc, CheckoutState>(
       body: BlocConsumer<CheckoutBloc, CheckoutState>(
         listener: (context, state) {
           if (state is AddressErrorState) {

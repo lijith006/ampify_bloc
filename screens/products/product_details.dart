@@ -353,7 +353,7 @@ import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_state.dart';
 import 'package:ampify_bloc/widgets/custom_action_button.dart';
-import 'package:ampify_bloc/widgets/custom_indicator_buttons.dart';
+import 'package:ampify_bloc/widgets/carousel_indicator_buttons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/arc.dart';
 
@@ -388,7 +388,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocListener<ProductDetailsBloc, ProductDetailsState>(
       listener: (context, state) {
-        // TODO: implement listener
         if (state is WishlistUpdated) {
           // Show snackbar when wishlist is updated
           ScaffoldMessenger.of(context).showSnackBar(

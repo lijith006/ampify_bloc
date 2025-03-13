@@ -585,15 +585,6 @@ class SearchResults extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          // if ((filter.isActive && filter.selectedCategories.isNotEmpty) ||
-          //     (filter.selectedBrands.isNotEmpty) ||
-          //     searchQuery.isNotEmpty)
-          //   ActiveFiltersDisplay(
-          //     filter: filter,
-          //     searchQuery: searchQuery,
-          //     onClearAll: onClearFilters,
-          //     onClearFilter: (field) {},
-          //   ),
           if ((filter.isActive &&
                   (filter.categories != null || filter.brands != null)) ||
               searchQuery.isNotEmpty)
@@ -604,7 +595,6 @@ class SearchResults extends StatelessWidget {
               onClearFilter: onClearFilter,
               searchFilterService: searchFilterService,
             ),
-
           Expanded(
             child: Center(
               child: Column(

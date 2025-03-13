@@ -95,8 +95,9 @@ import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
 import 'package:ampify_bloc/screens/cart/cart_service.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_event.dart';
-import 'package:ampify_bloc/screens/checkout_screen/checkoutService.dart';
+import 'package:ampify_bloc/screens/checkout_screen/addresstService.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
+import 'package:ampify_bloc/screens/payment/bloc/payment_bloc.dart';
 import 'package:ampify_bloc/screens/products/bloc/product_details_bloc.dart';
 import 'package:ampify_bloc/screens/profile/bloc/profile_bloc.dart';
 import 'package:ampify_bloc/screens/profile/profile_service.dart';
@@ -150,6 +151,10 @@ void main() async {
             BlocProvider(
                 create: (context) =>
                     CheckoutBloc(AddressService())..add(LoadAddresses())),
+            BlocProvider<PaymentBloc>(
+              create: (context) =>
+                  PaymentBloc(orderBloc: context.read<OrderBloc>()),
+            ),
           ],
           child: const MaterialApp(
             debugShowCheckedModeBanner: false,
