@@ -132,7 +132,7 @@ import 'package:lottie/lottie.dart'; // For animations
 import 'package:confetti/confetti.dart'; // For confetti effect
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/home/home_screen.dart';
-import 'package:ampify_bloc/screens/order_tracking_screen/order_tracking_screen.dart';
+// import 'package:ampify_bloc/screens/order_tracking_screen/order_tracking_screen.dart';
 import 'package:ampify_bloc/widgets/custom_orange_button.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
@@ -282,13 +282,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   width: 180,
                   text: 'Track Order',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            OrderTrackingScreen(orderId: widget.orderId),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         OrderTrackingScreen(orderId: widget.orderId),
+                    //   ),
+                    // );
                   },
                 ),
               ],

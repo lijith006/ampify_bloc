@@ -282,6 +282,7 @@ import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_state.dart';
+import 'package:ampify_bloc/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -302,10 +303,11 @@ class WishlistScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        title: const Text('W i s h l i s t'),
-        backgroundColor: AppColors.backgroundColor,
-      ),
+      appBar: const CustomAppBar(title: 'Wishlist'),
+      // appBar: AppBar(
+      //   title: const Text('W i s h l i s t'),
+      //   backgroundColor: AppColors.backgroundColor,
+      // ),
       body: BlocBuilder<WishlistBloc, WishlistState>(
         builder: (context, state) {
           if (state is WishlistLoading) {

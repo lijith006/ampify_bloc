@@ -108,7 +108,7 @@ class OrderModel {
       createdAt: map['createdAt'],
     );
   }
-  // **Progress Calculation Based on Order Status**
+  // Progress Calculation
   double get progress {
     switch (status.toLowerCase()) {
       case 'processing':

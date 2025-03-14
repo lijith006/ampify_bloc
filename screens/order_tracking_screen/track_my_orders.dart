@@ -1,19 +1,31 @@
 // import 'package:ampify_bloc/common/app_colors.dart';
+// import 'package:ampify_bloc/common/image_to_base.dart';
+// import 'package:ampify_bloc/screens/order_tracking_screen/track_my_od.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
-// import 'package:ampify_bloc/widgets/custom_orange_button.dart';
+// import 'package:ampify_bloc/widgets/custom_app_bar.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:intl/intl.dart';
+// import 'package:lottie/lottie.dart';
 
-// class TrackMyOrders extends StatefulWidget {
-//   const TrackMyOrders({super.key});
+// class AllOrdersScreen extends StatefulWidget {
+//   const AllOrdersScreen({super.key});
 
 //   @override
-//   State<TrackMyOrders> createState() => _TrackMyOrdersState();
+//   State<AllOrdersScreen> createState() => _AllOrdersScreenState();
 // }
 
-// class _TrackMyOrdersState extends State<TrackMyOrders> {
+// class _AllOrdersScreenState extends State<AllOrdersScreen> {
+//   // Format the createdAt timestamp
+//   String formatDate(Timestamp timestamp) {
+//     //final dateFormat = DateFormat('yyyy-MM-dd');
+//     final dateFormat = DateFormat('yyyy-MM-dd    hh:mm a');
+//     return dateFormat.format(timestamp.toDate());
+//   }
+
 //   @override
 //   void initState() {
 //     super.initState();
@@ -23,39 +35,163 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(title: const Text("Track Orders")),
+//       backgroundColor: AppColors.backgroundColor,
+//       appBar: const CustomAppBar(title: 'My Orders'),
 //       body: BlocBuilder<OrderBloc, OrderState>(
 //         builder: (context, state) {
 //           if (state is OrderLoading) {
-//             return const Center(child: CircularProgressIndicator());
+//             return Center(
+//               child: Lottie.asset(
+//                 'assets/animations/orderLoading.json',
+//                 width: 250,
+//               ),
+//             );
 //           } else if (state is OrdersLoaded) {
 //             if (state.orders.isEmpty) {
-//               return const Center(child: Text("No orders found"));
+//               return Center(
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Lottie.asset('assets/animations/noOrders.json',
+//                         height: 150),
+//                     const SizedBox(height: 20),
+//                     const Text(
+//                       "No orders found",
+//                       style: TextStyle(fontSize: 18, color: Colors.grey),
+//                     ),
+//                   ],
+//                 ),
+//               );
 //             }
 //             return ListView.builder(
+//               padding: const EdgeInsets.all(8),
 //               itemCount: state.orders.length,
 //               itemBuilder: (context, index) {
 //                 final order = state.orders[index];
-//                 return SizedBox(height: 100,
+//                 return GestureDetector(
+//                   onTap: () {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) =>
+//                               OrderTrackingScreen(order: order),
+//                         ));
+//                   },
 //                   child: Card(
-//                     margin: EdgeInsets.all(8),
-//                     color: Colors.purple[300],
-//                     child: Text('Order #${order.id}'),
+//                     margin:
+//                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+//                     elevation: 2,
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(12),
+//                     ),
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         // Order ID and Date
+//                         Padding(
+//                           padding: const EdgeInsets.all(16.0),
+//                           child: Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Text(
+//                                 "Order #${order.id}",
+//                                 style: const TextStyle(
+//                                   fontSize: 18,
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                               const SizedBox(height: 4),
+//                               Text(
+//                                 "Ordered on: ${formatDate(order.createdAt)}",
+//                                 style: const TextStyle(
+//                                   fontSize: 14,
+//                                   color: Colors.grey,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                         const Divider(height: 1, thickness: 1),
+
+//                         // List of Products in the Order
+//                         ListView.builder(
+//                           shrinkWrap: true,
+//                           physics: const NeverScrollableScrollPhysics(),
+//                           itemCount: order.items.length,
+//                           itemBuilder: (context, productIndex) {
+//                             final product = order.items[productIndex];
+//                             return Column(
+//                               children: [
+//                                 ListTile(
+//                                   leading: ClipRRect(
+//                                     borderRadius: BorderRadius.circular(8),
+//                                     child: ImageUtils.base64ToImage(product
+//                                         .imageUrls[0]), // Display Base64 image
+//                                   ),
+//                                   title: Text(
+//                                     product.title,
+//                                     style: const TextStyle(
+//                                       fontSize: 16,
+//                                       fontWeight: FontWeight.bold,
+//                                     ),
+//                                   ),
+//                                   subtitle: Text(
+//                                     "Quantity: ${product.quantity}",
+//                                     style: const TextStyle(
+//                                       fontSize: 14,
+//                                       color: Colors.grey,
+//                                     ),
+//                                   ),
+//                                   trailing: Text(
+//                                     "\₹${product.price}",
+//                                     style: const TextStyle(
+//                                       fontSize: 16,
+//                                       fontWeight: FontWeight.bold,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 if (productIndex < order.items.length - 1)
+//                                   const Divider(height: 1, thickness: 1),
+//                               ],
+//                             );
+//                           },
+//                         ),
+
+//                         // Order Status and Progress
+//                         Padding(
+//                           padding: const EdgeInsets.all(16.0),
+//                           child: Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Text(
+//                                 "Status: ${order.status}",
+//                                 style: const TextStyle(
+//                                   fontSize: 16,
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                               const SizedBox(height: 8),
+//                               LinearProgressIndicator(
+//                                 value: order.progress,
+//                                 backgroundColor: Colors.grey[300],
+//                                 color: Colors.blueAccent,
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ],
+//                     ),
 //                   ),
 //                 );
-//                 // return ListTile(
-//                 //   title: Text(
-//                 //     "Order  #${order.id}",
-//                 //     style: TextStyle(color: AppColors.dark),
-//                 //   ),
-//                 //   subtitle: Text("Status:  ${order.status}"),
-//                 //   trailing: CustomOrangeButton(
-//                 //       width: 90, text: 'Track', onPressed: () {}),
-//                 // );
 //               },
 //             );
 //           } else if (state is OrderFailed) {
-//             return Center(child: Text("Error: ${state.error}"));
+//             return Center(
+//               child: Text(
+//                 "Error: ${state.error}",
+//                 style: const TextStyle(color: Colors.red, fontSize: 16),
+//               ),
+//             );
 //           }
 //           return const Center(child: Text("No orders found"));
 //         },
@@ -63,24 +199,35 @@
 //     );
 //   }
 // }
-//************************************************ */
+//***************************************************MARCH 14/**** */
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/common/image_to_base.dart';
+import 'package:ampify_bloc/screens/order_tracking_screen/track_my_od.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
-import 'package:ampify_bloc/widgets/custom_black_button.dart';
+import 'package:ampify_bloc/widgets/custom_app_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
-class TrackMyOrders extends StatefulWidget {
-  const TrackMyOrders({super.key});
+class AllOrdersScreen extends StatefulWidget {
+  const AllOrdersScreen({super.key});
 
   @override
-  State<TrackMyOrders> createState() => _TrackMyOrdersState();
+  State<AllOrdersScreen> createState() => _AllOrdersScreenState();
 }
 
-class _TrackMyOrdersState extends State<TrackMyOrders> {
+class _AllOrdersScreenState extends State<AllOrdersScreen> {
+  // Format the createdAt timestamp
+  String formatDate(Timestamp timestamp) {
+    //final dateFormat = DateFormat('yyyy-MM-dd');
+    final dateFormat = DateFormat('yyyy-MM-dd    hh:mm a');
+    return dateFormat.format(timestamp.toDate());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -91,72 +238,162 @@ class _TrackMyOrdersState extends State<TrackMyOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        title: const Text("Track Orders"),
-        backgroundColor: AppColors.backgroundColor,
-      ),
+      appBar: const CustomAppBar(title: 'My Orders'),
       body: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
           if (state is OrderLoading) {
             return Center(
-                child: Lottie.asset('assets/animations/orderLoading.json',
-                    width: 250));
+              child: Lottie.asset(
+                'assets/animations/orderLoading.json',
+                width: 250,
+              ),
+            );
           } else if (state is OrdersLoaded) {
             if (state.orders.isEmpty) {
               return Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    LottieBuilder.asset('assets/animations/noOrders.json'),
-                    const SizedBox(
-                      height: 10,
+                    Lottie.asset('assets/animations/noOrders.json',
+                        height: 150),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "No orders found",
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
                     ),
-                    const Center(
-                        child: Text("No orders found",
-                            style: TextStyle(fontSize: 18))),
                   ],
                 ),
               );
             }
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                itemCount: state.orders.length,
-                itemBuilder: (context, index) {
-                  final order = state.orders[index];
-                  return SizedBox(
-                    //height: 100,
-                    child: Card(
-                        margin: const EdgeInsets.all(8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        color: Colors.grey[200],
-                        child: ListTile(
-                            title: Text(
-                              "Order  #${order.id}",
-                              style: TextStyle(color: AppColors.dark),
-                            ),
-                            // subtitle: Text("Status:  ${order.status}"),
-                            subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Status: ${order.status}"),
-                                  LinearProgressIndicator(
-                                    value: order.progress,
-                                    backgroundColor: Colors.grey[300],
-                                    color: Colors.cyan,
+            return ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: state.orders.length,
+              itemBuilder: (context, index) {
+                final order = state.orders[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              OrderTrackingScreen(order: order),
+                        ));
+                  },
+                  child: Card(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Order ID and Date
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Order #${order.id}",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "Ordered on: ${formatDate(order.createdAt)}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Divider(height: 1, thickness: 1),
+
+                        // List of Products in the Order
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: order.items.length,
+                          itemBuilder: (context, productIndex) {
+                            final product = order.items[productIndex];
+                            return Column(
+                              children: [
+                                ListTile(
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: ImageUtils.base64ToImage(product
+                                        .imageUrls[0]), // Display Base64 image
                                   ),
-                                ]),
-                            trailing: CustomBlackButton(
-                                width: 90, text: 'Track', onPressed: () {})
-                            // trailing: CustomOrangeButton(
-                            //     width: 90, text: 'Track', onPressed: () {}),
-                            )),
-                  );
-                },
-              ),
+                                  title: Text(
+                                    product.title,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "Quantity: ${product.quantity}",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    "\₹${product.price}",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                if (productIndex < order.items.length - 1)
+                                  const Divider(height: 1, thickness: 1),
+                              ],
+                            );
+                          },
+                        ),
+
+                        // Order Status and Progress
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Status: ${order.status}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              LinearProgressIndicator(
+                                value: order.progress,
+                                backgroundColor: Colors.grey[300],
+                                color: Colors.blueAccent,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             );
           } else if (state is OrderFailed) {
-            return Center(child: Text("Error: ${state.error}"));
+            return Center(
+              child: Text(
+                "Error: ${state.error}",
+                style: const TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            );
           }
           return const Center(child: Text("No orders found"));
         },

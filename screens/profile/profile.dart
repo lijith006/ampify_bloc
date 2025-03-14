@@ -223,7 +223,7 @@ class _MyProfileState extends State<MyProfile> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const TrackMyOrders(),
+                                  builder: (context) => const AllOrdersScreen(),
                                 ));
                           },
                         ),
