@@ -143,7 +143,7 @@
 import 'dart:convert';
 
 import 'package:ampify_bloc/common/app_colors.dart';
-import 'package:ampify_bloc/screens/order_tracking_screen/track_my_orders.dart';
+import 'package:ampify_bloc/screens/order_tracking_screen/my_orders_screen.dart';
 import 'package:ampify_bloc/screens/profile/bloc/profile_bloc.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/about_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/privacy_policy_screen.dart';
@@ -163,7 +163,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfileBloc>().add(LoadProfile()); // Load profile data
+    context.read<ProfileBloc>().add(LoadProfile());
   }
 
   @override
@@ -218,7 +218,7 @@ class _MyProfileState extends State<MyProfile> {
                       children: [
                         ListTile(
                           leading: const Icon(Icons.local_shipping),
-                          title: const Text('Track My Orders'),
+                          title: const Text('My Orders'),
                           onTap: () {
                             Navigator.push(
                                 context,

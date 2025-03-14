@@ -202,7 +202,7 @@
 //***************************************************MARCH 14/**** */
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/common/image_to_base.dart';
-import 'package:ampify_bloc/screens/order_tracking_screen/track_my_od.dart';
+import 'package:ampify_bloc/screens/order_tracking_screen/track_my_order_screen.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
@@ -223,7 +223,6 @@ class AllOrdersScreen extends StatefulWidget {
 class _AllOrdersScreenState extends State<AllOrdersScreen> {
   // Format the createdAt timestamp
   String formatDate(Timestamp timestamp) {
-    //final dateFormat = DateFormat('yyyy-MM-dd');
     final dateFormat = DateFormat('yyyy-MM-dd    hh:mm a');
     return dateFormat.format(timestamp.toDate());
   }
@@ -244,7 +243,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
           if (state is OrderLoading) {
             return Center(
               child: Lottie.asset(
-                'assets/animations/orderLoading.json',
+                'assets/animations/loading.json',
                 width: 250,
               ),
             );
@@ -373,11 +372,23 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              LinearProgressIndicator(
-                                value: order.progress,
-                                backgroundColor: Colors.grey[300],
-                                color: Colors.blueAccent,
+                              TweenAnimationBuilder<double>(
+                                tween: Tween<double>(
+                                    begin: 0, end: order.progress),
+                                duration: const Duration(seconds: 1),
+                                builder: (context, value, _) {
+                                  return LinearProgressIndicator(
+                                    value: value,
+                                    backgroundColor: Colors.grey[300],
+                                    color: Colors.black54,
+                                  );
+                                },
                               ),
+                              // LinearProgressIndicator(
+                              //   value: order.progress,
+                              //   backgroundColor: Colors.grey[300],
+                              //   color: Colors.black54,
+                              // ),
                             ],
                           ),
                         ),
