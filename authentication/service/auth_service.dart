@@ -135,7 +135,6 @@ class AuthService {
       return cred.user;
     } on FirebaseAuthException catch (e) {
       exceptionHandler(e.code);
-      // print("Error: ${e.message}");
     } catch (e) {
       print("Unexpected error: $e");
     }
@@ -196,7 +195,9 @@ class AuthService {
     try {
       await _auth.signOut();
       await GoogleSignIn().signOut();
+      debugPrint('serv - Logout successful');
     } catch (e) {
+      debugPrint('Logout error: $e');
       print("Something went wrong");
     }
   }

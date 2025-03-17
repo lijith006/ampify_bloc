@@ -102,24 +102,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ],
       ),
-
-      //  Row(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     SizedBox(
-      //       height: 100,
-      //       width: 100,
-      //       // child: SpinKitWave(
-      //       //   color: Color.fromARGB(255, 67, 25, 165),
-      //       //   size: 35.0,
-      //       // ),
-      //     ),
-      //     Text(
-      //       'Ampify',
-      //       style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-      //     ),
-      //   ],
-      // ),
     ));
   }
 }

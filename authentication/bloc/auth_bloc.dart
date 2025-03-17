@@ -93,6 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this._authService) : super(AuthInitial()) {
     on<SendPasswordResetLink>((event, emit) async {
       emit(AuthLoading());
+
       try {
         await _authService.sendPasswordResetLink(event.email);
         emit(AuthSuccess(user: null));
@@ -116,7 +117,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               .set({
             'email': user.email,
             'name': user.displayName ?? 'Unknown',
-            'profileImage': user.photoURL ?? '', // Store profile image URL
+            'profileImage': user.photoURL ?? '',
           });
 
           debugPrint('Google user data saved to Firestore successfully.');
@@ -161,11 +162,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await _authService.loginUserWithEmailAndPassword(
             event.email, event.password);
         if (user != null) {
+          debugPrint('Login successful, user UID: ${user.uid}');
           emit(AuthSuccess(user: user));
         } else {
+          debugPrint('Login failed: Incorrect credentials');
+
           emit(AuthError(message: 'Incorrect credentials'));
         }
       } catch (e) {
+        debugPrint('Login error: $e');
         emit(AuthError(message: e.toString()));
       }
     });
@@ -173,11 +178,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 //!signout
     on<Signout>(
       (event, emit) async {
+        emit(AuthLoading());
         try {
           await _authService.signOut();
+          debugPrint('Logout successful');
           emit(AuthInitial());
         } catch (e) {
-          emit(AuthError(message: e.toString()));
+          debugPrint('Logout error: $e');
+          emit(AuthError(message: 'Failed to log out'));
         }
       },
     );

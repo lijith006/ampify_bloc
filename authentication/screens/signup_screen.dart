@@ -314,10 +314,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ? FileImage(_imageFile!)
                                 : const AssetImage('assets/images/profile.png')
                                     as ImageProvider,
-                            // child: _imageFile == null
-                            //     ? const Icon(Icons.add_a_photo_rounded,
-                            //         color: Colors.white, size: 30)
-                            //     : null,
                           ),
                         ),
                       ],

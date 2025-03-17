@@ -77,17 +77,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<LoadProfile>(_onLoadProfile);
     on<UpdateProfile>(_onUpdateProfile);
     on<DeleteAccount>(_onDeleteAccount);
-    on<LogoutUser>(_onLogoutUser);
+    // on<LogoutUser>(_onLogoutUser);
   }
-  Future<void> _onLogoutUser(
-      LogoutUser event, Emitter<ProfileState> emit) async {
-    try {
-      await _profileService.logout();
-      emit(ProfileLoggedOut());
-    } catch (e) {
-      emit(ProfileError('Failed to log out'));
-    }
-  }
+  // Future<void> _onLogoutUser(
+  //     LogoutUser event, Emitter<ProfileState> emit) async {
+  //   debugPrint('Logging out...');
+  //   try {
+  //     await _profileService.logout();
+
+  //     debugPrint('Logout successful');
+  //     emit(ProfileLoggedOut());
+  //   } catch (e) {
+  //     debugPrint('Logout error: $e');
+  //     emit(ProfileError('Failed to log out'));
+  //   }
+  // }
 
   Future<void> _onLoadProfile(
       LoadProfile event, Emitter<ProfileState> emit) async {
@@ -116,7 +120,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
 
       await _profileService.updateProfile(userId, event.updates);
-      emit(ProfileUpdated()); // Notify UI
+      emit(ProfileUpdated());
       add(LoadProfile());
     } catch (e) {
       emit(ProfileError('Failed to update profile'));

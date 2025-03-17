@@ -49,6 +49,7 @@ class ProfileService {
   Future<void> logout() async {
     try {
       await _auth.signOut();
+      print('Logout successful...');
     } catch (e) {
       throw Exception('Failed to log out');
     }

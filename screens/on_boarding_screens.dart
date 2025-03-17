@@ -1,3 +1,4 @@
+import 'package:ampify_bloc/authentication/screens/auth_wrapper.dart';
 import 'package:ampify_bloc/screens/onboard_screens/on_boarding_screen_1.dart';
 import 'package:ampify_bloc/screens/onboard_screens/on_boarding_screen_2.dart';
 import 'package:ampify_bloc/screens/onboard_screens/on_boarding_screen_3.dart';
@@ -25,7 +26,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
     await prefs.setBool('onboardingComplete', true);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Wrapper()),
+      MaterialPageRoute(builder: (context) => AuthWrapper()),
     );
   }
 
