@@ -1,101 +1,36 @@
-// import 'dart:async';
-
 // import 'package:ampify_bloc/screens/home/bloc/home_event.dart';
 // import 'package:ampify_bloc/screens/home/bloc/home_state.dart';
-// import 'package:ampify_bloc/screens/search_filter/search_filter_service.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 
 // class HomeBloc extends Bloc<HomeEvent, HomeState> {
 //   final FirebaseFirestore firestore;
-//   final SearchFilterService searchFilterService;
-//   StreamSubscription? _productsSubscription;
-//   StreamSubscription? _categoriesSubscription;
-//   StreamSubscription? _brandsSubscription;
 
-//   HomeBloc({
-//     required this.firestore,
-//     required this.searchFilterService,
-//   }) : super(const HomeState()) {
-//     on<LoadHomeData>(_onLoadHomeData);
-//     on<UpdateSearchQuery>(_onUpdateSearchQuery);
-//     on<UpdateFilter>(_onUpdateFilter);
-//     on<ClearFilters>(_onClearFilters);
-//     on<UpdateCarouselIndex>(_onUpdateCarouselIndex);
+//   HomeBloc({required this.firestore}) : super(HomeInitial()) {
+//     on<FetchHomeData>(_onFetchHomeData);
+//     on<ToggleProductWishlist>(_onToggleProductWishlist);
 //   }
 
-//   Future<void> _onLoadHomeData(
-//       LoadHomeData event, Emitter<HomeState> emit) async {
-//     emit(state.copyWith(isLoading: true));
+//   Future<void> _onFetchHomeData(
+//       FetchHomeData event, Emitter<HomeState> emit) async {
+//     emit(HomeLoading());
 //     try {
-//       await _productsSubscription?.cancel();
-//       await _categoriesSubscription?.cancel();
-//       await _brandsSubscription?.cancel();
+//       // Using Future.wait to fetch both products and categories concurrently
+//       final results = await Future.wait([
+//         firestore.collection('products').get(),
+//         firestore.collection('categories').get(),
+//       ]);
 
-//       // Load initial data
-//       final productsSnapshot = await searchFilterService
-//           .fetchProducts(searchQuery: '', filter: ProductFilter())
-//           .first;
-//       final categoriesSnapshot =
-//           await searchFilterService.fetchCategories().first;
-//       final brandsSnapshot = await searchFilterService.fetchBrands().first;
+//       final products = results[0].docs;
+//       final categories = results[1].docs;
 
-//       emit(state.copyWith(
-//         isLoading: false,
-//         products: productsSnapshot.docs,
-//         categories: categoriesSnapshot.docs,
-//         brands: brandsSnapshot.docs,
-//       ));
+//       emit(HomeLoaded(products: products, categories: categories));
 //     } catch (e) {
-//       emit(state.copyWith(isLoading: false, error: e.toString()));
+//       emit(HomeError(message: 'Failed to load home data: ${e.toString()}'));
 //     }
 //   }
 
-//   Future<void> _onUpdateSearchQuery(
-//       UpdateSearchQuery event, Emitter<HomeState> emit) async {
-//     emit(state.copyWith(isLoading: true, searchQuery: event.query));
-//     try {
-//       final snapshot = await searchFilterService
-//           .fetchProducts(searchQuery: event.query, filter: state.filter)
-//           .first;
-//       emit(state.copyWith(isLoading: false, products: snapshot.docs));
-//     } catch (e) {
-//       emit(state.copyWith(isLoading: false, error: e.toString()));
-//     }
-//   }
-
-//   Future<void> _onUpdateFilter(
-//       UpdateFilter event, Emitter<HomeState> emit) async {
-//     emit(state.copyWith(
-//         isLoading: true, filter: event.filter, isFilterActive: true));
-//     try {
-//       final snapshot = await searchFilterService
-//           .fetchProducts(searchQuery: state.searchQuery, filter: event.filter)
-//           .first;
-//       emit(state.copyWith(isLoading: false, products: snapshot.docs));
-//     } catch (e) {
-//       emit(state.copyWith(isLoading: false, error: e.toString()));
-//     }
-//   }
-
-//   void _onClearFilters(ClearFilters event, Emitter<HomeState> emit) {
-//     emit(state.copyWith(
-//       filter: ProductFilter(),
-//       isFilterActive: false,
-//     ));
-//     add(UpdateFilter(ProductFilter()));
-//   }
-
-//   void _onUpdateCarouselIndex(
-//       UpdateCarouselIndex event, Emitter<HomeState> emit) {
-//     emit(state.copyWith(activeCarouselIndex: event.index));
-//   }
-
-//   @override
-//   Future<void> close() {
-//     _productsSubscription?.cancel();
-//     _categoriesSubscription?.cancel();
-//     _brandsSubscription?.cancel();
-//     return super.close();
-//   }
+//   void _onToggleProductWishlist(
+//       ToggleProductWishlist event, Emitter<HomeState> emit) {}
 // }
+//********************************************** */

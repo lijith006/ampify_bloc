@@ -5,15 +5,11 @@ class ProductFilter {
   double? maxPrice;
   List<String>? categories;
   List<String>? brands;
-  // List<String> selectedCategories;
-  // List<String> selectedBrands;
   ProductFilter({
     this.minPrice,
     this.maxPrice,
     this.categories,
     this.brands,
-    // this.selectedCategories = const [],
-    // this.selectedBrands = const [],
   });
   //test
   bool get isActive {

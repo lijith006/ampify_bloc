@@ -1,4 +1,4 @@
-import 'package:ampify_bloc/screens/search_filter/search_service/search_filter_service.dart';
+import 'package:ampify_bloc/screens/search/search_widgets/search_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

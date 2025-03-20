@@ -33,7 +33,6 @@
 //     );
 //   }
 // }
-//****************------------------------------------------ */
 
 // //**************************************************************** */
 class CartItem {
@@ -49,7 +48,7 @@ class CartItem {
     required this.quantity,
     required this.imageUrls,
   });
-
+//Convert to firestore - format
   Map<String, dynamic> toMap() {
     return {
       'productId': productId,
@@ -60,6 +59,7 @@ class CartItem {
     };
   }
 
+//Convert from firestore--
   factory CartItem.fromMap(Map<String, dynamic> map) {
     return CartItem(
       productId: map['productId'],

@@ -1,6 +1,6 @@
 // import 'package:ampify_bloc/common/app_colors.dart';
 // import 'package:ampify_bloc/common/image_to_base.dart';
-// import 'package:ampify_bloc/screens/order_tracking_screen/track_my_od.dart';
+// import 'package:ampify_bloc/screens/order_tracking_screen/track_my_order_screen.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
@@ -21,7 +21,6 @@
 // class _AllOrdersScreenState extends State<AllOrdersScreen> {
 //   // Format the createdAt timestamp
 //   String formatDate(Timestamp timestamp) {
-//     //final dateFormat = DateFormat('yyyy-MM-dd');
 //     final dateFormat = DateFormat('yyyy-MM-dd    hh:mm a');
 //     return dateFormat.format(timestamp.toDate());
 //   }
@@ -37,12 +36,13 @@
 //     return Scaffold(
 //       backgroundColor: AppColors.backgroundColor,
 //       appBar: const CustomAppBar(title: 'My Orders'),
+//       //BLOC Builder --
 //       body: BlocBuilder<OrderBloc, OrderState>(
 //         builder: (context, state) {
 //           if (state is OrderLoading) {
 //             return Center(
 //               child: Lottie.asset(
-//                 'assets/animations/orderLoading.json',
+//                 'assets/animations/loading.json',
 //                 width: 250,
 //               ),
 //             );
@@ -125,8 +125,8 @@
 //                                 ListTile(
 //                                   leading: ClipRRect(
 //                                     borderRadius: BorderRadius.circular(8),
-//                                     child: ImageUtils.base64ToImage(product
-//                                         .imageUrls[0]), // Display Base64 image
+//                                     child: ImageUtils.base64ToImage(
+//                                         product.imageUrls[0]),
 //                                   ),
 //                                   title: Text(
 //                                     product.title,
@@ -143,7 +143,9 @@
 //                                     ),
 //                                   ),
 //                                   trailing: Text(
-//                                     "\₹${product.price}",
+//                                     // "\₹${product.price}",
+
+//                                     "\₹${product.price * product.quantity}",
 //                                     style: const TextStyle(
 //                                       fontSize: 16,
 //                                       fontWeight: FontWeight.bold,
@@ -171,10 +173,17 @@
 //                                 ),
 //                               ),
 //                               const SizedBox(height: 8),
-//                               LinearProgressIndicator(
-//                                 value: order.progress,
-//                                 backgroundColor: Colors.grey[300],
-//                                 color: Colors.blueAccent,
+//                               TweenAnimationBuilder<double>(
+//                                 tween: Tween<double>(
+//                                     begin: 0, end: order.progress),
+//                                 duration: const Duration(seconds: 1),
+//                                 builder: (context, value, _) {
+//                                   return LinearProgressIndicator(
+//                                     value: value,
+//                                     backgroundColor: Colors.grey[300],
+//                                     color: Colors.black54,
+//                                   );
+//                                 },
 //                               ),
 //                             ],
 //                           ),
@@ -199,7 +208,7 @@
 //     );
 //   }
 // }
-//***************************************************MARCH 14/**** */
+//******************************************************************************************************** */
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/common/image_to_base.dart';
 import 'package:ampify_bloc/screens/order_tracking_screen/track_my_order_screen.dart';
@@ -238,6 +247,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: const CustomAppBar(title: 'My Orders'),
+      //BLOC Builder --
       body: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
           if (state is OrderLoading) {
@@ -326,8 +336,8 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                                 ListTile(
                                   leading: ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
-                                    child: ImageUtils.base64ToImage(product
-                                        .imageUrls[0]), // Display Base64 image
+                                    child: ImageUtils.base64ToImage(
+                                        product.imageUrls[0]),
                                   ),
                                   title: Text(
                                     product.title,
@@ -344,7 +354,9 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                                     ),
                                   ),
                                   trailing: Text(
-                                    "\₹${product.price}",
+                                    // "\₹${product.price}",
+
+                                    "\₹${product.price * product.quantity}",
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -384,11 +396,6 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                                   );
                                 },
                               ),
-                              // LinearProgressIndicator(
-                              //   value: order.progress,
-                              //   backgroundColor: Colors.grey[300],
-                              //   color: Colors.black54,
-                              // ),
                             ],
                           ),
                         ),

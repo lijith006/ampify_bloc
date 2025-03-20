@@ -94,28 +94,6 @@ class SavedItemsScreen extends StatelessWidget {
                               ),
                             ),
 
-                            // ElevatedButton(
-                            //   style: ElevatedButton.styleFrom(
-                            //     backgroundColor: AppColors.buttonColorOrange,
-                            //   ),
-                            //   onPressed: () {
-                            //     final cartBloc = context.read<CartBloc>();
-
-                            //     context
-                            //         .read<SavedItemsBloc>()
-                            //         .add(MoveToCart(item, cartBloc));
-
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       const SnackBar(
-                            //           content: Text('Item moved to cart!')),
-                            //     );
-                            //   },
-                            //   child: const Text(
-                            //     'Move to Cart',
-                            //     style: TextStyle(color: Colors.white),
-                            //   ),
-                            // )
-
                             CustomOrangeButton(
                                 width: 135,
                                 text: 'Move to Cart',

@@ -2,7 +2,6 @@ import 'package:ampify_bloc/authentication/screens/auth_wrapper.dart';
 import 'package:ampify_bloc/screens/onboard_screens/on_boarding_screen_1.dart';
 import 'package:ampify_bloc/screens/onboard_screens/on_boarding_screen_2.dart';
 import 'package:ampify_bloc/screens/onboard_screens/on_boarding_screen_3.dart';
-import 'package:ampify_bloc/widgets/wrapper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

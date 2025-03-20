@@ -110,7 +110,7 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     on<UpdateWishlist>(_onUpdateWishlist);
     on<ClearWishlistStream>(_onClearWishlistStream);
     on<AuthStateChanged>(_onAuthStateChanged);
-    // Listen for authentication state changes
+    // Listen for authentication state changes-
     _authSubscription =
         FirebaseAuth.instance.authStateChanges().listen((User? user) {
       final newUserId = user?.uid;

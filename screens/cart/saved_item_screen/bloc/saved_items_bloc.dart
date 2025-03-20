@@ -60,7 +60,7 @@ class SavedItemsBloc extends Bloc<SavedItemsEvent, SavedItemsState> {
       await cartRef.doc(event.item.productId).set(event.item.toMap());
 
       //  Reload  SavedItems and Cart
-      add(LoadSavedItems()); // Reload saved items
+      add(LoadSavedItems());
       event.cartBloc.add(LoadCartItems()); // --Reload cart
     } catch (e) {
       emit(SavedItemsError('Failed to move item to cart'));

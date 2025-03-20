@@ -1,4 +1,3 @@
-// import 'package:ampify_bloc/screens/cart/cart_model.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 // import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
 // import 'package:ampify_bloc/screens/orders/order_model/order_model.dart';
@@ -16,33 +15,7 @@
 //     on<PlaceOrder>(_onPlaceOrder);
 //     on<FetchOrders>(_onFetchOrders);
 //     on<UpdateOrderStatus>(_onUpdateOrderStatus);
-
-//     // Setup Razorpay Listeners
-//     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-//     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
 //   }
-
-//   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-//     String firestoreOrderId = _firestore.collection('orders').doc().id;
-//     add(PlaceOrder(
-//       amount: _currentOrderAmount,
-//       orderId: firestoreOrderId,
-//       paymentId: response.paymentId ?? '',
-//       items: _currentOrderItems,
-//       address: _currentOrderAddress,
-//       userEmail: _currentUserEmail,
-//     ));
-//   }
-
-//   void _handlePaymentError(PaymentFailureResponse response) {
-//     emit(OrderFailed(error: 'Payment Failed: ${response.message}'));
-//   }
-
-//   // Variables to store current order details
-//   double _currentOrderAmount = 0.0;
-//   List<CartItem> _currentOrderItems = [];
-//   String _currentOrderAddress = '';
-//   String _currentUserEmail = '';
 
 //   Future<void> _onPlaceOrder(PlaceOrder event, Emitter<OrderState> emit) async {
 //     emit(OrderLoading());
@@ -59,7 +32,10 @@
 //       String customerName =
 //           userDoc.exists ? (userDoc.data()?['name'] ?? 'User') : 'User';
 
-//       String orderId = _firestore.collection('orders').doc().id;
+//       // String orderId = _firestore.collection('orders').doc().id;
+//       String orderId = event.orderId.isNotEmpty
+//           ? event.orderId
+//           : _firestore.collection('orders').doc().id;
 //       OrderModel newOrder = OrderModel(
 //         id: orderId,
 //         paymentId: event.paymentId,
@@ -71,7 +47,7 @@
 //         address: event.address,
 //         createdAt: Timestamp.now(),
 //       );
-
+//       print('Order Details- plc ordr:   ${newOrder.toMap()}');
 //       await _firestore.collection('orders').doc(orderId).set(newOrder.toMap());
 
 //       emit(OrderPlaced(
@@ -120,7 +96,7 @@
 //     return super.close();
 //   }
 // }
-//**************************************march  *12/0****************
+//*****************************************March 19 ***************/
 import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
 import 'package:ampify_bloc/screens/orders/order_model/order_model.dart';
@@ -186,20 +162,57 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     try {
       String userId = _auth.currentUser?.uid ?? '';
 
-      QuerySnapshot snapshot = await _firestore
+      // Fetch initial data
+      QuerySnapshot initialSnapshot = await _firestore
           .collection('orders')
           .where('userId', isEqualTo: userId)
           .get();
 
-      List<OrderModel> orders = snapshot.docs
+      List<OrderModel> initialOrders = initialSnapshot.docs
           .map((doc) => OrderModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
 
-      emit(OrdersLoaded(orders: orders));
+      emit(OrdersLoaded(orders: initialOrders));
+
+      // Listen to real-time updates
+      _firestore
+          .collection('orders')
+          .where('userId', isEqualTo: userId)
+          .snapshots()
+          .listen((snapshot) {
+        List<OrderModel> updatedOrders = snapshot.docs
+            // ignore: unnecessary_cast
+            .map((doc) => OrderModel.fromMap(doc.data()))
+            .toList();
+
+        if (!isClosed) {
+          emit(OrdersLoaded(orders: updatedOrders));
+        }
+      });
     } catch (e) {
       emit(OrderFailed(error: e.toString()));
     }
   }
+  // Future<void> _onFetchOrders(
+  //     FetchOrders event, Emitter<OrderState> emit) async {
+  //   emit(OrderLoading());
+  //   try {
+  //     String userId = _auth.currentUser?.uid ?? '';
+
+  //     QuerySnapshot snapshot = await _firestore
+  //         .collection('orders')
+  //         .where('userId', isEqualTo: userId)
+  //         .get();
+
+  //     List<OrderModel> orders = snapshot.docs
+  //         .map((doc) => OrderModel.fromMap(doc.data() as Map<String, dynamic>))
+  //         .toList();
+
+  //     emit(OrdersLoaded(orders: orders));
+  //   } catch (e) {
+  //     emit(OrderFailed(error: e.toString()));
+  //   }
+  // }
 
   Future<void> _onUpdateOrderStatus(
       UpdateOrderStatus event, Emitter<OrderState> emit) async {
