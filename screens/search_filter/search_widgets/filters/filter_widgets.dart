@@ -1,3 +1,4 @@
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/search_filter/search_service/search_filter_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class PriceRangeFilter extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         RangeSlider(
+          activeColor: Colors.orange,
           values: RangeValues(minPrice, maxPrice),
           min: 0,
           max: 90000,

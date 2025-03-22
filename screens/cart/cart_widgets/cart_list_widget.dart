@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
@@ -44,7 +45,8 @@ class CartList extends StatelessWidget {
           child: Stack(
             children: [
               Card(
-                color: Colors.white,
+                color: AppColors.backgroundColor,
+                elevation: 1,
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -90,6 +92,7 @@ class CartList extends StatelessWidget {
                             ),
 
                             // Add & Remove Quantity
+
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

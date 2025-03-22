@@ -4,6 +4,7 @@ import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/bloc/auth_state.dart';
 import 'package:ampify_bloc/authentication/screens/login_screen.dart';
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/screens/checkout_screen/select_address_screen.dart';
 import 'package:ampify_bloc/screens/order_tracking_screen/my_orders_screen.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
 import 'package:ampify_bloc/screens/profile/bloc/profile_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:ampify_bloc/screens/profile/profile_screens/about_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/privacy_policy_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/user_agreement_screen.dart';
 import 'package:ampify_bloc/widgets/widget_support.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -113,10 +115,25 @@ class _MyProfileState extends State<MyProfile> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => BlocProvider(
-                                      create: (context) => OrderBloc(),
+                                      create: (context) => OrderBloc(
+                                          firestore:
+                                              FirebaseFirestore.instance),
                                       child: const AllOrdersScreen(),
                                     ),
                                   ));
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.location_on),
+                            title: const Text('Manage Addresses'),
+                            onTap: () {
+                              // Navigate to About Screen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SelectAddressScreen()),
+                              );
                             },
                           ),
                           ListTile(

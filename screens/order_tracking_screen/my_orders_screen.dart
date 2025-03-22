@@ -208,9 +208,10 @@
 //     );
 //   }
 // }
-//******************************************************************************************************** */
+//******************************************************************************* */
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/common/image_to_base.dart';
+import 'package:ampify_bloc/common/order_utils.dart';
 import 'package:ampify_bloc/screens/order_tracking_screen/track_my_order_screen.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
@@ -232,24 +233,27 @@ class AllOrdersScreen extends StatefulWidget {
 class _AllOrdersScreenState extends State<AllOrdersScreen> {
   // Format the createdAt timestamp
   String formatDate(Timestamp timestamp) {
-    final dateFormat = DateFormat('yyyy-MM-dd    hh:mm a');
+    final dateFormat = DateFormat('MMM dd, yyyy    hh:mm a');
     return dateFormat.format(timestamp.toDate());
   }
 
   @override
   void initState() {
     super.initState();
+    print("AllOrdersScreen initialized");
     context.read<OrderBloc>().add(FetchOrders());
   }
 
   @override
   Widget build(BuildContext context) {
+    print("AllOrdersScreen building");
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: const CustomAppBar(title: 'My Orders'),
       //BLOC Builder --
       body: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
+          print("BlocBuilder rebuilding with state: ${state.runtimeType}");
           if (state is OrderLoading) {
             return Center(
               child: Lottie.asset(
@@ -289,9 +293,10 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                         ));
                   },
                   child: Card(
+                    color: AppColors.backgroundColor,
                     margin:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    elevation: 2,
+                    elevation: 1,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -376,11 +381,22 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Status: ${order.status}",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: OrderUtils.getStatusColor(order.status)
+                                      .withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  order.status,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        OrderUtils.getStatusColor(order.status),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 8),

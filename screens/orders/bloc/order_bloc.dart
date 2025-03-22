@@ -97,6 +97,8 @@
 //   }
 // }
 //*****************************************March 19 ***************/
+import 'dart:async';
+
 import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
 import 'package:ampify_bloc/screens/orders/order_model/order_model.dart';
@@ -106,14 +108,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Razorpay _razorpay = Razorpay();
 
-  OrderBloc() : super(OrderInitial()) {
-    on<PlaceOrder>(_onPlaceOrder);
+  final FirebaseFirestore _firestore;
+  StreamSubscription<QuerySnapshot>? _ordersSubscription;
+
+  OrderBloc({required FirebaseFirestore firestore})
+      : _firestore = firestore,
+        super(OrderInitial()) {
     on<FetchOrders>(_onFetchOrders);
+    on<PlaceOrder>(_onPlaceOrder);
     on<UpdateOrderStatus>(_onUpdateOrderStatus);
+    on<UpdateOrdersFromSnapshot>(_onUpdateOrdersFromSnapshot);
+    on<OrderSubscriptionError>(_onOrderSubscriptionError);
   }
 
   Future<void> _onPlaceOrder(PlaceOrder event, Emitter<OrderState> emit) async {
@@ -159,40 +167,48 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Future<void> _onFetchOrders(
       FetchOrders event, Emitter<OrderState> emit) async {
     emit(OrderLoading());
+    print("Fetching orders - started");
+
+    // Cancel existing subscription if any
+    await _ordersSubscription?.cancel();
+
+    // First, fetch the initial data synchronously
     try {
-      String userId = _auth.currentUser?.uid ?? '';
+      final QuerySnapshot initialSnapshot =
+          await _firestore.collection('orders').get();
+      print("Initial fetch: ${initialSnapshot.docs.length} documents");
 
-      // Fetch initial data
-      QuerySnapshot initialSnapshot = await _firestore
-          .collection('orders')
-          .where('userId', isEqualTo: userId)
-          .get();
-
-      List<OrderModel> initialOrders = initialSnapshot.docs
-          .map((doc) => OrderModel.fromMap(doc.data() as Map<String, dynamic>))
-          .toList();
+      final initialOrders = initialSnapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return OrderModel.fromMap(doc.id, data);
+      }).toList();
 
       emit(OrdersLoaded(orders: initialOrders));
-
-      // Listen to real-time updates
-      _firestore
-          .collection('orders')
-          .where('userId', isEqualTo: userId)
-          .snapshots()
-          .listen((snapshot) {
-        List<OrderModel> updatedOrders = snapshot.docs
-            // ignore: unnecessary_cast
-            .map((doc) => OrderModel.fromMap(doc.data()))
-            .toList();
-
-        if (!isClosed) {
-          emit(OrdersLoaded(orders: updatedOrders));
-        }
-      });
     } catch (e) {
+      print("Error in initial fetch: $e");
       emit(OrderFailed(error: e.toString()));
+      return;
     }
+
+    // Then set up the subscription for future updates
+    _ordersSubscription = _firestore.collection('orders').snapshots().listen(
+      (QuerySnapshot snapshot) {
+        // This runs after the event handler has completed
+        // We need to handle this in a separate event
+        if (snapshot.docs.isNotEmpty) {
+          print(
+              "Real-time update received, dispatching UpdateOrdersFromSnapshot event");
+          add(UpdateOrdersFromSnapshot(snapshot: snapshot));
+        }
+      },
+      onError: (error) {
+        print("Error in subscription: $error");
+        add(OrderSubscriptionError(error: error.toString()));
+      },
+    );
   }
+
+  //************************************************************* */
   // Future<void> _onFetchOrders(
   //     FetchOrders event, Emitter<OrderState> emit) async {
   //   emit(OrderLoading());
@@ -214,6 +230,39 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   //   }
   // }
 
+// Add these event handlers
+  void _onUpdateOrdersFromSnapshot(
+      UpdateOrdersFromSnapshot event, Emitter<OrderState> emit) {
+    try {
+      print(
+          "Processing snapshot update: ${event.snapshot.docs.length} documents");
+
+      // Log changes in the snapshot
+      for (var change in event.snapshot.docChanges) {
+        print("Doc change type: ${change.type} for document: ${change.doc.id}");
+        final data = change.doc.data() as Map<String, dynamic>;
+        if (data.containsKey('status')) {
+          print("Updated status: ${data['status']}");
+        }
+      }
+
+      final orders = event.snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return OrderModel.fromMap(doc.id, data);
+      }).toList();
+
+      emit(OrdersLoaded(orders: orders));
+    } catch (e) {
+      print("Error processing snapshot: $e");
+      emit(OrderFailed(error: e.toString()));
+    }
+  }
+
+  void _onOrderSubscriptionError(
+      OrderSubscriptionError event, Emitter<OrderState> emit) {
+    emit(OrderFailed(error: event.error));
+  }
+
   Future<void> _onUpdateOrderStatus(
       UpdateOrderStatus event, Emitter<OrderState> emit) async {
     try {
@@ -229,6 +278,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   @override
   Future<void> close() {
     _razorpay.clear();
+    _ordersSubscription?.cancel();
     return super.close();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/search_filter/search_service/search_filter_service.dart';
 import 'package:ampify_bloc/screens/search_filter/search_widgets/filters/filter_widgets.dart';
 // import 'package:ampify_bloc/screens/search_filter/search_widgets/filters/filter_widgets.dart';
@@ -79,16 +80,27 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           ),
           const SizedBox(height: 20),
           SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                widget.onApplyFilters(filter);
+              width: double.infinity,
+              child: ElevatedButton(
+                  onPressed: () {
+                    widget.onApplyFilters(filter);
 
-                Navigator.pop(context);
-              },
-              child: const Text('Apply Filters'),
-            ),
-          ),
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.dark,
+                      foregroundColor: Colors.white,
+                      elevation: 4,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12))),
+                  child: const Text(
+                    'Apply Filters',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ))),
         ],
       ),
     );

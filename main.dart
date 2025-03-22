@@ -17,6 +17,7 @@ import 'package:ampify_bloc/screens/profile/profile_service.dart';
 import 'package:ampify_bloc/screens/splash_screen.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,8 @@ void main() async {
               create: (context) => WishlistBloc()..add(FetchWishlist()),
             ),
             BlocProvider<OrderBloc>(
-              create: (context) => OrderBloc(),
+              create: (context) =>
+                  OrderBloc(firestore: FirebaseFirestore.instance),
             ),
             BlocProvider<ProfileBloc>(
               create: (context) => ProfileBloc(context.read<ProfileService>())

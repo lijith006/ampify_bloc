@@ -204,7 +204,10 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         print("Product removed from wishlist.");
         if (event.context.mounted) {
           ScaffoldMessenger.of(event.context).showSnackBar(
-            const SnackBar(content: Text('Removed from Wishlist')),
+            const SnackBar(
+              content: Text('Removed from Wishlist'),
+              duration: Duration(seconds: 1),
+            ),
           );
         }
       } else {
@@ -222,7 +225,10 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         // print("Product added to wishlist.");
         if (event.context.mounted) {
           ScaffoldMessenger.of(event.context).showSnackBar(
-            const SnackBar(content: Text('Added to Wishlist')),
+            const SnackBar(
+              content: Text('Added to Wishlist'),
+              duration: Duration(seconds: 1),
+            ),
           );
         }
       }

@@ -16,7 +16,9 @@ class AddNewAddressScreen extends StatefulWidget {
 }
 
 class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
-  final TextEditingController countryController = TextEditingController();
+  // final TextEditingController countryController = TextEditingController();
+  final TextEditingController countryController =
+      TextEditingController(text: 'India');
 
   final TextEditingController fullNameController = TextEditingController();
 
@@ -67,6 +69,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     //Country
                     CustomTextFormField(
                       controller: countryController,
+                      readOnly: true,
                       labelText: 'Country',
                       validator: (value) =>
                           Validators.validateRequired(value, 'Country'),
@@ -76,8 +79,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     CustomTextFormField(
                       controller: fullNameController,
                       labelText: 'Full name',
-                      validator: (value) =>
-                          Validators.validateRequired(value, 'Full Name'),
+                      validator: (value) => Validators.validateUsername(value),
                     ),
                     //Mobile number
                     CustomTextFormField(

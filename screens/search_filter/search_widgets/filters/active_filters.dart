@@ -1,3 +1,4 @@
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/search_filter/search_service/search_filter_service.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,10 @@ class ActiveFiltersDisplay extends StatelessWidget {
               ),
               TextButton(
                 onPressed: onClearAll,
-                child: const Text('Clear All'),
+                child: const Text(
+                  'Clear All',
+                  style: TextStyle(color: AppColors.button),
+                ),
               ),
             ],
           ),

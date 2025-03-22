@@ -268,10 +268,11 @@ class _HomeContentState extends State<HomeContent> {
                                     .add(cart_event.AddToCart(cartItem));
                                 print(
                                     "AddToCart event dispatched: ${cartItem.productId}");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Product added to cart!')));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Product added to cart!'),
+                                  duration: Duration(seconds: 1),
+                                ));
                               },
                               cartCount: cartCount),
                         );

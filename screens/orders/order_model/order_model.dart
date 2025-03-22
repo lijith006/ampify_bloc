@@ -1,3 +1,4 @@
+// // //9000000000000000000000000000000000000000000000000000000000
 // import 'package:ampify_bloc/screens/cart/cart_model.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -52,7 +53,23 @@
 //       createdAt: map['createdAt'],
 //     );
 //   }
+//   // Progress Calculation
+//   double get progress {
+//     switch (status.toLowerCase()) {
+//       case 'processing':
+//         return 0.2;
+//       case 'shipped':
+//         return 0.5;
+//       case 'out for delivery':
+//         return 0.8;
+//       case 'delivered':
+//         return 1.0;
+//       default:
+//         return 0.0;
+//     }
+//   }
 // }
+//-------------------------------------------------------
 // //9000000000000000000000000000000000000000000000000000000000
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -94,9 +111,10 @@ class OrderModel {
     };
   }
 
-  factory OrderModel.fromMap(Map<String, dynamic> map) {
+  // Modified factory constructor to accept two arguments
+  factory OrderModel.fromMap(String id, Map<String, dynamic> map) {
     return OrderModel(
-      id: map['id'],
+      id: id, // Pass the ID separately
       paymentId: map['paymentId'] ?? '',
       items:
           (map['items'] as List).map((item) => CartItem.fromMap(item)).toList(),
@@ -108,6 +126,7 @@ class OrderModel {
       createdAt: map['createdAt'],
     );
   }
+
   // Progress Calculation
   double get progress {
     switch (status.toLowerCase()) {

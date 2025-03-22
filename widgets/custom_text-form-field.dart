@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final int maxLines;
   final Widget? prefixicon;
+  final bool readOnly;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
@@ -20,6 +21,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.labelText,
     this.obscureText = false,
     this.validator,
+    this.readOnly = false,
     this.prefixicon,
     this.suffixIcon,
     this.maxLines = 1,
@@ -35,6 +37,7 @@ class CustomTextFormField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         obscureText: obscureText,
+        readOnly: readOnly,
         maxLines: maxLines,
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
