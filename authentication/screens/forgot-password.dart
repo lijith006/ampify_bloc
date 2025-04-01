@@ -2,7 +2,6 @@ import 'package:ampify_bloc/authentication/service/auth_service.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
 import 'package:ampify_bloc/widgets/validators_widget.dart';
-import 'package:ampify_bloc/widgets/widget_support.dart';
 
 import 'package:flutter/material.dart';
 
@@ -21,11 +20,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white,
-        // title: const Text(
-        //   'Forgot password',
-        //   style: TextStyle(
-        //       fontSize: 30, fontWeight: FontWeight.w400, color: Colors.white),
-        // ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         shadowColor: Colors.transparent,
@@ -45,13 +39,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(
                   height: 70,
                 ),
-                Row(
+                const Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         'Forgot password',
-                        style: AppWidget.screenHeading(),
+                        // style: AppWidget.screenHeading(),
                       ),
                     ),
                   ],

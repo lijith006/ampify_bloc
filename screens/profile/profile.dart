@@ -11,9 +11,7 @@ import 'package:ampify_bloc/screens/profile/bloc/profile_bloc.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/about_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/privacy_policy_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/user_agreement_screen.dart';
-import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -68,7 +66,6 @@ class _MyProfileState extends State<MyProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      //Text('M y   P r o f i l e'),
                       CircleAvatar(
                         radius: 50,
                         backgroundImage: userProfile['profileImage'] != null
@@ -105,12 +102,6 @@ class _MyProfileState extends State<MyProfile> {
                             leading: const Icon(Icons.local_shipping),
                             title: const Text('My Orders'),
                             onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           const AllOrdersScreen(),
-                              //     ));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -232,9 +223,8 @@ class _MyProfileState extends State<MyProfile> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: Text(
+              child: const Text(
                 'Sign Out',
-                style: AppWidget.whitelightTextFieldStyle(),
               ),
             ),
           ],

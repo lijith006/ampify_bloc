@@ -1,6 +1,10 @@
+import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
+import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
 import 'package:ampify_bloc/screens/orders/order_widgets/order_confirmation_build_row.dart';
 import 'package:ampify_bloc/widgets/confetti.dart';
+import 'package:ampify_bloc/widgets/custom_nav/nav_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:confetti/confetti.dart';
 import 'package:ampify_bloc/common/app_colors.dart';
@@ -82,6 +86,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   centerTitle: true,
                   leading: IconButton(
                     onPressed: () {
+                      context.read<CartBloc>().add(ClearCart());
+                      context.read<NavCubit>().updateIndex(0);
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
@@ -130,11 +136,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             label: "Delivering to:", value: widget.address),
                         OrderDetailRow(
                             label: "Total Amount:", value: "₹${widget.amount}"),
-                        // _buildOrderDetailRow("Order ID:", widget.orderId),
-                        // _buildOrderDetailRow("Payment ID:", widget.paymentId),
-                        // _buildOrderDetailRow("Delivering to:", widget.address),
-                        // _buildOrderDetailRow(
-                        //     "Total Amount:", "₹${widget.amount}"),
                       ],
                     ),
                   ),
@@ -148,34 +149,4 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       ),
     );
   }
-
-  // Widget _buildOrderDetailRow(String label, String value) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 8.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(
-  //           label,
-  //           style: const TextStyle(
-  //             fontSize: 16,
-  //             fontWeight: FontWeight.w500,
-  //             color: Colors.black54,
-  //           ),
-  //         ),
-  //         Expanded(
-  //           child: Text(
-  //             value,
-  //             textAlign: TextAlign.right,
-  //             style: const TextStyle(
-  //               fontSize: 16,
-  //               fontWeight: FontWeight.w600,
-  //               color: Colors.black87,
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

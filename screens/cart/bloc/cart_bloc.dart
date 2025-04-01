@@ -17,6 +17,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<UpdateQuantity>(_onUpdateQuantity);
     on<SaveForLater>(_onSaveForLater);
     on<CartUpdated>(_onCartUpdated);
+    on<ClearCart>(_onClearCart);
   }
 
   // Load cart items
@@ -47,11 +48,32 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   void _onCartUpdated(CartUpdated event, Emitter<CartState> emit) {
-    if (state is CartLoaded && (state as CartLoaded).cartItems == event.items) {
-      return;
+    if (state is CartLoaded) {
+      List<CartItem> currentItems = (state as CartLoaded).cartItems;
+      if (_areListsEqual(currentItems, event.items)) {
+        return; // Only return if both lists are identical
+      }
     }
     emit(CartLoaded(event.items));
   }
+
+  bool _areListsEqual(List<CartItem> list1, List<CartItem> list2) {
+    if (list1.length != list2.length) return false;
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i].productId != list2[i].productId ||
+          list1[i].quantity != list2[i].quantity) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // void _onCartUpdated(CartUpdated event, Emitter<CartState> emit) {
+  //   if (state is CartLoaded && (state as CartLoaded).cartItems == event.items) {
+  //     return;
+  //   }
+  //   emit(CartLoaded(event.items));
+  // }
 
   Future<void> _onAddToCart(AddToCart event, Emitter<CartState> emit) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -109,6 +131,18 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       await _cartService.saveForLater(userId, event.item);
     } catch (e) {
       emit(CartError("Failed to save for later: ${e.toString()}"));
+    }
+  }
+
+  Future<void> _onClearCart(ClearCart event, Emitter<CartState> emit) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    try {
+      await _cartService.clearCart(userId);
+      emit(CartLoaded([]));
+    } catch (e) {
+      emit(CartError("Failed to clear cart: ${e.toString()}"));
     }
   }
 

@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
-import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:flutter/material.dart';
 
 class CartList extends StatelessWidget {
@@ -74,7 +73,7 @@ class CartList extends StatelessWidget {
                             // Title and Price
                             Text(
                               item.title,
-                              style: AppWidget.boldCardTitle(),
+                              //   style: AppWidget.boldCardTitle(),
                             ),
                             Text(
                               '₹${item.price}',

@@ -8,8 +8,8 @@ class CustomButton extends StatefulWidget {
   final bool isLoading;
   final Color? borderColor;
   final double blurStrength;
-  final double? width; //  button width
-  final double height; //  button height
+  final double? width;
+  final double height;
 
   const CustomButton({
     super.key,
@@ -46,9 +46,8 @@ class _CustomButtonState extends State<CustomButton> {
         transform: _isPressed
             ? Matrix4.translationValues(0, 2, 0)
             : Matrix4.identity(),
-        width: widget.width ??
-            MediaQuery.of(context).size.width * 0.9, // Adjustable width
-        height: widget.height, // Adjustable height
+        width: widget.width ?? MediaQuery.of(context).size.width * 0.9,
+        height: widget.height,
         decoration: BoxDecoration(
           color: const Color(0xFF31473A),
           // color: const Color(0XFF202224),

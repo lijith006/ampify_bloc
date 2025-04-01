@@ -65,12 +65,12 @@ class CustomTextFormField extends StatelessWidget {
               color: AppColors.outLineColor,
               width: 1.5,
             ),
-          ), // Define the error border
+          ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: const BorderSide(
-              color: Colors.red, // Error border color
-              width: 1.5, // Error border width
+              color: Colors.red,
+              width: 1.5,
             ),
           ),
           suffixIcon: suffixIcon,

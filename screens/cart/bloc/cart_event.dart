@@ -88,3 +88,5 @@ class CartUpdated extends CartEvent {
 
   CartUpdated(this.items);
 }
+
+class ClearCart extends CartEvent {}

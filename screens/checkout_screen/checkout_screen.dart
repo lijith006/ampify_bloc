@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:ampify_bloc/screens/checkout_screen/checkout_widget/price_row_widget.dart';
+import 'package:ampify_bloc/screens/checkout_screen/checkout_widgets/price_calculator.dart';
 import 'package:ampify_bloc/screens/orders/order_confirmation_screen.dart.dart';
 import 'package:ampify_bloc/screens/payment/bloc/payment_bloc.dart' as payment;
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import '../checkout_screen/bloc/checkout_state.dart';
 import '../checkout_screen/select_address_screen.dart';
 import '../cart/cart_model.dart';
 import '../../widgets/custom_orange_button.dart';
-import '../../widgets/widget_support.dart';
 
 class CheckoutScreen extends StatelessWidget {
   final List<CartItem> products;
@@ -25,13 +25,20 @@ class CheckoutScreen extends StatelessWidget {
     return base64Decode(base64String);
   }
 
-  double _calculateTotalPrice() {
-    return products.fold(0, (sum, item) => sum + (item.price * item.quantity));
-  }
+  // double _calculateTotalPrice() {
+  //   return products.fold(0, (sum, item) => sum + (item.price * item.quantity));
+  // }
+  // double _calculateTotalPrice() {
+  //   double subtotal =
+  //       products.fold(0, (sum, item) => sum + (item.price * item.quantity));
+  //   double deliveryCharge = subtotal < 600 ? 40 : 0;
+  //   return subtotal + deliveryCharge;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    double totalPrice = _calculateTotalPrice();
+    // double totalPrice = _calculateTotalPrice();
+    double totalPrice = calculateTotalPrice(products);
 
     return BlocListener<payment.PaymentBloc, payment.PaymentState>(
       listener: (context, state) {
@@ -60,13 +67,15 @@ class CheckoutScreen extends StatelessWidget {
         backgroundColor: AppColors.backgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text('C h e c k o u t'),
+          title: const Text('Checkout'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text('Delivering To', style: AppWidget.boldTextFieldStyle()),
+              const Text(
+                'Delivering To',
+              ),
               BlocBuilder<CheckoutBloc, CheckoutState>(
                 builder: (context, state) {
                   if (state.isLoading) {
@@ -131,7 +140,6 @@ class CheckoutScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     item.title,
-                                    style: AppWidget.boldTextFieldStyleSmall(),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -163,7 +171,10 @@ class CheckoutScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     PriceRowWidget(title: "Subtotal", value: "₹$totalPrice"),
-                    const PriceRowWidget(title: "Delivery Fee", value: "Free"),
+                    //const PriceRowWidget(title: "Delivery Fee", value: "Free"),
+                    PriceRowWidget(
+                        title: "Delivery Fee",
+                        value: totalPrice < 600 ? "₹40" : "Free"),
                     const Divider(),
                     PriceRowWidget(
                         title: "Total", value: "₹$totalPrice", isBold: true),
@@ -171,7 +182,7 @@ class CheckoutScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              //Custom button
+              //C u s t o m   b u t t o n -->
               CustomOrangeButton(
                 width: 300,
                 text: 'Place Order',

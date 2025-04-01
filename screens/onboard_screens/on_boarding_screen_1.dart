@@ -33,7 +33,7 @@ class _OnBoardScreen1State extends State<OnBoardScreen1> {
             child: const Padding(
               padding: EdgeInsets.all(30.0),
               child: Text(
-                'Welcome to Ampify! Your ultimate destination for \n premium audio solutions.',
+                'Welcome to Ampify! Your ultimate destination for premium audio solutions.',
                 style: TextStyle(color: Colors.white),
               ),
             ),

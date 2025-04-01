@@ -48,7 +48,9 @@ class ProductDetailsBloc
               productName: productData['name'] ?? "No Name",
               productDescription:
                   productData['description'] ?? "No description available",
-              productPrice: (productData['price'] ?? 0.0).toDouble(),
+              productPrice: (productData['price'] is int)
+                  ? (productData['price'] as int).toDouble()
+                  : (productData['price'] ?? 0.0),
             ));
           } else {
             emit(ProductDetailError("Product not found"));
@@ -123,7 +125,8 @@ class ProductDetailsBloc
               'price': currentState.productPrice,
               'imageUrls': currentState.base64Images,
             },
-            context: event.context, // For snackbar messages
+            // For snackbar messages
+            context: event.context,
           ));
     }
   }

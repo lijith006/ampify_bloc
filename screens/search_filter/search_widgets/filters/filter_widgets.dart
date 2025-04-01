@@ -1,4 +1,3 @@
-import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/search_filter/search_service/search_filter_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

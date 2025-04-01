@@ -53,7 +53,6 @@ class Categories extends StatelessWidget {
               final productId = products[index].id;
 
               final product = products[index];
-              // String productId = doc['productId'];
 
               return GestureDetector(
                 onTap: () {

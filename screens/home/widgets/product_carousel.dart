@@ -11,7 +11,6 @@ class ProductCarousel extends StatefulWidget {
   const ProductCarousel({
     Key? key,
     required this.productStream,
-    //required List<DocumentSnapshot<Object?>> products,
   }) : super(key: key);
 
   @override
@@ -110,8 +109,8 @@ class _ProductCarouselState extends State<ProductCarousel> {
 
   // Carousel Indicators with Slide Animation
   Widget buildIndicator(int itemCount) {
-    if (itemCount == 0)
-      return const SizedBox.shrink(); // Handle empty list case
+    // Handle empty list case
+    if (itemCount == 0) return const SizedBox.shrink();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

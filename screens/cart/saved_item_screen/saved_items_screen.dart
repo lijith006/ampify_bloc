@@ -6,7 +6,6 @@ import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/bloc/saved_items_bloc.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/widgets/custom_orange_button.dart';
-import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,7 +82,7 @@ class SavedItemsScreen extends StatelessWidget {
                                   //title  and price
                                   Text(
                                     item.title,
-                                    style: AppWidget.boldCardTitle(),
+                                    //   style: AppWidget.boldCardTitle(),
                                   ),
                                   Text('₹${item.price}',
                                       style: const TextStyle(

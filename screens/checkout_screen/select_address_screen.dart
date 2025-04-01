@@ -1,7 +1,9 @@
+import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/add_address_screen/add_new_address_screen.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_event.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_state.dart';
+import 'package:ampify_bloc/widgets/custom_app_bar.dart';
 import 'package:ampify_bloc/widgets/custom_orange_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +14,8 @@ class SelectAddressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Address'),
-      ),
+      backgroundColor: AppColors.backgroundColor,
+      appBar: const CustomAppBar(title: 'Select Address'),
       body: BlocConsumer<CheckoutBloc, CheckoutState>(
         listener: (context, state) {
           if (state is AddressErrorState) {
@@ -40,8 +41,12 @@ class SelectAddressScreen extends StatelessWidget {
                       final address = state.addresses[index]['address'];
                       final id = state.addresses[index]['id'];
                       return Card(
+                        color: AppColors.backgroundColor,
                         child: ListTile(
-                          title: Text(address),
+                          title: Text(
+                            address,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

@@ -224,7 +224,6 @@ import 'package:ampify_bloc/screens/home/home_screen.dart';
 import 'package:ampify_bloc/widgets/custom_button.dart';
 import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
 import 'package:ampify_bloc/widgets/validators_widget.dart';
-import 'package:ampify_bloc/widgets/widget_support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -284,9 +283,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 30),
-                    Text(
+                    const Text(
                       'Signup',
-                      style: AppWidget.screenHeadingBlack(),
+                      // style: AppWidget.screenHeadingBlack(),
                     ),
 
                     Column(

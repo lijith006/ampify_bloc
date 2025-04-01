@@ -16,7 +16,6 @@ class AddNewAddressScreen extends StatefulWidget {
 }
 
 class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
-  // final TextEditingController countryController = TextEditingController();
   final TextEditingController countryController =
       TextEditingController(text: 'India');
 
