@@ -3,7 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   final Uri privacyPolicyUrl = Uri.parse(
-      "https://www.termsfeed.com/live/c1ea5a27-3103-4b27-b03f-6a004ea3498f");
+      "https://www.termsfeed.com/live/0d4f577c-9ea8-4c41-b743-7a56f5683f3a");
 
   @override
   Widget build(BuildContext context) {

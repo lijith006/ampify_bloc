@@ -74,8 +74,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
     // First, fetch the initial data synchronously
     try {
-      final QuerySnapshot initialSnapshot =
-          await _firestore.collection('orders').get();
+      final QuerySnapshot initialSnapshot = await _firestore
+          .collection('orders')
+          .orderBy('createdAt', descending: true)
+          .get();
       print("Initial fetch: ${initialSnapshot.docs.length} documents");
 
       final initialOrders = initialSnapshot.docs.map((doc) {
@@ -90,7 +92,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       return;
     }
 
-    _ordersSubscription = _firestore.collection('orders').snapshots().listen(
+    _ordersSubscription = _firestore
+        .collection('orders')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .listen(
       (QuerySnapshot snapshot) {
         if (snapshot.docs.isNotEmpty) {
           print(

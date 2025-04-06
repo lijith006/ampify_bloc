@@ -10,7 +10,8 @@ class CategoryRepository {
       return snapshot.docs.map((doc) {
         return {
           'id': doc.id,
-          ...doc.data(), // Spread operator to include all fields
+          // used Spread operator to include all fields
+          ...doc.data(),
         };
       }).toList();
     });

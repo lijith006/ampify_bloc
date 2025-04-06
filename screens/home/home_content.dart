@@ -38,14 +38,22 @@
 //     return firestore.collection('categories').snapshots();
 //   }
 
-//   void toggleWishlist(String productId) {
-//     setState(() {
-//       if (wishlistedItems.contains(productId)) {
-//         wishlistedItems.remove(productId);
-//       } else {
-//         wishlistedItems.add(productId);
-//       }
-//     });
+//   void toggleWishlist(BuildContext context, String productId,
+//       Map<String, dynamic> productData) {
+//     final wishlistBloc = context.read<WishlistBloc>();
+//     final wishlistState = wishlistBloc.state;
+
+//     final isWishlisted = wishlistState is WishlistLoaded &&
+//         wishlistState.wishlistedItems.contains(productId);
+
+//     wishlistBloc.add(
+//       ToggleWishlistItem(
+//         productId: productId,
+//         isCurrentlyWishlisted: isWishlisted,
+//         productData: productData,
+//         context: context,
+//       ),
+//     );
 //   }
 
 //   @override
@@ -203,7 +211,10 @@
 //                           child: CardWidget(
 //                               key: ValueKey(productId),
 //                               name: product['name'],
-//                               price: product['price'].toDouble(),
+//                               // price: product['price'].toDouble(),
+//                               price: (product['price'] is int)
+//                                   ? (product['price'] as int).toDouble()
+//                                   : (product['price'] ?? 0.0),
 //                               imageBytes: base64Decode(product['images'][0]),
 //                               isWishlisted: context
 //                                   .watch<WishlistBloc>()
@@ -217,39 +228,13 @@
 //                                 print(
 //                                     "Wishlist Toggle Clicked for Product ID: $productId");
 
-//                                 final wishlistBloc =
-//                                     context.read<WishlistBloc>();
-//                                 final wishlistState = wishlistBloc.state;
-
-//                                 final isWishlisted =
-//                                     wishlistState is WishlistLoaded &&
-//                                         wishlistState.wishlistedItems
-//                                             .contains(productId);
-
-//                                 print(
-//                                     "Before Dispatch: Is $productId wishlisted? $isWishlisted");
-
-//                                 // Add/remove from wishlist
 //                                 final productData = {
 //                                   'name': product['name'],
 //                                   'price': product['price'].toDouble(),
 //                                   'imageUrls': product['images'],
 //                                 };
 
-//                                 context.read<WishlistBloc>().add(
-//                                       ToggleWishlistItem(
-//                                         productId: productId,
-//                                         isCurrentlyWishlisted: context
-//                                                 .read<WishlistBloc>()
-//                                                 .state is WishlistLoaded &&
-//                                             (context.read<WishlistBloc>().state
-//                                                     as WishlistLoaded)
-//                                                 .wishlistedItems
-//                                                 .any((doc) => doc == productId),
-//                                         productData: productData,
-//                                         context: context,
-//                                       ),
-//                                     );
+//                                 toggleWishlist(context, productId, productData);
 //                               },
 //                               onAddToCart: () {
 //                                 //  Uint8List  to  Base64 String
@@ -260,7 +245,8 @@
 //                                 final cartItem = CartItem(
 //                                   productId: productId,
 //                                   title: name,
-//                                   price: price,
+//                                   price: price.toDouble(),
+//                                   // price: price,
 //                                   quantity: 1,
 //                                   imageUrls: [base64Image],
 //                                 );
@@ -290,7 +276,7 @@
 //     );
 //   }
 // }
-//-----------------------------------------------------MARCH 26
+//march 28*-----------------------------------------------------
 // import 'dart:convert';
 // import 'dart:typed_data';
 
@@ -569,17 +555,18 @@
 //     );
 //   }
 // }
-//march 28*-----------------------------------------------------
+//----------------------<<<<<<<<< APRIL 2 >>>>>>>>>>>-------------------------
+
 import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:ampify_bloc/common/card_widget.dart';
+import 'package:ampify_bloc/repositories/product_repository.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_state.dart';
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
-import 'package:ampify_bloc/screens/categories/bloc/categories_bloc.dart';
-import 'package:ampify_bloc/screens/categories/bloc/categories_event.dart';
-import 'package:ampify_bloc/screens/categories/categories.dart';
+import 'package:ampify_bloc/screens/home/widgets/fetch_categories.dart';
+
 import 'package:ampify_bloc/screens/home/widgets/product_carousel.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
@@ -598,16 +585,14 @@ class HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<HomeContent> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late final ProductRepository productRepository;
   final CarouselSliderController controller = CarouselSliderController();
   int activeIndex = 0;
   Set<String> wishlistedItems = {};
-
-  Stream<QuerySnapshot> fetchProducts() {
-    return firestore.collection('products').snapshots();
-  }
-
-  Stream<QuerySnapshot> fetchCategories() {
-    return firestore.collection('categories').snapshots();
+  @override
+  void initState() {
+    super.initState();
+    productRepository = ProductRepository(firestore);
   }
 
   void toggleWishlist(BuildContext context, String productId,
@@ -633,79 +618,17 @@ class _HomeContentState extends State<HomeContent> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProductCarousel(productStream: fetchProducts()),
+          //C a r o u s e l >>---------------------------
+          ProductCarousel(productStream: productRepository.fetchProducts()),
 
-          // F e t c h    C a t e g o r i e s
+          // F e t c h    C a t e g o r i e s >>>>>>>>>>>
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Categories',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+                CategoryListWidget(firestore: firestore),
 
-                const SizedBox(height: 5),
-                StreamBuilder(
-                  stream: fetchCategories(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
-                    final categories = snapshot.data!.docs;
-                    return SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: categories.length,
-                        itemBuilder: (context, index) {
-                          final category = categories[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BlocProvider(
-                                      create: (context) => CategoriesBloc(
-                                        firestore: FirebaseFirestore.instance,
-                                      )..add(FetchProducts(
-                                          category.id,
-                                        )),
-                                      child: Categories(
-                                        categoryId: category.id,
-                                        categoryName: category['name'],
-                                      ),
-                                    ),
-                                  ));
-                            },
-                            child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: MemoryImage(base64Decode(
-                                                  category['image'])),
-                                              fit: BoxFit.cover)),
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(category['name']),
-                                  ],
-                                )),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
                 const SizedBox(height: 5),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -715,9 +638,10 @@ class _HomeContentState extends State<HomeContent> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                //P R O D U C T    G R I D
+
+                //P R O D U C T    G R I D >>>>>>>>---------
                 StreamBuilder<QuerySnapshot>(
-                  stream: fetchProducts(),
+                  stream: productRepository.fetchProducts(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -779,11 +703,10 @@ class _HomeContentState extends State<HomeContent> {
                                 ));
                           },
 
-                          //C a r d     W i d g e t
+                          //C a r d     W i d g e t-*->>>>>>>>>>-------
                           child: CardWidget(
                               key: ValueKey(productId),
                               name: product['name'],
-                              // price: product['price'].toDouble(),
                               price: (product['price'] is int)
                                   ? (product['price'] as int).toDouble()
                                   : (product['price'] ?? 0.0),
@@ -795,7 +718,7 @@ class _HomeContentState extends State<HomeContent> {
                                   .contains(productId),
                               productId: productId,
 
-                              //c h e c k   w i s h l i s t e d
+                              //c h e c k   w i s h l i s t e d------>>>--
                               onWishlistToggle: () {
                                 print(
                                     "Wishlist Toggle Clicked for Product ID: $productId");

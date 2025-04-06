@@ -11,6 +11,7 @@ import 'package:ampify_bloc/screens/profile/bloc/profile_bloc.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/about_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/privacy_policy_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_screens/user_agreement_screen.dart';
+import 'package:ampify_bloc/screens/profile/profile_widgets/sign_out.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -169,8 +170,10 @@ class _MyProfileState extends State<MyProfile> {
                             leading: const Icon(Icons.logout_outlined),
                             title: const Text('Log out'),
                             onTap: () {
-                              // Log out
-                              showSignOutDialog(context);
+                              showDialog(
+                                context: context,
+                                builder: (context) => const SignOutDialog(),
+                              );
                             },
                           ),
                         ],
@@ -191,45 +194,6 @@ class _MyProfileState extends State<MyProfile> {
           },
         ),
       ),
-    );
-  }
-
-  void showSignOutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          title: const Text(
-            'Sign Out',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          content: const Text('Are you sure you want to sign out?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(Signout());
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                'Sign Out',
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

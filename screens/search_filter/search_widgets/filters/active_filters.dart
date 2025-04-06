@@ -133,7 +133,6 @@ class ActiveFiltersDisplay extends StatelessWidget {
   final ProductFilter filter;
   final String searchQuery;
   final VoidCallback onClearAll;
-  // final Function(String) onClearFilter;
   final Function(String, String?) onClearFilter;
   final SearchFilterService searchFilterService;
 

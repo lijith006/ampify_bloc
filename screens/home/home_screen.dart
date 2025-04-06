@@ -446,7 +446,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const MyCart(),
     const MyProfile(),
   ];
-  //------------------------------------ovr
 
   @override
   Widget build(BuildContext context) {

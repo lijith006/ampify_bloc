@@ -415,12 +415,10 @@ class SearchResults extends StatelessWidget {
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
-              // itemCount: searchResults!.docs.length,
               itemCount: filteredResults.length,
               itemBuilder: (context, index) {
                 final product = filteredResults[index];
-                //  final product = searchResults!.docs[index];
-                // final productData = product.data() as Map<String, dynamic>;
+
                 return _buildProductCard(context, product);
               },
             ),
@@ -437,7 +435,6 @@ class SearchResults extends StatelessWidget {
     final String name = product['name'];
     final double price = (product['price'] ?? 0).toDouble();
 
-    // final bool isWishlisted = product['isWishlisted'] ?? false;
     final bool isWishlisted = (productData['isWishlisted'] ?? false) as bool;
     final int cartCount =
         productData.containsKey('cartCount') ? productData['cartCount'] : 0;
