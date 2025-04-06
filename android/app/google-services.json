@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "525220056646",
+    "project_id": "ampify-with-bloc",
+    "storage_bucket": "ampify-with-bloc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525220056646:android:81e37d770b82da62968447",
+        "android_client_info": {
+          "package_name": "com.example.ampify_admin_bloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525220056646-6mteb2qas8r9dc20pkmjt3l8h7md0sfg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEUFhb_UiIuz7B289tNolsLWdpyiPMOzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525220056646-6mteb2qas8r9dc20pkmjt3l8h7md0sfg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525220056646:android:88b26558fc1ad7a8968447",
+        "android_client_info": {
+          "package_name": "com.example.ampify_bloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525220056646-qpngc2dim5358jj06trmmf0u3bi1jk8j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ampify_bloc",
+            "certificate_hash": "fce9c9172794c093d7cef8e47c9cb57217b7fec2"
+          }
+        },
+        {
+          "client_id": "525220056646-6mteb2qas8r9dc20pkmjt3l8h7md0sfg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEUFhb_UiIuz7B289tNolsLWdpyiPMOzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525220056646-6mteb2qas8r9dc20pkmjt3l8h7md0sfg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
