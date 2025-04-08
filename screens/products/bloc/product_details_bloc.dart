@@ -43,14 +43,22 @@ class ProductDetailsBloc
         (snapshot) {
           if (snapshot.exists) {
             final productData = snapshot.data() as Map<String, dynamic>;
+            print(
+                'Raw price value: ${productData['price']} (${productData['price'].runtimeType})');
+
             add(_ProductUpdated(
               base64Images: List<String>.from(productData['images'] ?? []),
               productName: productData['name'] ?? "No Name",
               productDescription:
                   productData['description'] ?? "No description available",
-              productPrice: (productData['price'] is int)
-                  ? (productData['price'] as int).toDouble()
-                  : (productData['price'] ?? 0.0),
+              productPrice: (productData['price'] is int ||
+                      productData['price'] is double)
+                  ? (productData['price'] as num).toDouble()
+                  : double.tryParse(productData['price'].toString()) ?? 0.0,
+
+              // productPrice: (productData['price'] is int)
+              //     ? (productData['price'] as int).toDouble()
+              //     : (productData['price'] ?? 0.0),
             ));
           } else {
             emit(ProductDetailError("Product not found"));

@@ -679,7 +679,9 @@ class _HomeContentState extends State<HomeContent> {
                         var doc = products[index];
 
                         String name = doc['name'];
-                        double price = doc['price'];
+                        // double price = doc['price'];
+
+                        double price = (doc['price'] as num).toDouble();
                         final productId = products[index].id;
                         List<dynamic> images = doc['images'];
                         Uint8List imageBytes =
