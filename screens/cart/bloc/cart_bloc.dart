@@ -68,13 +68,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     return true;
   }
 
-  // void _onCartUpdated(CartUpdated event, Emitter<CartState> emit) {
-  //   if (state is CartLoaded && (state as CartLoaded).cartItems == event.items) {
-  //     return;
-  //   }
-  //   emit(CartLoaded(event.items));
-  // }
-
   Future<void> _onAddToCart(AddToCart event, Emitter<CartState> emit) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return;

@@ -2,11 +2,11 @@ import 'dart:typed_data';
 
 import 'package:ampify_bloc/screens/checkout_screen/checkout_screen.dart';
 import 'package:ampify_bloc/screens/products/bloc/product_details_bloc.dart';
+import 'package:ampify_bloc/screens/products/products_widget/product_arc_widget.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_bloc.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_event.dart';
 import 'package:ampify_bloc/screens/wishlist_screen/bloc/whishlist_state.dart';
 import 'package:ampify_bloc/widgets/carousel_indicator_buttons.dart';
-import 'package:clippy_flutter/arc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -154,52 +154,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           const SizedBox(height: 30),
 
                           // Arc Design
-                          Arc(
-                            height: 30,
-                            edge: Edge.TOP,
-                            arcType: ArcType.CONVEY,
-                            child: Container(
-                              width: double.infinity,
-                              color: const Color.fromARGB(255, 218, 229, 243),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 50, bottom: 20),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              state.productName,
-                                              style: const TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.w900,
-                                                  color: Color.fromARGB(
-                                                      255, 85, 86, 94)),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Text(
-                                            " \₹${state.productPrice.toStringAsFixed(2)}",
-                                            style: const TextStyle(
-                                              fontSize: 23,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFFFF6F61),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          ProductArcWidget(
+                            productName: state.productName,
+                            productPrice: state.productPrice,
                           ),
 
                           // Product Details

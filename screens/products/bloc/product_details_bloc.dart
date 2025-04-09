@@ -55,10 +55,6 @@ class ProductDetailsBloc
                       productData['price'] is double)
                   ? (productData['price'] as num).toDouble()
                   : double.tryParse(productData['price'].toString()) ?? 0.0,
-
-              // productPrice: (productData['price'] is int)
-              //     ? (productData['price'] as int).toDouble()
-              //     : (productData['price'] ?? 0.0),
             ));
           } else {
             emit(ProductDetailError("Product not found"));
@@ -139,7 +135,7 @@ class ProductDetailsBloc
     }
   }
 
-// //Add to Cart
+//Add to Cart
   Future<void> _onAddToCart(
       AddToCart event, Emitter<ProductDetailsState> emit) async {
     try {
