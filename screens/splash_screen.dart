@@ -246,14 +246,13 @@ class _SplashScreenState extends State<SplashScreen>
 
     _logoController.forward();
 
-    // Show "Ampify" text after 1.2 seconds
     Future.delayed(const Duration(milliseconds: 1200), () {
       setState(() {
         showText = true;
       });
     });
 
-    // Navigate after 3 seconds
+    // Navigate
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
