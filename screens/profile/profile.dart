@@ -4,6 +4,9 @@ import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/bloc/auth_state.dart';
 import 'package:ampify_bloc/authentication/screens/login_screen.dart';
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/screens/chat_screen/chat_bloc/bloc/chat_bloc.dart';
+import 'package:ampify_bloc/screens/chat_screen/chat_screen/chat_screen.dart';
+import 'package:ampify_bloc/screens/chat_screen/service/chat_service.dart';
 import 'package:ampify_bloc/screens/checkout_screen/select_address_screen.dart';
 import 'package:ampify_bloc/screens/order_tracking_screen/my_orders_screen.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_bloc.dart';
@@ -13,6 +16,7 @@ import 'package:ampify_bloc/screens/profile/profile_screens/privacy_policy_scree
 import 'package:ampify_bloc/screens/profile/profile_screens/user_agreement_screen.dart';
 import 'package:ampify_bloc/screens/profile/profile_widgets/sign_out.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -163,6 +167,26 @@ class _MyProfileState extends State<MyProfile> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         UserAgreementScreen()),
+                              );
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.chat),
+                            title: const Text('Chat with Admin'),
+                            onTap: () {
+                              final currentUserId =
+                                  FirebaseAuth.instance.currentUser!.uid;
+                              final chatId = '${currentUserId}_admin';
+                              print('Opening chat room: $chatId');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChatScreen(
+                                    chatId: chatId,
+                                    currentUserId: currentUserId,
+                                    chatBloc: ChatBloc(ChatService()),
+                                  ),
+                                ),
                               );
                             },
                           ),
