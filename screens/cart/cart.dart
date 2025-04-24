@@ -49,7 +49,7 @@ class _MyCartState extends State<MyCart> {
                     unselectedLabelColor: Colors.grey,
                     tabs: const [
                       Tab(
-                        icon: Icon(Icons.save),
+                        icon: Icon(Icons.shopping_cart),
                         text: 'My Cart',
                       ),
                       Tab(icon: Icon(Icons.save), text: "Saved for Later"),
@@ -76,7 +76,6 @@ class _MyCartState extends State<MyCart> {
                               onSaveForLater: saveForLater,
                               onRemoveFromCart: removeFromCart,
                             ),
-                            //buildCartList(state.cartItems)
                           ),
                           buildTotalSection(state.cartItems),
                         ],

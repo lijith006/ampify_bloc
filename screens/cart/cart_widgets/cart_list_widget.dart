@@ -73,7 +73,6 @@ class CartList extends StatelessWidget {
                             // Title and Price
                             Text(
                               item.title,
-                              //   style: AppWidget.boldCardTitle(),
                             ),
                             Text(
                               '₹${item.price}',

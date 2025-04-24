@@ -14,7 +14,7 @@ class ProfileService {
     }
   }
 
-  //Get prodile info
+  //Get profile info
   Future<Map<String, dynamic>> getUserProfile(String userId) async {
     try {
       final doc = await _firestore.collection('users').doc(userId).get();
