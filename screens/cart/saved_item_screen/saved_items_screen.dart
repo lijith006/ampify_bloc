@@ -82,7 +82,6 @@ class SavedItemsScreen extends StatelessWidget {
                                   //title  and price
                                   Text(
                                     item.title,
-                                    //   style: AppWidget.boldCardTitle(),
                                   ),
                                   Text('₹${item.price}',
                                       style: const TextStyle(

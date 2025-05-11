@@ -149,10 +149,14 @@ class CartList extends StatelessWidget {
               // Remove Product Icon
               Positioned(
                 top: 0,
-                right: 0,
+                right: 3,
                 child: IconButton(
                   onPressed: () => onRemoveFromCart(context, item),
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: Image.asset(
+                    'assets/icons/delete_2.png',
+                    width: 24,
+                    height: 24,
+                  ),
                 ),
               ),
             ],

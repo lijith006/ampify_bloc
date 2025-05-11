@@ -9,7 +9,8 @@ import 'package:ampify_bloc/screens/cart/cart_service.dart';
 import 'package:ampify_bloc/screens/cart/cart_widgets/cart_list_widget.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/saved_items_screen.dart';
 import 'package:ampify_bloc/screens/checkout_screen/checkout_screen.dart';
-import 'package:ampify_bloc/widgets/custom_orange_button.dart';
+import 'package:ampify_bloc/widgets/confirm_dialogue.dart';
+import 'package:ampify_bloc/widgets/glowing_revolving_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +48,7 @@ class _MyCartState extends State<MyCart> {
                     indicatorColor: AppColors.buttonColorOrange,
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.grey,
-                    tabs: const [
+                    tabs: [
                       Tab(
                         icon: Icon(Icons.shopping_cart),
                         text: 'My Cart',
@@ -124,16 +125,18 @@ class _MyCartState extends State<MyCart> {
             ],
           ),
           const SizedBox(height: 10),
-          CustomOrangeButton(
-              width: 300,
-              text: 'Proceed to Buy',
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CheckoutScreen(products: cartItems),
-                    ));
-              })
+          GlowingSnakeButton(
+            width: 280,
+            text: 'Proceed to Buy',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckoutScreen(products: cartItems),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -149,22 +152,31 @@ class _MyCartState extends State<MyCart> {
     context.read<CartBloc>().add(SaveForLater(item));
   }
 
-//Remove Product Logic
-  void removeFromCart(BuildContext context, CartItem item) {
-    context.read<CartBloc>().add(RemoveFromCart(item.productId));
+  void removeFromCart(BuildContext context, CartItem item) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => const ConfirmDialog(
+        title: 'Remove Item',
+        content: 'Are you sure you want to remove this item from your cart?',
+      ),
+    );
 
-    //snackbar
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text('Item removed from cart!'),
-      duration: const Duration(seconds: 2),
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      action: SnackBarAction(
+    if (confirmed == true) {
+      context.read<CartBloc>().add(RemoveFromCart(item.productId));
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Item removed from cart!'),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
-            //Re-add the item
             context.read<CartBloc>().add(AddToCart(item));
-          }),
-    ));
+          },
+        ),
+      ));
+    }
   }
 }
