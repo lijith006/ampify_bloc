@@ -1,16 +1,52 @@
-# ampify_bloc
+# 🚀 Ampify – Client-Side Flutter App 🎧
 
-A new Flutter project.
+**Ampify** is a premium audio e-commerce mobile app built with **Flutter**, **BLoC**, and **Firebase**, designed for music lovers. This is the customer-facing app of the full-stack Ampify platform.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 📲 Download APK
 
-A few resources to get you started if this is your first Flutter project:
+🔗 [**Download Ampify Client APK**](https://github.com/lijith006/ampify_bloc/releases/download/v1.0.0/app-release.apk)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+📦 Also available on Amazon Appstore:  
+[**Ampify on Amazon**](https://www.amazon.com/gp/product/B0F3WCP89V)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## ✨ Features
+
+- 🎧 Explore speakers, amps, and subwoofers
+- ❤️ Wishlist and Save-for-Later
+- 🔍 Filter and search with ease
+- 📍 One-tap geolocation address autofill
+- 🔐 Firebase + Google Sign-In
+- 💬 Real-time chat with admin
+- 💸 Razorpay payment integration
+- 📦 Live order tracking
+- ✨ Smooth UI and animations
+
+---
+
+## 🛠️ Tech Stack
+
+- Flutter & BLoC
+- Firebase (Auth, Firestore, Realtime DB)
+- Razorpay
+- Google Sign-In
+- Geolocation
+- Shared Preferences
+
+---
+
+## 🌐 Related Projects
+
+- 🔧 [Admin Mobile App](https://github.com/lijith006/ampify_admin_bloc)
+- 🖥️ [Admin Web Dashboard](https://ampify-with-bloc.web.app)
+
+---
+
+
+## 👨‍💻 Let’s Connect
+
+- 📧 lijith006@gmail.com
+- 💼 [LinkedIn](https://www.linkedin.com/in/lijithcheriyath/)
