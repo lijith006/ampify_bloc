@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:525220056646:android:0f1ca45632ce6e07968447",
+        "android_client_info": {
+          "package_name": "com.ampify.ampify_bloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525220056646-bkqe29ba47e2dka6t08mrliehdcrhgil.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ampify.ampify_bloc",
+            "certificate_hash": "2a55dfb3e18f9a5d344ab2938e65d38a6d30caa3"
+          }
+        },
+        {
+          "client_id": "525220056646-6mteb2qas8r9dc20pkmjt3l8h7md0sfg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEUFhb_UiIuz7B289tNolsLWdpyiPMOzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525220056646-6mteb2qas8r9dc20pkmjt3l8h7md0sfg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:525220056646:android:81e37d770b82da62968447",
         "android_client_info": {
           "package_name": "com.example.ampify_admin_bloc"
