@@ -30,7 +30,7 @@
 ## 🛠️ Tech Stack
 
 - Flutter & BLoC
-- Firebase (Auth, Firestore, Realtime DB)
+- Firebase (Auth, Firestore,)
 - Razorpay
 - Google Sign-In
 - Geolocation
