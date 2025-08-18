@@ -80,6 +80,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "525220056646-3idq2hasso76u7u81rrr6p41d1dv0o4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ampify_bloc",
+            "certificate_hash": "fa94932287cb8e5136b6785afbc8c9f354b1871c"
+          }
+        },
+        {
           "client_id": "525220056646-qpngc2dim5358jj06trmmf0u3bi1jk8j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
