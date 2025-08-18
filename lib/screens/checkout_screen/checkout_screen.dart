@@ -25,16 +25,6 @@ class CheckoutScreen extends StatelessWidget {
     return base64Decode(base64String);
   }
 
-  // double _calculateTotalPrice() {
-  //   return products.fold(0, (sum, item) => sum + (item.price * item.quantity));
-  // }
-  // double _calculateTotalPrice() {
-  //   double subtotal =
-  //       products.fold(0, (sum, item) => sum + (item.price * item.quantity));
-  //   double deliveryCharge = subtotal < 600 ? 40 : 0;
-  //   return subtotal + deliveryCharge;
-  // }
-
   @override
   Widget build(BuildContext context) {
     // double totalPrice = _calculateTotalPrice();

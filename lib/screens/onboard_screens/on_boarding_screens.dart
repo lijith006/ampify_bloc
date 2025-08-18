@@ -16,7 +16,7 @@ class OnBoardingScreens extends StatefulWidget {
 
 class _OnBoardingScreensState extends State<OnBoardingScreens> {
   final PageController _controller = PageController();
-  //to check if we are on last page
+  //to check if we are on last page/
   bool onLastPage = false;
 
 //onboard with wrp

@@ -51,8 +51,8 @@ class SelectAddressScreen extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon:
-                                    const Icon(Icons.edit, color: Colors.blue),
+                                icon: const Icon(Icons.edit,
+                                    color: Colors.black54),
                                 onPressed: () {
                                   TextEditingController controller =
                                       TextEditingController(text: address);

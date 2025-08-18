@@ -188,25 +188,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Widget buildSearchAndFilterResults() {
-  //   return StreamBuilder<QuerySnapshot>(
-  //     stream: searchFilterService.fetchProducts(
-  //       searchQuery: searchQuery,
-  //       filter: filter,
-  //     ),
-  //     builder: (context, snapshot) {
-  //       return SearchResults(
-  //         searchResults: snapshot.hasData ? snapshot.data : null,
-  //         searchQuery: searchQuery,
-  //         filter: filter,
-  //         isLoading: snapshot.connectionState == ConnectionState.waiting,
-  //         onClearFilters: clearAllFilters,
-  //         onClearFilter: clearFilter,
-  //         searchFilterService: searchFilterService,
-  //       );
-  //     },
-  //   );
-  // }
   Widget buildSearchAndFilterResults() {
     return StreamBuilder<QuerySnapshot>(
       stream: searchFilterService.fetchProducts(
