@@ -41,3 +41,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+# Unwanted artifacts
+app-release.zip
+bundletool.jar
+extracted_aab/
