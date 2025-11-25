@@ -32,7 +32,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-dependency_overrides:
+# dependency_overrides:
   fluttertoast: ^8.2.10
 
   # The following adds the Cupertino Icons font to your application.
@@ -40,9 +40,16 @@ dependency_overrides:
   cupertino_icons: ^1.0.8
   flutter_bloc: ^8.1.6
   smooth_page_indicator: ^1.2.0+3
-  firebase_core: ^2.27.0
-  firebase_auth: ^4.17.8
-  firebase_auth_platform_interface: ^7.3.0
+  # firebase_core: ^3.6.0
+  # cloud_firestore: ^5.4.0
+  # firebase_auth: ^5.4.0
+  firebase_core: ^3.15.0  
+  cloud_firestore: ^5.6.10
+  firebase_auth: ^5.7.0
+  # firebase_core: ^2.27.0
+  # firebase_auth: ^4.17.8
+
+  # firebase_auth_platform_interface: ^7.3.0
   shared_preferences: ^2.3.4
   google_sign_in: ^6.2.1
   equatable: ^2.0.7
@@ -51,7 +58,7 @@ dependency_overrides:
   clippy_flutter: ^2.0.0-nullsafety.1
   carousel_slider: ^5.0.0
   flutter_image_compress: ^2.3.0
-  cloud_firestore: ^4.17.5
+  # cloud_firestore: ^4.17.5
   curved_navigation_bar: ^1.0.3
   google_nav_bar: ^5.0.7
   flutter_swiper_plus: ^2.0.4
@@ -79,7 +86,7 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.4
   
 flutter_icons:
   android: true

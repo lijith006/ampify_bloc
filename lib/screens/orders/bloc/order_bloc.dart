@@ -72,12 +72,16 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     // Cancel existing subscription if any
     await _ordersSubscription?.cancel();
 
-    // First, fetch the initial data synchronously
+    //Fetch
     try {
+      String userId = _auth.currentUser!.uid;
+
       final QuerySnapshot initialSnapshot = await _firestore
           .collection('orders')
+          .where('userId', isEqualTo: userId)
           .orderBy('createdAt', descending: true)
           .get();
+
       print("Initial fetch: ${initialSnapshot.docs.length} documents");
 
       final initialOrders = initialSnapshot.docs.map((doc) {
@@ -91,9 +95,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(OrderFailed(error: e.toString()));
       return;
     }
+    String userId = _auth.currentUser!.uid;
 
     _ordersSubscription = _firestore
         .collection('orders')
+        .where('userId', isEqualTo: userId)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .listen(

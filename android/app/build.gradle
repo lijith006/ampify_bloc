@@ -1,7 +1,6 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
     id "com.google.gms.google-services"
 
@@ -18,7 +17,7 @@ android {
     // namespace = "com.example.ampify_bloc"
     // namespace = "com.ampify.ampify_bloc"
     namespace = "com.example.ampify_bloc"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion "27.0.12077973"
 
     compileOptions {
@@ -36,7 +35,7 @@ android {
         applicationId = "com.example.ampify_bloc"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
+        minSdkVersion = flutter.minSdkVersion
         targetSdk = 35
         versionCode = 9
         versionName = "1.0.2"
@@ -74,6 +73,9 @@ flutter {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    //implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    // implementation platform('com.google.firebase:firebase-bom:32.2.3')
+
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.razorpay:checkout:1.6.40'
     implementation("com.google.android.material:material:1.12.0")
