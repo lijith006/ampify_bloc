@@ -42,14 +42,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> sendMessage(String chatId, ChatMessage message) async {
+  Future<void> sendMessage(
+      String chatId, ChatMessage message, String receiverId) async {
     await _firestore
         .collection('chats')
         .doc(chatId)
         .collection('messages')
         .add(message.toMap());
 
-    //  Upsert the root chat-room document with metadata
     await _firestore.collection('chats').doc(chatId).set({
       'userId': message.senderId,
       'userName': message.senderName,

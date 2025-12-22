@@ -29,7 +29,9 @@ class CartItem {
       title: map['title'],
       price: (map['price'] ?? 0).toDouble(),
       quantity: map['quantity'] ?? 1,
-      imageUrls: List<String>.from(map['imageUrls'] ?? []),
+      // imageUrls: List<String>.from(map['imageUrls'] ?? []),
+      imageUrls:
+          map['imageUrls'] != null ? List<String>.from(map['imageUrls']) : [],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ampify_bloc/authentication/service/auth_service.dart';
+import 'package:ampify_bloc/notification/fcm_token_handler.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -39,8 +40,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'email': user.email,
             'name': user.displayName ?? 'Unknown',
             'profileImage': user.photoURL ?? '',
-          });
-
+          }, SetOptions(merge: true));
+          //);
+//  Save the FCM Token after login
+          await FCMTokenHandler.saveTokenToFirestore(user.uid);
           debugPrint('Google user data saved to Firestore successfully.');
           emit(AuthSuccess(user: user));
         }
@@ -67,6 +70,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'name': event.name,
             'profileImage': event.base64Image, // Store Base64 image
           });
+
+          // Save FCM Token
+          await FCMTokenHandler.saveTokenToFirestore(user.uid);
+
           debugPrint('User data saved to Firestore successfully.');
           emit(AuthSuccess(user: user));
         }
@@ -84,6 +91,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             event.email, event.password);
         if (user != null) {
           debugPrint('Login successful, user UID: ${user.uid}');
+          //  Save/Update token
+          await FCMTokenHandler.saveTokenToFirestore(user.uid);
           emit(AuthSuccess(user: user));
         } else {
           debugPrint('Login failed: Incorrect credentials');

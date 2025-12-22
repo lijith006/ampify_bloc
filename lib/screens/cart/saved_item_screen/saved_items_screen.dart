@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/common/app_loader_main.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/saved_item_screen/bloc/saved_items_bloc.dart';
 import 'package:ampify_bloc/screens/products/product_details.dart';
@@ -28,7 +29,8 @@ class SavedItemsScreen extends StatelessWidget {
         body: BlocBuilder<SavedItemsBloc, SavedItemsState>(
           builder: (context, state) {
             if (state is SavedItemsLoading) {
-              return const Center(child: CircularProgressIndicator());
+              // return const Center(child: CircularProgressIndicator());
+              return AppLoader();
             } else if (state is SavedItemsLoaded) {
               final savedItems = state.savedItems;
 

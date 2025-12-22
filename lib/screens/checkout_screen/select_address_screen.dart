@@ -1,4 +1,5 @@
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/common/app_loader_main.dart';
 import 'package:ampify_bloc/screens/add_address_screen/add_new_address_screen.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_bloc.dart';
 import 'package:ampify_bloc/screens/checkout_screen/bloc/checkout_event.dart';
@@ -27,7 +28,7 @@ class SelectAddressScreen extends StatelessWidget {
         builder: (BuildContext context, state) {
           // Show loader while fetching
           if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoader();
           }
 
           return Padding(

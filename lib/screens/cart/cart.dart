@@ -1,6 +1,7 @@
 // import 'dart:convert';
 // import 'dart:typed_data';
 // import 'package:ampify_bloc/common/app_colors.dart';
+// import 'package:ampify_bloc/common/app_loader_main.dart';
 // import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 // import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
 // import 'package:ampify_bloc/screens/cart/bloc/cart_state.dart';
@@ -62,7 +63,7 @@
 //                 BlocBuilder<CartBloc, CartState>(
 //                   builder: (context, state) {
 //                     if (state is CartLoading) {
-//                       return const Center(child: CircularProgressIndicator());
+//                       return AppLoader();
 //                     } else if (state is CartLoaded) {
 //                       if (state.cartItems.isEmpty) {
 //                         return const Center(
@@ -187,10 +188,11 @@
 //     }
 //   }
 // }
-//-----------------------------------june 17
+//------------------------------------------------
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/common/app_loader_main.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_bloc.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_event.dart';
 import 'package:ampify_bloc/screens/cart/bloc/cart_state.dart';
@@ -252,7 +254,7 @@ class _MyCartState extends State<MyCart> {
                 BlocBuilder<CartBloc, CartState>(
                   builder: (context, state) {
                     if (state is CartLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return AppLoader();
                     } else if (state is CartLoaded) {
                       if (state.cartItems.isEmpty) {
                         return const Center(
@@ -291,43 +293,62 @@ class _MyCartState extends State<MyCart> {
   }
 
 //bottom total section
+// Enhanced Total Section
   Widget buildTotalSection(List<CartItem> cartItems) {
     double total =
         cartItems.fold(0, (sum, item) => sum + (item.price * item.quantity));
 
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-          color: AppColors.light,
-          boxShadow: [BoxShadow(color: Colors.grey[300]!, blurRadius: 4)]),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Total:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text('₹$total',
-                  style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green)),
-            ],
-          ),
-          const SizedBox(height: 10),
-          GlowingSnakeButton(
-            width: 280,
-            text: 'Proceed to Buy',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CheckoutScreen(products: cartItems),
-                ),
-              );
-            },
-          ),
+        color: Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          )
         ],
+      ),
+      child: SafeArea(
+        // Ensures it looks good on notched phones
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${cartItems.length} Items',
+                    style: TextStyle(color: Colors.grey[600])),
+                Row(
+                  children: [
+                    const Text('Total: ', style: TextStyle(fontSize: 16)),
+                    Text('₹$total',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.buttonColorOrange)),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            GlowingSnakeButton(
+              width:
+                  double.infinity, // Full width looks more modern on checkout
+              text: 'Proceed to Checkout',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CheckoutScreen(products: cartItems),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
