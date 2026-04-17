@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationService {
-  //REPLACE WITH YOUR RENDER.COM URL
   static const String serverURL =
       "https://fcm-server-jrrq.onrender.com/sendNotification";
 
@@ -40,7 +39,7 @@ class NotificationService {
     }
   }
 
-  /// Save FCM token to Firestore (call after login)
+  /// Save FCM token to Firestore
   static Future<void> saveTokenToFirestore(String uid) async {
     try {
       String? token = await FirebaseMessaging.instance.getToken();

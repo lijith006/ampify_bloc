@@ -84,22 +84,6 @@ class _HomeContentState extends State<HomeContent> {
                 },
               ),
 
-              // StreamBuilder(
-              //   stream: productRepository.fetchProducts(),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       return const ShimmerCarouselPlaceholder();
-              //     }
-              //     // return ProductCarousel(
-              //     //     productStream: productRepository.fetchProducts());
-              //     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              //       return const Center(child: Text("No banners available"));
-              //     }
-
-              //     return ProductCarousel(documents: snapshot.data!.docs);
-              //   },
-              // ),
-
               // F e t c h    C a t e g o r i e s
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -174,7 +158,6 @@ class _HomeContentState extends State<HomeContent> {
                           );
                         }
                         final products = snapshot.data!.docs;
-                        //   final cartState = context.watch<CartBloc>().state;
 
                         return Column(
                           children: [

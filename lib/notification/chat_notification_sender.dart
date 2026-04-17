@@ -3,7 +3,7 @@
 // import 'package:http/http.dart' as http;
 
 // class ChatNotificationSender {
-//   static const String serverKey = "YOUR_FCM_SERVER_KEY"; // from Firebase
+//   static const String serverKey = "FCM_SERVER_KEY";
 
 //   /// Send notification to specific user
 //   static Future<void> sendNotification({

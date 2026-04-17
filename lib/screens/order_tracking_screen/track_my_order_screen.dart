@@ -1,5 +1,3 @@
-//----------------------------------------APR 7
-
 import 'package:ampify_bloc/common/app_colors.dart';
 import 'package:ampify_bloc/screens/order_tracking_screen/order_timeline.dart';
 import 'package:ampify_bloc/screens/order_tracking_screen/widgets/ordered_products_list.dart';
@@ -31,9 +29,9 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   }
 
   // Format the createdAt timestamp
-  String formatDate(Timestamp timestamp) {
-    final dateFormat = DateFormat('MMM dd, yyyy hh:mm a');
-    return dateFormat.format(timestamp.toDate());
+  String formatDate(DateTime dateTime) {
+    final dateFormat = DateFormat('MMM dd, yyyy    hh:mm a');
+    return dateFormat.format(dateTime);
   }
 
   @override

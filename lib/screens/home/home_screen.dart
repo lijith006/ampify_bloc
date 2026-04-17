@@ -1,4 +1,5 @@
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/repositories/payment_repository.dart';
 import 'package:ampify_bloc/screens/cart/cart.dart';
 import 'package:ampify_bloc/screens/home/home_content.dart';
 import 'package:ampify_bloc/screens/profile/profile.dart';
@@ -16,6 +17,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -27,6 +29,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Razorpay _razorpay;
+
   int _selectedIndex = 0;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final TextEditingController searchController = TextEditingController();
@@ -43,6 +47,39 @@ class _HomeScreenState extends State<HomeScreen> {
     const MyCart(),
     const MyProfile(),
   ];
+  @override
+  void initState() {
+    super.initState();
+
+    _razorpay = Razorpay();
+
+    _preWarmRazorpay();
+    //---------------------------
+    Future.microtask(() {
+      context.read<PaymentRepository>().pingServer();
+    });
+    //------------------------------
+  }
+
+  void _preWarmRazorpay() {
+    Future.delayed(const Duration(milliseconds: 400), () {
+      try {
+        // dummy listener to trigger native initialization
+        _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (_) {});
+
+        _razorpay.clear();
+      } catch (e) {
+        debugPrint("Razorpay warmup failed: $e");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _razorpay.clear();
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomOrangeButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;
   final Color textColor;
   final double fontSize;
@@ -14,7 +14,7 @@ class CustomOrangeButton extends StatelessWidget {
   const CustomOrangeButton({
     Key? key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.backgroundColor = Colors.orange,
     this.textColor = Colors.white,
     this.fontSize = 16,

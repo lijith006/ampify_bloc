@@ -1,24 +1,20 @@
 import 'package:ampify_bloc/screens/cart/cart_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 abstract class OrderEvent {}
 
 class PlaceOrder extends OrderEvent {
   final double amount;
-  final String orderId;
-  final String paymentId;
 
   final List<CartItem> items;
   final String address;
-  final String userEmail;
-
+  final String customerName;
   PlaceOrder({
-    required this.paymentId,
     required this.amount,
-    required this.orderId,
     required this.items,
     required this.address,
-    required this.userEmail,
+    required this.customerName,
   });
 }
 
@@ -39,4 +35,22 @@ class UpdateOrdersFromSnapshot extends OrderEvent {
 class OrderSubscriptionError extends OrderEvent {
   final String error;
   OrderSubscriptionError({required this.error});
+}
+
+class PaymentSucceeded extends OrderEvent {
+  final PaymentSuccessResponse response;
+
+  PaymentSucceeded(this.response);
+}
+
+class PaymentFailed extends OrderEvent {
+  final String error;
+
+  PaymentFailed(this.error);
+}
+
+class PreparePayment extends OrderEvent {
+  final double amount;
+
+  PreparePayment(this.amount);
 }

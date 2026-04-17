@@ -4,6 +4,7 @@ import 'package:ampify_bloc/authentication/bloc/auth_bloc.dart';
 import 'package:ampify_bloc/authentication/bloc/auth_state.dart';
 import 'package:ampify_bloc/authentication/screens/login_screen.dart';
 import 'package:ampify_bloc/common/app_colors.dart';
+import 'package:ampify_bloc/repositories/payment_repository.dart';
 import 'package:ampify_bloc/screens/chat_screen/chat_bloc/bloc/chat_bloc.dart';
 import 'package:ampify_bloc/screens/chat_screen/chat_screen/chat_screen.dart';
 import 'package:ampify_bloc/screens/chat_screen/service/chat_service.dart';
@@ -112,8 +113,10 @@ class _MyProfileState extends State<MyProfile> {
                                   MaterialPageRoute(
                                     builder: (context) => BlocProvider(
                                       create: (context) => OrderBloc(
-                                          firestore:
-                                              FirebaseFirestore.instance),
+                                        firestore: FirebaseFirestore.instance,
+                                        paymentRepository:
+                                            context.read<PaymentRepository>(),
+                                      ),
                                       child: const AllOrdersScreen(),
                                     ),
                                   ));

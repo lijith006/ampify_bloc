@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-                  //EXP im
+                  //EXP
                   Column(
                     children: [
                       Center(
@@ -159,10 +159,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 80,
                           height: 80,
                           child: Stack(
-                            clipBehavior: Clip.none, // allow overflow
+                            clipBehavior: Clip.none,
                             alignment: Alignment.center,
                             children: [
-                              // Google Icon (small and centered)
+                              // Google Icon
                               if (state is! AuthLoading)
                                 InkWell(
                                   onTap: () {
@@ -178,10 +178,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
 
-                              // Loading animation (larger, overflow allowed)
+                              // Loading animation
                               if (state is AuthLoading)
                                 Positioned(
-                                  top: -110, // lift up to reduce gap
+                                  top: -110,
                                   left: -110,
                                   right: -110,
                                   bottom: -110,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ampify_bloc/repositories/payment_repository.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_event.dart';
 import 'package:ampify_bloc/screens/orders/bloc/order_state.dart';
 import 'package:ampify_bloc/screens/orders/order_model/order_model.dart';
@@ -9,59 +10,134 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
+  List<Map<String, dynamic>> _pendingItems = [];
+  double _pendingAmount = 0;
+  String _pendingAddress = '';
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Razorpay _razorpay = Razorpay();
 
   final FirebaseFirestore _firestore;
+  final PaymentRepository paymentRepository;
+
   StreamSubscription<QuerySnapshot>? _ordersSubscription;
 
-  OrderBloc({required FirebaseFirestore firestore})
-      : _firestore = firestore,
+  OrderBloc({
+    required FirebaseFirestore firestore,
+    required this.paymentRepository,
+  })  : _firestore = firestore,
         super(OrderInitial()) {
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+        (PaymentSuccessResponse response) {
+      add(PaymentSucceeded(response));
+    });
+
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+        (PaymentFailureResponse response) {
+      add(PaymentFailed(response.message ?? "Payment failed"));
+    });
+
     on<FetchOrders>(_onFetchOrders);
     on<PlaceOrder>(_onPlaceOrder);
     on<UpdateOrderStatus>(_onUpdateOrderStatus);
     on<UpdateOrdersFromSnapshot>(_onUpdateOrdersFromSnapshot);
     on<OrderSubscriptionError>(_onOrderSubscriptionError);
+    on<PaymentSucceeded>(_handlePaymentSuccess);
+    on<PaymentFailed>(_handlePaymentFailed);
   }
 
-  Future<void> _onPlaceOrder(PlaceOrder event, Emitter<OrderState> emit) async {
-    emit(OrderLoading());
-    try {
-      String userId = _auth.currentUser?.uid ?? '';
+  Future<void> _onPlaceOrder(
+    PlaceOrder event,
+    Emitter<OrderState> emit,
+  ) async {
+    emit(PaymentInProgress());
 
-      if (userId.isEmpty) {
-        emit(OrderFailed(error: "User not logged in."));
+    try {
+      final user = _auth.currentUser;
+      if (user == null) throw Exception('Not logged in');
+
+      _pendingItems = event.items.map((e) => e.toMap()).toList();
+      _pendingAmount = event.amount;
+      _pendingAddress = event.address;
+
+      final customerName = event.customerName;
+
+      print("STEP 1 - Creating Razorpay order");
+      final razorpayOrderId = await paymentRepository.createOrder(event.amount);
+      print("STEP 2 - Razorpay order created: $razorpayOrderId");
+
+      _razorpay.open({
+        'key': 'rzp_test_FRLD6BPBYxystN',
+        'amount': (event.amount * 100).toInt(),
+        'order_id': razorpayOrderId,
+        'name': 'Ampify',
+        'prefill': {
+          'email': user.email,
+          'name': customerName,
+        },
+      });
+    } catch (e) {
+      emit(PaymentFailure(error: e.toString()));
+    }
+  }
+
+  Future<void> _handlePaymentSuccess(
+    PaymentSucceeded event,
+    Emitter<OrderState> emit,
+  ) async {
+    try {
+      final response = event.response;
+
+      final verified = await paymentRepository.verifyPayment(
+        orderId: response.orderId!,
+        paymentId: response.paymentId!,
+        signature: response.signature!,
+      );
+
+      if (!verified) {
+        emit(PaymentFailure(error: 'Payment verification failed'));
         return;
       }
+      final user = _auth.currentUser!;
+      final userDoc = await _firestore.collection('users').doc(user.uid).get();
 
-//Fetch customer name
-      final userDoc = await _firestore.collection('users').doc(userId).get();
-      String customerName =
-          userDoc.exists ? (userDoc.data()?['name'] ?? 'User') : 'User';
+      final docRef = _firestore.collection('orders').doc();
 
-      String orderId = event.orderId.isNotEmpty
-          ? event.orderId
-          : _firestore.collection('orders').doc().id;
-      OrderModel newOrder = OrderModel(
-        id: orderId,
-        paymentId: event.paymentId,
-        items: event.items,
-        totalAmount: event.amount,
-        userId: userId,
-        customerName: customerName,
-        status: 'pending',
-        address: event.address,
-        createdAt: Timestamp.now(),
-      );
-      print('Order Details- plc ordr:   ${newOrder.toMap()}');
-      await _firestore.collection('orders').doc(orderId).set(newOrder.toMap());
+      await docRef.set({
+        'id': docRef.id,
+        'razorpayOrderId': response.orderId,
+        'razorpayPaymentId': response.paymentId,
+        'paymentStatus': 'PAID',
+        'verified': true,
+        'address': _pendingAddress,
+        'items': _pendingItems,
+        'totalAmount': _pendingAmount,
+        'userId': user.uid,
+        'userEmail': user.email,
+        // 'customerName': userDoc['name'],
+        'customerName': userDoc.data()?['name'] ?? 'User',
+        'status': 'confirmed',
+        'progress': 20,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      //_preparedRazorpayOrderId = null;
 
-      emit(OrderPlaced(
-          orderId: orderId, status: "Pending", paymentId: event.paymentId));
+      emit(PaymentSuccess(
+        orderId: docRef.id,
+        paymentId: response.paymentId!,
+      ));
     } catch (e) {
-      emit(OrderFailed(error: e.toString()));
+      emit(PaymentFailure(error: e.toString()));
     }
+  }
+
+  void _handlePaymentFailed(
+    PaymentFailed event,
+    Emitter<OrderState> emit,
+  ) {
+    // reset prepared order
+    // _preparedRazorpayOrderId = null;
+    emit(PaymentFailure(error: event.error));
   }
 
   Future<void> _onFetchOrders(

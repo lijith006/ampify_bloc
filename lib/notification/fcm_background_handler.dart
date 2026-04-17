@@ -4,7 +4,7 @@
 
 // @pragma('vm:entry-point')
 // Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   log("🔔 Background Message Received!");
+//   log(" Background Message Received!");
 //   log("Message Title: ${message.notification?.title}");
 //   log("Message Body: ${message.notification?.body}");
 // }

@@ -7,8 +7,6 @@ import 'package:ampify_bloc/widgets/custom_text-form-field.dart';
 import 'package:ampify_bloc/widgets/validators_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:geocoding/geocoding.dart';
-// import 'package:geolocator/geolocator.dart';
 
 class AddNewAddressScreen extends StatefulWidget {
   @override
@@ -175,7 +173,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                           Validators.validateRequired(value, 'Town/City'),
                     ),
 
-                    //-------------------------------------------------------------------------------------
                     const SizedBox(
                       height: 20,
                     ),

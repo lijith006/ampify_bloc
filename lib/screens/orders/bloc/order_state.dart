@@ -6,28 +6,44 @@ class OrderInitial extends OrderState {}
 
 class OrderLoading extends OrderState {}
 
-class PaymentInitiated extends OrderState {}
-
-class OrderPlaced extends OrderState {
+/// Firestore order created, Razorpay order created
+class OrderCreated extends OrderState {
   final String orderId;
-  final String status;
-  final String paymentId;
-  OrderPlaced(
-      {required this.orderId, required this.status, required this.paymentId});
+  final String razorpayOrderId;
+
+  OrderCreated({
+    required this.orderId,
+    required this.razorpayOrderId,
+  });
 }
 
+/// Razorpay checkout opened
+class PaymentInProgress extends OrderState {}
+
+/// Payment verified successfully
+class PaymentSuccess extends OrderState {
+  final String orderId;
+  final String paymentId;
+
+  PaymentSuccess({
+    required this.orderId,
+    required this.paymentId,
+  });
+}
+
+/// Payment failed or verification failed
+class PaymentFailure extends OrderState {
+  final String error;
+  PaymentFailure({required this.error});
+}
+
+/// Orders list
 class OrdersLoaded extends OrderState {
   final List<OrderModel> orders;
   OrdersLoaded({required this.orders});
 }
 
-class OrderUpdated extends OrderState {
-  final String orderId;
-  final String status;
-
-  OrderUpdated({required this.orderId, required this.status});
-}
-
+/// Any backend / firestore error
 class OrderFailed extends OrderState {
   final String error;
   OrderFailed({required this.error});
