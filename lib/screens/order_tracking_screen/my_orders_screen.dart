@@ -57,7 +57,6 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
   Widget build(BuildContext context) {
     print("AllOrdersScreen building");
     return Scaffold(
-      // backgroundColor: AppColors.backgroundColor,
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: const CustomAppBar(title: 'My Orders'),
       //BLOC Builder --

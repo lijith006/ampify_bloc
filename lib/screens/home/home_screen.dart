@@ -54,11 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _razorpay = Razorpay();
 
     _preWarmRazorpay();
-    //---------------------------
     Future.microtask(() {
       context.read<PaymentRepository>().pingServer();
     });
-    //------------------------------
   }
 
   void _preWarmRazorpay() {
