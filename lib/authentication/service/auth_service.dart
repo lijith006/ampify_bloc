@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  //final _auth = FirebaseAuth.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   User? get currentUser => _auth.currentUser;
@@ -32,7 +31,7 @@ class AuthService {
       }
     } catch (e) {
       debugPrint('Error sending email verification: $e');
-      throw e; // Re-throw for BLoC to handle.
+      throw e; 
     }
   }
 

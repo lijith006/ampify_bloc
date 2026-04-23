@@ -203,7 +203,7 @@ class _CardWidgetState extends State<CardWidget>
     );
   }
 
-  // Widget to show the add to cart button
+  //  add to cart button
   Widget _buildAddToCartButton() {
     return GestureDetector(
       onTap: _handleAddToCart,
@@ -223,7 +223,7 @@ class _CardWidgetState extends State<CardWidget>
     );
   }
 
-  // Widget to show the product count in the cart
+  // product count in the cart
   Widget _buildCartCountWidget(int cartCount) {
     return Container(
       width: 30,
@@ -240,7 +240,7 @@ class _CardWidgetState extends State<CardWidget>
     );
   }
 
-  // Widget to show the tick animation
+  // tick animation
   Widget _buildTickAnimation() {
     return AnimatedBuilder(
       animation: _animation,
